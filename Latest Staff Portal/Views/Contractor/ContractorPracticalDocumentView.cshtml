@@ -54,7 +54,7 @@
         <h4>Contractor Practical Completion Certification Document</h4>
         <div style="text-align:right; margin-bottom: 20px">
             @{
-                if (@Model.Status == "Open")
+                if (@Model.Status == "New")
                 {
                     <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitRequest('@Model.No');">
                         <i class="fa fa-check" aria-hidden="true"></i> Submit Request
@@ -824,14 +824,17 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ No: No }),
-            url: "/ProjectManagement/ValuingMembersLinesPartialView",
+            url: "/Contractor/ValuingMembersLinesPartialView",
             success: function (data) {
                 $("#divContractorRequestLines").html(data);
                 HideProgress();
-                LoadBOQLines(No)
+                //LoadBOQLines(No)
+                LoadContractorRequestComments(No)
             },
             error: function () {
-                LoadBOQLines(No);
+                //LoadBOQLines(No);
+                HideProgress();
+                LoadContractorRequestComments(No)
                 Swal.fire("There is some problem to process your request. Please try after some time");
             }
         });

@@ -1,12 +1,10 @@
-﻿@model Latest_Staff_Portal.ViewModel.ContractorPaymentRequests
+﻿@model Latest_Staff_Portal.ViewModel.ContractorExtensionRequests
 
 
 @{
     ViewBag.Title = "ContractsDocumentView";
     Layout = "~/Views/Shared/Sitemaster.cshtml";
-    var isDirector = ViewBag.isDirector??false;
-    var loggedInStaffNo = ViewBag.loggedInStaffNo;
-    var SecretaryStaffNo = ViewBag.SecretaryStaffNo;
+    var loggedInUserID = ViewBag.loggedInUserID;
 }
 
 
@@ -25,6 +23,7 @@
         transition: background-color 0.3s ease; /* Smooth transition effect */
     }
 
+
     .breadcrumb-item a {
         text-decoration: none;
     }
@@ -34,12 +33,14 @@
     }
 </style>
 
+
+
 <div class="page-headers">
     <div class="row">
         <div class="col-sm-12">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" onclick="ContractorPaymentRequestLink();" style="color: #000">Contractor Payment Request List</a></li>
-                <li class="breadcrumb-item active">Contractor Payment Request Document</li>
+                <li class="breadcrumb-item"><a href="#" onclick="ContractorInstructionRequestLink();" style="color: #000">Contractor Instruction Request List</a></li>
+                <li class="breadcrumb-item active">Contractor Instruction Request Document</li>
             </ul>
         </div>
     </div>
@@ -49,14 +50,72 @@
 
 <div class="card">
     <div class="card-header">
-        <h4>Contractor Payment Request Document</h4>
+        <h4>Contractor Instruction Request Document</h4>
         <div style="text-align:right; margin-bottom: 20px">
             @{
-
                 if (@Model.Status == "New")
                 {
-                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendRequest('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i> Send Request
+                    <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitRequest('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Submit Request
+                    </button>
+                }
+                if (Model.isManager)
+                {
+                    if (@Model.Status == "Submitted")
+                    {
+
+
+                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ReceiveContractorExtensionRequest('@Model.No');">
+                            <i class="fa fa-check" aria-hidden="true"></i> Receive
+                        </button>
+                    }
+
+                    if (@Model.Status == "Received" && !@Model.Sent_to_Ast_Directors)
+                    {
+                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendExtensionReqToAssistantDirector('@Model.No');">
+                            <i class="fa fa-check" aria-hidden="true"></i>Send To Assistant Director
+                        </button>
+                    }
+                }
+
+                if (@Model.Status == "Team Approval" && Model.Team_Approval_Status == "New" && @loggedInUserID == Model.Current_Approving_Member)
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitToTeamLeadForApproval('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Submit To Team Lead For Approval
+                    </button>
+                }
+
+
+                if (@Model.Status == "Team Approval" && @Model.Team_Approval_Status == "Submitted" && @loggedInUserID == Model.Asssigning_Employee)
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="TeamLeadApproveExtSubmission('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Approve Submission
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="TeamLeadRejectExtSubmission('@Model.No');">
+                        <i class="fa fa-close" aria-hidden="true"></i>Reject Submission
+                    </button>
+                }
+
+                if (@Model.Status == "PM" && @Model.isManager)
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ApproveAndSubmitToCRJ('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Approve and Submit To CJ
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="PMRejectSubmission('@Model.No');">
+                        <i class="fa fa-close" aria-hidden="true"></i>PM Reject Submission
+                    </button>
+                }
+
+                if (@Model.Status == "CRJ" && @Model.isManager)
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendToSupplyChain('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Send To Supply Chain
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="CRJRejectSubmission('@Model.No');">
+                        <i class="fa fa-close" aria-hidden="true"></i>CRJ Reject Submission
                     </button>
                 }
             }
@@ -145,111 +204,13 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Project_Sum, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                    @Html.EditorFor(model => model.Project_Sum, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.ValidationMessageFor(model => model.Project_Sum, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Retention_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                    @Html.EditorFor(model => model.Retention_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.ValidationMessageFor(model => model.Retention_Amount, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Project_Manager, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                    @Html.EditorFor(model => model.Project_Manager, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.ValidationMessageFor(model => model.Project_Manager, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Project_Manager_Name, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                    @Html.EditorFor(model => model.Project_Manager_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.ValidationMessageFor(model => model.Project_Manager_Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            @* <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.Label("Team Approval Status", htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Team_Approval_Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Team_Approval_Status, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-
-            @*   <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Key_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Key_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Key_Comments, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            *@
-            @* <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Action_Approved, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Action_Approved, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Action_Approved, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            @* <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Extension_Period, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Extension_Period, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Extension_Period, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            @*   <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.SCM_Status, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.SCM_Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.SCM_Status, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            @*   <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Procurement_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Procurement_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Procurement_Comments, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            @*
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Crj_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.Crj_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.Crj_Comments, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            @* <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.CRJ_General_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                        @Html.EditorFor(model => model.CRJ_General_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.CRJ_General_Comments, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+           
         </div>
 
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="accordionExample" hidden>
 
             <!-- Accordion Item 1- Comment Input Section -->
-            <div class="accordion-item" hidden>
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Comment Input Section
@@ -293,7 +254,7 @@
                             <div class="row mt-5">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Approved Amount", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Approved_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Approved_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Approved_Amount, "", new { @class = "text-danger" })
@@ -301,7 +262,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Approved Variation Addition", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Approved_Variation_Addition, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Approved_Variation_Addition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Approved_Variation_Addition, "", new { @class = "text-danger" })
@@ -309,7 +270,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Approved Variation Omition", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Apprroved_Variation_Omition, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Apprroved_Variation_Omition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Apprroved_Variation_Omition, "", new { @class = "text-danger" })
@@ -317,18 +278,26 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Actual Work Progress", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Actual_Work_Progress, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Actual_Work_Progress, new { htmlAttributes = new { @class = "form-control", @id = "Actual_Work_Progress" } })
+                                        @Html.EditorFor(model => model.Actual_Work_Progress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Actual_Work_Progress, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
-                             
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Approved Certificates", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Approved_Certificates, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Approved_Certificates, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Approved_Certificates, "", new { @class = "text-danger" })
@@ -336,7 +305,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Certificate No", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Certificate_No, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Certificate_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Certificate_No, "", new { @class = "text-danger" })
@@ -344,7 +313,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Contract No", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Contract_No, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Contract_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Contract_No, "", new { @class = "text-danger" })
@@ -352,42 +321,42 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Final Contract Value", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Final_Contract_Value, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Final_Contract_Value, new { htmlAttributes = new { @class = "form-control", @id = "Final_Contract_Value" } })
+                                        @Html.EditorFor(model => model.Final_Contract_Value, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Final_Contract_Value, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Previously Paid Amount", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Previously_Paid_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Previously_Paid_Amount, new { htmlAttributes = new { @class = "form-control", @id = "Previously_Paid_Amount" } })
+                                        @Html.EditorFor(model => model.Previously_Paid_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Previously_Paid_Amount, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Revised Completion Date", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Revised_Completion_Date, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Revised_Completion_Date, new { htmlAttributes = new { @class = "form-control", @id = "Revised_Completion_Date" } })
+                                        @Html.EditorFor(model => model.Revised_Completion_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Revised_Completion_Date, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Valuation Date", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Valuation_Date, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Valuation_Date, new { htmlAttributes = new { @class = "form-control", @id = "Valuation_Date" } })
+                                        @Html.EditorFor(model => model.Valuation_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Valuation_Date, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Total Net Variation", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Total_Net_Variation, htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Total_Net_Variation, new { htmlAttributes = new { @class = "form-control", @id = "Total_Net_Variation" } })
+                                        @Html.EditorFor(model => model.Total_Net_Variation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Total_Net_Variation, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -399,8 +368,9 @@
                 </div>
             </div>
 
+
             <!-- Accordion Item 3- DBS Actions -->
-            <div class="accordion-item" hidden>
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         DBS Actions
@@ -478,17 +448,18 @@
             <!-- Accordion Item 4- Supply Chain Actions -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingFour">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                         Supply Chain Actions
                     </button>
                 </h2>
-                <div id="collapseFour" class="accordion-collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div id="" style="margin: 10px 20px">
                             <div class="row mt-5">
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Selected SCM Employee", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Selected_SCM_Employee, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Selected_SCM_Employee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Selected_SCM_Employee, "", new { @class = "text-danger" })
@@ -496,7 +467,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Selected Employee Name", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Selected_Employee_Name, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Selected_Employee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Selected_Employee_Name, "", new { @class = "text-danger" })
@@ -504,53 +475,33 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Selected user ID", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Selected_user_Id, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Selected_user_Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Selected_user_Id, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-
-                                @{
-                                    if (@Model.SCM_Status == "Director SCM" && @isDirector)
-                                    {
-                                        <div class="col-md-12 text-center" hidden>
-                                            <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SelectSupplyChainOfficer('@Model.No')">Select Supply Chain Officer</button>
-                                        </div>
-                                    }
-                                }
-
-                            </div>
-                            <hr style="height: 2px; background-color: #000; border: none;">
-                            <div class="row mt-5">
-                                @{
-                                    string formattedInitialContractEndDate = string.IsNullOrEmpty(Model.Initial_Contract_End_Date)
-                                        ? string.Empty
-                                        : DateTime.Parse(Model.Initial_Contract_End_Date).ToString("dd-MM-yyyy");
-                                }
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Initial Contract End Date", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        @*  <input class="form-control" value="@(formattedInitialContractEndDate)" type="text" name="name" id="Initial_Contract_End_Date" />*@
-                                        @Html.EditorFor(model => model.Initial_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @id = "Initial_Contract_End_Dates", @readonly = "readonly" } })
+                                        @Html.LabelFor(model => model.Committee_Assesment_Notes, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Committee_Assesment_Notes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Committee_Assesment_Notes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Initial_Contract_End_Date, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Initial_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Initial_Contract_End_Date, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Approval Action", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <select class="form-control" id="Action_Approved">
-                                            @*<option value="">Select Option</option>*@
-                                            <option value="0">Yes</option>
-                                            <option value="1">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                          
+
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("New Contract End Date", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.New_Contract_End_Date, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.New_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.New_Contract_End_Date, "", new { @class = "text-danger" })
@@ -558,61 +509,29 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Director SCM Comments", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Director_SCM_Comments">@Model.Director_SCM_Comments</textarea>
-                                        @*@Html.EditorFor(model => model.Director_SCM_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Director_SCM_Comments" } })*@
+                                        @Html.LabelFor(model => model.Director_SCM_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Director_SCM_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Director_SCM_Comments, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-
-                                @* @if (@loggedInStaffNo == @SecretaryStaffNo)
-                            {
-                                <div class="col-md-12 text-center"> <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="UpdateCommitteeReport('@Model.No')">Update Committee Report</button></div>
-                            }*@
-                            </div>
-
-                            @* <hr style="height: 2px; background-color: #000; border: none;">*@
-
-                            <div class="row mt-5">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Committee Assesment Notes", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Committee_Assesment_Notes">@Model.Committee_Assesment_Notes</textarea>
-                                        @* @Html.EditorFor(model => model.Committee_Assesment_Notes, new { htmlAttributes = new { @class = "form-control", @id = "Committee_Assesment_Notes" } })*@
-                                        @Html.ValidationMessageFor(model => model.Committee_Assesment_Notes, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @Html.Label("Professional Opinion Notes", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Professional_Opinion_Notes">@Model.Professional_Opinion_Notes</textarea>
-                                        @* @Html.EditorFor(model => model.Professional_Opinion_Notes, new { htmlAttributes = new { @class = "form-control", @id = "Professional_Opinion_Notes" } })*@
+                                        @Html.LabelFor(model => model.Professional_Opinion_Notes, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Professional_Opinion_Notes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Professional_Opinion_Notes, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                @if (@loggedInStaffNo == @SecretaryStaffNo)
-                                {
-                                    @* <div class="col-md-12 text-center">
-                                    <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SecretaryUpdateAssessmentAndOpinion('@Model.No')">Update Assessment & Opinion</button>
-                                </div>
-                                    *@
-                                    <div class="col-md-12 text-center" hidden>
-                                        <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="UpdateCommitteeReport('@Model.No')">Update Committee Report</button>
-                                    </div>
-
-
-                                }
-
                             </div>
-                            <hr style="height: 2px; background-color: #000; border: none;">
+
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <!-- Accordion Item 5- CRJ -->
-            <div class="accordion-item" hidden>
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingFive">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                         CRJ
@@ -626,7 +545,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Committee Sec No", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Committee_Sec_No, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Committee_Sec_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Committee_Sec_No, "", new { @class = "text-danger" })
@@ -634,12 +553,15 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.Label("Secretary Name", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.LabelFor(model => model.Secretary_Name, htmlAttributes: new { @class = "control-label col-md-12" })
 
                                         @Html.EditorFor(model => model.Secretary_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Secretary_Name, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+
+
+
                             </div>
 
                         </div>
@@ -648,7 +570,7 @@
             </div>
 
             <!-- Accordion Item 6- Communication -->
-            <div class="accordion-item" hidden>
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingSix">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                         Communication
@@ -674,16 +596,7 @@
 
         </div>
 
-
-
         <div class="row mb-5">
-            <div class="row mt-5">
-                <h5 class="mb-3">Project BOQs</h5>
-                <hr />
-                <div id="divProjectBOQLines"></div>
-                <hr />
-            </div>
-
 
             <div class="row mt-5">
                 <h5 class="mb-3">Contractor Request Lines</h5>
@@ -692,14 +605,14 @@
                 <hr />
             </div>
 
-            <div class="row mt-5">
+            <div class="row mt-5" hidden>
                 <h5 class="mb-3">Comments</h5>
                 <hr />
                 <div id="divComments"></div>
                 <hr />
             </div>
 
-            <div class="row mt-5">
+            <div class="row mt-5" hidden>
                 <h5 class="mb-3">Tender Evaluation Committee Members</h5>
                 <hr />
                 <div id="divCommitteeMembers"></div>
@@ -720,7 +633,7 @@
         <div class="modal-content bg-white">
             <div class="modal-header">
                 <h4 class="modal-title"><label id="labelF"></label></h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -735,7 +648,7 @@
         <div class="modal-content bg-white">
             <div class="modal-header">
                 <h4 class="modal-title">Attachment</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -750,73 +663,27 @@
         <div class="modal-content bg-white">
             <div class="modal-header">
                 <h4 class="modal-title">Assign Employee</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" id="assignEmployeeModalBody">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger waves-effect " data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
 
+
 <script>
     $(document).ready(function () {
-        LoadProjectBOQLines(`@Model.No`);
-@*        LoadContractorRequestLines(`@Model.No`);*@
+        LoadContractorRequestLines(`@Model.No`);
         $('.select2').select2();
-
-
-        $('#Initial_Contract_End_Date').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            autoclose: true,
-            yearRange: '-1:+2',
-            showOtherMonths: true,
-            dateFormat: 'dd-mm-yy'
-        });
-        $("#Initial_Contract_End_Date").focus(function () {
-            $("#ui-datepicker-div").position({
-                my: "left top",
-                at: "left bottom",
-                of: $(this)
-            });
-        });
-
-        var dateVal = $('#Initial_Contract_End_Date').val();
-
-        if (dateVal && dateVal.includes('-')) {
-            var parts = dateVal.split('-'); // Expected format: yyyy-MM-dd
-            var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0]; // Convert to dd-MM-yyyy
-            $('#Initial_Contract_End_Date').val(formattedDate);
-        }
     });
-    var LoadProjectBOQLines = function (No) {
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "html",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ No: No }),
-            url: "/Contractor/ProjectBOQLinesPartialView",
-            success: function (data) {
-                $("#divProjectBOQLines").html(data);
-                HideProgress();
-                LoadContractorRequestLines(No)
-            },
-            error: function () {
-                LoadContractorRequestLines(No);
-                HideProgress();
-                Swal.fire("There is some problem to process your request. Please try after some time");
-            }
-        });
-    };
+
     var LoadContractorRequestLines = function (No) {
         ShowProgress();
         $.ajax({
@@ -882,13 +749,14 @@
         });
     };
 
-    function ContractorPaymentRequestLink(status) {
-        window.location.href = `ContractorPaymentRequests`;
+
+    function ContractorInstructionRequestLink(status) {
+        window.location.href = `ContractorInstructionRequests`;
     }
     var ViewDoc = function (DocNo) {
         ShowProgress();
         var form = $('<form>', {
-            action: '/Contractor/ContractorAmmendedRequestsDocumentView',
+            action: '/Contractor/ContractorInstructionRequestsDocumentView',
             method: 'POST'
         }).append($('<input>', {
             type: 'hidden',
@@ -899,7 +767,7 @@
     };
 
     //actions
-    function SendToAssignedEmployee(No) {
+    function ReceiveContractorExtensionRequest(No) {
         ShowProgress();
         $.ajax({
             async: true,
@@ -908,7 +776,7 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ DocNo: No }),
-            url: "/Contractor/SendToAssignedEmployee",
+            url: "/Contractor/ReceiveContractorExtensionRequest",
             success: function (data) {
                 if (data.success) {
                     HideProgress();
@@ -925,7 +793,7 @@
             }
         });
     }
-    function SendToDSCMForCommitteeApproval(No) {
+    function SendExtensionReqToAssistantDirector(No) {
         ShowProgress();
         $.ajax({
             async: true,
@@ -934,38 +802,7 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ DocNo: No }),
-            url: "/Contractor/SendToDSCMForCommitteeApproval",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Record submitted", "success");
-                    ViewDoc(No)
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-    function SendToAccountingOfficerForCommitteeProposal(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/SendToAccountingOfficerForCommitteeProposal",
+            url: "/Contractor/SendExtensionReqToAssistantDirector",
             success: function (data) {
                 if (data.success) {
                     HideProgress();
@@ -983,12 +820,23 @@
             }
         });
     }
-    function AppointCommittee(No) {
+    function SubmitToTeamLeadForApproval(No) {
+        var Memo_Comments = $('#Memo_Comments').val();
         var Key_Comments = $('#Key_Comments').val();
+        if (!Memo_Comments) {
+            Swal.fire("Warning", "Memo Notes required", "warning");
+            return;
+        }
+
         if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
+            Swal.fire("Warning", "Key Comments required", "warning");
             return;
         }
+
+
+
+
+
         ShowProgress();
         $.ajax({
             async: true,
@@ -996,241 +844,12 @@
             datatype: "json",
             contentType: "application/json; charset = utf-8",
             processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/AppointCommittee",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Approved", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-    function RejectCommittee(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/RejectCommittee",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Rejected", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-
-
-    function SelectSupplyChainOfficer(DocNo) {
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            data: JSON.stringify({ DocNo: DocNo }),
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            url: '/Procurement/SelectSupplyChainOfficer',
-            success: function (data) {
-                $("#assignEmployeeModalBody").html(data);
-                HideProgress();
-                $("#assignEmployeeModal").modal("show");
-            },
-            error: function (err) {
-                HideProgress();
-                Swal.fire('Warning', err, 'warning');
-            }
-        });
-    }
-
-
-    var SecretaryUpdateAssessmentAndOpinion = function (No) {
-        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
-        var Professional_Opinion_Notes = $('#Professional_Opinion_Notes').val();
-
-        if (!Committee_Assesment_Notes) {
-            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
-            return;
-        }
-        if (!Professional_Opinion_Notes) {
-            Swal.fire("Warning", "Professional Opinion_Notes is required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            type: "POST",
-            url: "/Procurement/SecretaryUpdateAssessmentAndOpinion",
-            data: JSON.stringify({
-                DocNo: No,
-                CommitteeAssessment: Committee_Assesment_Notes,
-                ProfessionalOpinionNotes: Professional_Opinion_Notes,
-            }),
-            contentType: "application/json; charset=utf-8",  // Ensure JSON content
-            dataType: "json",
-            success: function (data) {
-                HideProgress();
-                if (data.success) {
-                    Swal.fire('Success', data.message, 'success').then(() => {
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire('Warning', data.message, 'warning');
-                }
-            },
-            error: function (xhr, status, error) {
-                HideProgress();
-                console.error("Error:", xhr.responseText);
-                Swal.fire('Error', "An error occurred while updating the report", 'error');
-            }
-        });
-
-    }
-    var UpdateCommitteeReport = function (No) {
-        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
-        var Action_Approved = $('#Action_Approved').val();
-        var Extension_Period = $('#Extension_Period').val();
-        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
-        var Professional_Opinion_Notes = $('#Professional_Opinion_Notes').val();
-
-        if (!Committee_Assesment_Notes) {
-            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
-            return;
-        }
-
-        if (!Professional_Opinion_Notes) {
-            Swal.fire("Warning", "Professional Opinion Notes required", "warning");
-            return;
-        }
-
-        if (!Action_Approved) {
-            Swal.fire("Warning", "Approval Action is required", "warning");
-            return;
-        }
-
-        ShowProgress();
-        $.ajax({
-            type: "POST",
-            url: "/Procurement/UpdateCommitteeReport",
-            data: JSON.stringify({
-                DocNo: No,
-                CommitteeAssessment: Committee_Assesment_Notes,
-                ApprovalAction: Action_Approved,
-                ExtensionPeriod: Extension_Period
-            }),
-            contentType: "application/json; charset=utf-8",  // Ensure JSON content
-            dataType: "json",
-            success: function (data) {
-                HideProgress();
-                if (data.success) {
-                    Swal.fire('Success', data.message, 'success').then(() => {
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire('Warning', data.message, 'warning');
-                }
-            },
-            error: function (xhr, status, error) {
-                HideProgress();
-                console.error("Error:", xhr.responseText);
-                Swal.fire('Error', "An error occurred while updating the report", 'error');
-            }
-        });
-
-    }
-
-    function SubmitInspectionReportToDirectorSCM(No) {
-        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
-        var Action_Approved = $('#Action_Approved').val();
-        var Extension_Period = $('#Extension_Period').val();
-
-        if (!Committee_Assesment_Notes) {
-            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
-            return;
-        }
-
-        if (!Action_Approved) {
-            Swal.fire("Warning", "Approval Action is required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({
-                DocNo: No,
-                CommitteeAssessment: Committee_Assesment_Notes,
-                ApprovalAction: Action_Approved,
-                ExtensionPeriod: Extension_Period
-            }),
-            url: "/Procurement/SubmitInspectionReportToDirectorSCM",
-
+            data: JSON.stringify({ DocNo: No, Memo_Comments: Memo_Comments, Key_Comments: Key_Comments  }),
+            url: "/Contractor/SubmitToTeamLeadForApproval",
             success: function (data) {
                 if (data.success) {
                     HideProgress();
                     Swal.fire("Success", "Record submitted", "success");
-                    window.location.reload();
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-
-    function RejectCommitteeFindings(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/RejectCommitteeFindings",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Rejected", "success");
                     ViewDoc(No)
                     /* window.location.reload;*/
                 } else {
@@ -1244,137 +863,7 @@
             }
         });
     }
-    function SubmitOpinionReportToAccountingOfficer(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/SubmitOpinionReportToAccountingOfficer",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Approved", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-    function SendToPMForRevaluation(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/SendToPMForRevaluation",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Approved", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-
-    function AcceptOpinion(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/AcceptOpinion",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Approved", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-    function RejectOpinion(No) {
-        var Key_Comments = $('#Key_Comments').val();
-        if (!Key_Comments) {
-            Swal.fire("Warning", "Comments required", "warning");
-            return;
-        }
-        ShowProgress();
-        $.ajax({
-            async: true,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset = utf-8",
-            processData: false,
-            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
-            url: "/Procurement/RejectOpinion",
-            success: function (data) {
-                if (data.success) {
-                    HideProgress();
-                    Swal.fire("Success", "Document Rejected", "success");
-                    ViewDoc(No)
-                    /* window.location.reload;*/
-                } else {
-                    HideProgress();
-                    Swal.fire("Warning", data.message, "warning");
-                }
-            },
-            error: function () {
-                HideProgress();
-                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
-            }
-        });
-    }
-
-    function SubmitAdviceToProjectManager(No) {
+    function TeamLeadApproveExtSubmission(No) {
         var Team_Lead_General_Comments = $('#Team_Lead_General_Comments').val();
         if (!Team_Lead_General_Comments) {
             Swal.fire("Warning", "Team Lead General Comments required", "warning");
@@ -1388,11 +877,172 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ DocNo: No, Team_Lead_General_Comments: Team_Lead_General_Comments }),
-            url: "/Procurement/SubmitAdviceToProjectManager",
+            url: "/Contractor/TeamLeadApproveExtSubmission",
             success: function (data) {
                 if (data.success) {
                     HideProgress();
                     Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function TeamLeadRejectExtSubmission(No) {
+        var Team_Lead_General_Comments = $('#Team_Lead_General_Comments').val();
+        if (!Team_Lead_General_Comments) {
+            Swal.fire("Warning", "Team Lead General Comments required", "warning");
+            return;
+        }
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Team_Lead_General_Comments: Team_Lead_General_Comments }),
+            url: "/Contractor/RejectSubmission",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function ApproveAndSubmitToCRJ(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Contractor/ApproveAndSubmitToCRJ",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function PMRejectSubmission(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Contractor/PMRejectSubmission",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SendToSupplyChain(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Contractor/SendToSupplyChain",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document sent to DSCM", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function CRJRejectSubmission(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Contractor/CRJRejectSubmission",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
                     ViewDoc(No)
                     /* window.location.reload;*/
                 } else {
@@ -1411,7 +1061,7 @@
     var GetDocumentAttachments = function () {
         var DocNo = `@Model.No`;
         var status2 = '@Model.Status';
-        if (status2 == "New") {
+        if (status2 == "DSCM") {
             var status="Open"
         }
         $.ajax({
@@ -1616,26 +1266,10 @@
          return new Blob(byteArrays, { type: contentType });
      }
 
-      function SendRequest() {
-          var RequestNo = `@Model.No`;
-          ShowProgress();
-          $.ajax({
-              type: "POST",
-              url: '/Contractor/SendRequestForProcessing',
-              data: { RequestNo: RequestNo},
-              success: function (response) {
-                  HideProgress();
-                  if (response.success) {
-                      Swal.fire('Success', 'Record successfully submitted', 'success');
-                      window.location.reload();
-                  }
-              },
-              error: function (err) {
-                  HideProgress();
-                  Swal.fire('Warning', err.responseText || 'An error occurred', 'warning');
-              }
-          });
-      }
+
+
 
 </script>
+
+
 

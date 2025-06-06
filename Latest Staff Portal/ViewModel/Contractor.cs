@@ -237,6 +237,20 @@ namespace Latest_Staff_Portal.ViewModel
     }
 
 
+    public class ApprovalRequestCard
+    {
+        
+        public string No { get; set; }
+        public string Contractor_No { get; set; }
+        public string Contractor_Name { get; set; }
+        public string Project_No { get; set; }
+        public string Project_Name { get; set; }
+        public string Document_Type { get; set; }
+        public DateTime Date_of_Submittion { get; set; }
+        public DateTime Date_of_Receipt { get; set; }
+        public string Received_By { get; set; }
+        public string Status { get; set; }
+    }
 
 
 

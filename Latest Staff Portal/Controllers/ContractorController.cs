@@ -1083,6 +1083,52 @@ namespace Latest_Staff_Portal.Controllers
         }
 
 
+        public PartialViewResult ProjectBOQLinesPartialView(string No)
+        {
+            EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
+            List<VariationProjectBoqs> variationProjectBoqList = new List<VariationProjectBoqs>();
+
+            string staffName = employeeView.FirstName + " " + employeeView.LastName;
+            string StaffNo = Session["Username"].ToString();
+            string UserID = employeeView.UserID;
+
+            string page = $"VariationProjectBoqs?$filter=Project_Code eq '{No}'&$format=json";
+
+            HttpWebResponse httpResponse = Credentials.GetOdataData(page);
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                var details = JObject.Parse(result);
+                foreach (JObject config in details["value"])
+                {
+                    VariationProjectBoqs variationProjectBoq = new VariationProjectBoqs
+                    {
+                        Project_Code = (string)config["Project_Code"],
+                        Entry_No = (int)config["Entry_No"],
+                        Line_Type = (string)config["Line_Type"],
+                        Section = (string)config["Section"],
+                        Description = (string)config["Description"],
+                        Quantity = (int)config["Quantity"],
+                        UOM = (string)config["UOM"],
+                        Unit_Price = (decimal)config["Unit_Price"],
+                        Line_Amount = (decimal)config["Line_Amount"],
+                        Remeasured_Qty = (int)config["Remeasured_Qty"],
+                        Remeasured_Line_Amount = (decimal)config["Remeasured_Line_Amount"],
+                        Remeasured_Total_Amount = (decimal)config["Remeasured_Total_Amount"],
+                        Variation_Type = (string)config["Variation_Type"],
+                        Variation_Amount = (decimal)config["Variation_Amount"],
+                        Entry_Type = (string)config["Entry_Type"]
+
+
+                    };
+                    variationProjectBoqList.Add(variationProjectBoq);
+
+                }
+            }
+            return PartialView("~/Views/Contractor/PartialView/ProjectBOQLinesPartialView.cshtml", variationProjectBoqList);
+        }
+
+
         //contractor Ammended
         public ActionResult ContractorAmmendedRequests()
         {
@@ -1183,7 +1229,7 @@ namespace Latest_Staff_Portal.Controllers
 
                 }
             }
-            return PartialView("~/Views/Contractor/PartialView/ContractorAmendedRequestsListPartialView.cshtml", ExtensionRequestsList);
+            return PartialView("~/Views/Contractor/PartialView/ContractorAmmendedRequestsListPartialView.cshtml", ExtensionRequestsList);
         }
         public PartialViewResult ContractorAmmendedTeamApprovalListPartialView(string teamApprovalStatus)
         {
@@ -1724,7 +1770,7 @@ namespace Latest_Staff_Portal.Controllers
         public PartialViewResult ContractorApprovalRequestsListPartialView(string status)
         {
             EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
-            List<InstructionRequestCard> ExtensionRequestsList = new List<InstructionRequestCard>();
+            List<ContractorExtensionRequests> ExtensionRequestsList = new List<ContractorExtensionRequests>();
 
             string staffName = employeeView.FirstName + " " + employeeView.LastName;
             string StaffNo = Session["Username"].ToString();
@@ -1742,7 +1788,7 @@ namespace Latest_Staff_Portal.Controllers
                 var details = JObject.Parse(result);
                 foreach (JObject config in details["value"])
                 {
-                    InstructionRequestCard extensionRequest = new InstructionRequestCard
+                    ContractorExtensionRequests extensionRequest = new ContractorExtensionRequests
                     {
                         No = (string)config["No"],
                         Project_No = (string)config["Project_No"],
@@ -1750,8 +1796,8 @@ namespace Latest_Staff_Portal.Controllers
                         Contractor_No = (string)config["Contractor_No"],
                         Contractor_Name = (string)config["Contractor_Name"],
                         Document_Type = (string)config["Document_Type"],
-                        Date_of_Submittion = (string)config["Date_of_Submittion"],
-                        Date_of_Receipt = (string)config["Date_of_Receipt"],
+                        Date_of_Submittion = (DateTime)config["Date_of_Submittion"],
+                        Date_of_Receipt = (DateTime)config["Date_of_Receipt"],
                         Received_By = (string)config["Received_By"],
                         Status = (string)config["Status"],
                     };
@@ -1861,7 +1907,7 @@ namespace Latest_Staff_Portal.Controllers
             string StaffNo = Session["Username"].ToString();
             string UserID = employeeView.UserID;
             var isManager = IsManager(UserID);
-            List<ContractorExtensionRequests> ContractorPaymentRequests = new List<ContractorExtensionRequests>();
+            List<ApprovalRequestCard> ContractorPaymentRequests = new List<ApprovalRequestCard>();
 
             string page = $"ApprovalRequestCard?$filter=No eq '{No}'&$format=json";
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
@@ -1872,7 +1918,7 @@ namespace Latest_Staff_Portal.Controllers
                 var config = details["value"].FirstOrDefault();
                 if (config != null)
                 {
-                    ContractorExtensionRequests contractorPaymentRequest = new ContractorExtensionRequests
+                    ApprovalRequestCard contractorPaymentRequest = new ApprovalRequestCard
                     {
                         No = (string)config["No"],
                         Project_No = (string)config["Project_No"],
@@ -1884,54 +1930,7 @@ namespace Latest_Staff_Portal.Controllers
                         Date_of_Receipt = (DateTime?)config["Date_of_Receipt"] ?? default,
                         Received_By = (string)config["Received_By"],
                         Status = (string)config["Status"],
-                        Project_Sum = (int?)config["Project_Sum"] ?? 0,
-                        Retention_Amount = (int?)config["Retention_Amount"] ?? 0,
-                        Project_Manager = (string)config["Project_Manager"],
-                        Project_Manager_Name = (string)config["Project_Manager_Name"],
-                        Team_Approval_Status = (string)config["Team_Approval_Status"],
-                        Invoiced = (bool?)config["Invoiced"] ?? false,
-                        Memo_Comments = (string)config["Memo_Comments"],
-                        Approved_Amount = (int?)config["Approved_Amount"] ?? 0,
-                        Approved_Variation_Addition = (int?)config["Approved_Variation_Addition"] ?? 0,
-                        Apprroved_Variation_Omition = (int?)config["Apprroved_Variation_Omition"] ?? 0,
-                        Actual_Work_Progress = (int?)config["Actual_Work_Progress"] ?? 0,
-                        Approved_Certificates = (int?)config["Approved_Certificates"] ?? 0,
-                        Certificate_No = (int?)config["Certificate_No"] ?? 0,
-                        Contract_No = (string)config["Contract_No"],
-                        Final_Contract_Value = (int?)config["Final_Contract_Value"] ?? 0,
-                        Previously_Paid_Amount = (int?)config["Previously_Paid_Amount"] ?? 0,
-                        Revised_Completion_Date = (string)config["Revised_Completion_Date"],
-                        Valuation_Date = (string)config["Valuation_Date"],
-                        Total_Net_Variation = (int?)config["Total_Net_Variation"] ?? 0,
-                        Current_Approving_Member = (string)config["Current_Approving_Member"],
-                        Approving_Member_Name = (string)config["Approving_Member_Name"],
-                        Asssigning_Employee = (string)config["Asssigning_Employee"],
-                        Assigning_Emplyee_Name = (string)config["Assigning_Emplyee_Name"],
-                        Deadline = (string)config["Deadline"],
-                        Team_Lead_General_Comments = (string)config["Team_Lead_General_Comments"],
-                        Team_Lead_Rejection_Comments = (string)config["Team_Lead_Rejection_Comments"],
-                        Key_Comments = (string)config["Key_Comments"],
-                        Selected_SCM_Employee = (string)config["Selected_SCM_Employee"],
-                        Selected_Employee_Name = (string)config["Selected_Employee_Name"],
-                        Selected_user_Id = (string)config["Selected_user_Id"],
-                        Committee_Assesment_Notes = (string)config["Committee_Assesment_Notes"],
-                        Initial_Contract_End_Date = (string)config["Initial_Contract_End_Date"],
-                        Action_Approved = (string)config["Action_Approved"],
-                        Extension_Period = (string)config["Extension_Period"],
-                        New_Contract_End_Date = (string)config["New_Contract_End_Date"],
-                        Director_SCM_Comments = (string)config["Director_SCM_Comments"],
-                        Professional_Opinion_Notes = (string)config["Professional_Opinion_Notes"],
-                        SCM_Status = (string)config["SCM_Status"],
-                        Procurement_Comments = (string)config["Procurement_Comments"],
-                        Committee_Sec_No = (string)config["Committee_Sec_No"],
-                        Secretary_Name = (string)config["Secretary_Name"],
-                        Crj_Comments = (string)config["Crj_Comments"],
-                        CRJ_General_Comments = (string)config["CRJ_General_Comments"],
-                        Project_Manger_Communication = (string)config["Project_Manger_Communication"],
-                        Contract_Sum_Execution_PercentodatamediaReadLink = (string)config["Contract_Sum_Execution_PercentodatamediaReadLink"],
-
-                        isManager = isManager,
-                        Sent_to_Ast_Directors = (bool)config["Sent_to_Ast_Directors"],
+                       
 
                     };
                     ContractorPaymentRequests.Add(contractorPaymentRequest);
@@ -4320,6 +4319,37 @@ namespace Latest_Staff_Portal.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult SendRequestForProcessing(string RequestNo)
+        {
+            try
+            {
+                EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
+                string Responsible_Employee_No = employeeView.No;
+                string UserID = employeeView.UserID;
+
+
+
+                string staffNo = Session["Username"].ToString();
+                EmployeeView employee = Session["EmployeeData"] as EmployeeView;
+                //string userId = employee.UserID;
+                bool result = false;
+                result = Credentials.ObjNav.FnSubmitContractorRequest(RequestNo);
+                if (result)
+                {
+
+                    return Json(new { message = "Request successfully sent", success = true }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { message = "Error sending request record. Try again.", success = false }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex.Message.Replace("'", ""), success = false }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

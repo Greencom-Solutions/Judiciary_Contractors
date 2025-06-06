@@ -1,4 +1,4 @@
-﻿@model Latest_Staff_Portal.ViewModel.ContractorExtensionRequests
+﻿@model Latest_Staff_Portal.ViewModel.AmendmendRequestCard
 
 
 @{
@@ -325,15 +325,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
+                              
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -582,14 +574,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Director SCM Advice", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Director_SCM_Advice">@Model.Director_SCM_Advice</textarea>
-                                        @* @Html.EditorFor(model => model.Director_SCM_Advice, new { htmlAttributes = new { @class = "form-control", @id = "Director_SCM_Advice" } })*@
-                                        @Html.ValidationMessageFor(model => model.Director_SCM_Advice, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                             
                                 @* @if (@loggedInStaffNo == @SecretaryStaffNo)
                             {
                                 <div class="col-md-12 text-center"> <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="UpdateCommitteeReport('@Model.No')">Update Committee Report</button></div>
