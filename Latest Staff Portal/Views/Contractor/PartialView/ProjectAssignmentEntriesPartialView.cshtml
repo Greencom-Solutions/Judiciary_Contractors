@@ -1,0 +1,208 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ProjectAssignmentEntries>
+
+<div class="table-responsive">
+    <table id="extensionLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Entry No</th>
+                <th>Document Type</th>
+                <th>Document No</th>
+                <th>Assignment Description</th>
+                <th>Assigning Employee</th>
+                <th>Assigning Employee Name</th>
+                <th>Assigned Employee</th>
+                <th>Assigned Employee Name</th>
+                <th>Date Sent</th>
+                <th>Assigned Date</th>
+                <th>Contractor</th>
+                <th>Project Name</th>
+                <th>Deadline</th>
+                <th></th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Document_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Document_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assignment_Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigning_Employee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigning_Employee_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigned_Employee)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigned_Employee_Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_Sent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigned_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contractor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        <button class="btn btn-primary  btn-sm ml-3" style="background-color: #b8a603; border: none " onclick="EditItem('@item.Document_No', @item.Entry_No);">Update</button>
+                        @if (@item.Assigned_Employee != "" && !@item.Assigned)
+                        {
+                            <button class="btn btn-primary  btn-sm ml-3" style="background-color: #162f25; border: none " onclick="AssignEmployee('@item.Document_No', @item.Entry_No, '@item.Assigned_Employee');">Assign</button>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div style="text-align: right">
+    @* <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AddExtensionReqLine(`@DocNo`);">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add Record
+        </button>*@
+</div>
+
+
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="assignEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Employee</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="assignEmployeeModalBody">
+            </div>
+            <div class="modal-footer">
+
+
+                <button class="btn btn-primary waves-effect waves-light" style="background-color: #162f25" onclick="SubmitAssignedEmployee();">
+                    <i class="fa fa-check" aria-hidden="true"></i> Submit
+                </button>
+
+
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var table = $("#extensionLines").DataTable({
+        lengthChange: true,
+        order: [[1, 'desc']],
+        lengthMenu: [5, 10, 25, 50, 100],
+        "bDestroy": true
+    });
+
+
+    function AddExtensionReqLine(DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/NewExtensionReqLine',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+
+    function EditItem(Document_No, Entry_No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ Document_No: Document_No, Entry_No: Entry_No }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/AssignEmployee',
+            success: function (data) {
+                $("#assignEmployeeModalBody").html(data);
+                HideProgress();
+                $("#assignEmployeeModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+
+    }
+
+    function AssignEmployee(Document_No, Entry_No, Assigned_Employee) {  
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({
+                Document_No: Document_No,
+                Entry_No: Entry_No,
+                Assigned_Employee: Assigned_Employee,
+            }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/AssignEmployeeAction',
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire('Success', 'Record successfully Assigned to employee', 'success');
+                    window.location.reload();
+                }
+                else {
+                    HideProgress()
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+
+    }
+
+    
+
+</script>
+

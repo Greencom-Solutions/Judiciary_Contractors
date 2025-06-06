@@ -1,0 +1,82 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectAssignmentEntries
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Document No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Document_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Document_No" } })
+            @Html.ValidationMessageFor(model => model.Document_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Entry No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Entry_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Entry_No" } })
+            @Html.ValidationMessageFor(model => model.Entry_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Assigned Employee", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.DropDownListFor(model => model.Assigned_Employee, Model.ListOfEmployees, "--Select option--", new { @class = "form-control", @id = "Assigned_Employee" })
+            @Html.ValidationMessageFor(model => model.Assigned_Employee, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    function SubmitAssignedEmployee() {
+        var Document_No = $('#Document_No').val();
+        var Entry_No = $('#Entry_No').val();
+        var Assigned_Employee = $('#Assigned_Employee').val();
+
+
+        if (!Assigned_Employee) {
+            Swal.fire("Warning", "Select Assigned Employee is required", "warning");
+            return;
+        }
+
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({
+                Document_No: Document_No,
+                Entry_No: Entry_No,
+                Assigned_Employee: Assigned_Employee,
+            }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/SubmitAssignedEmployeeRequest',
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    $("#assignEmployeeModal").modal("hide");
+                    Swal.fire('Success', 'Request successfully submitted', 'success');
+                    window.location.reload();
+                }
+                else {
+                    HideProgress()
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+
+    }
+</script>

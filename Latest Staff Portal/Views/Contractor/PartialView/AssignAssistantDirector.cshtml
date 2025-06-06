@@ -1,0 +1,91 @@
+﻿@model Latest_Staff_Portal.ViewModel.ContractorExtensionRequestLines
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Header No", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Header_No, new { htmlAttributes = new { @class = "form-control",@readonly="readonly", @id= "Header_No" } })
+            @Html.ValidationMessageFor(model => model.Header_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Line No", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Line_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Line_No" } })
+            @Html.ValidationMessageFor(model => model.Line_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Assistant Director", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.DropDownListFor(model => model.Assistant_Director, Model.ListOfEmployees, "--Select option--", new { @class = "form-control", @id = "Assistant_Director2" })
+            @Html.ValidationMessageFor(model => model.Assistant_Director, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+
+<div class="text-center">
+    <button class="btn btn-primary waves-effect waves-light" style="background-color: #162f25" onclick="SubmitAssignedAssDir();">
+        <i class="fa fa-check" aria-hidden="true"></i> Submit
+    </button>
+
+</div>
+
+
+
+<script>
+
+    function SubmitAssignedAssDir() {
+        var Document_No = $('#Header_No').val();
+        var Entry_No = $('#Line_No').val();
+        var Assigned_Employee = $('#Assistant_Director2').val();
+
+
+        if (!Assigned_Employee) {
+            Swal.fire("Warning", "Select Aassistant Director", "warning");
+            return;
+        }
+
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({
+                Header_No: Document_No,
+                Line_No: Entry_No,
+                Assistant_Director: Assigned_Employee,
+            }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/SubmitAssignedAssistantDirector',
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    $("#assignEmployeeModal").modal("hide");
+                    Swal.fire('Success', 'Request successfully submitted', 'success');
+                    window.location.reload();
+                }
+                else {
+                    HideProgress()
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+
+    }
+</script>
+
+

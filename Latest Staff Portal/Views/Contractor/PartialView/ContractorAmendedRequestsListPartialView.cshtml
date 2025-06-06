@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ContractorExtensionRequests>
+
+@{
+    var title = ViewBag.title;
+
+}
+
+<div class="text-center"><h4>Contractor Ammended Requests (@title)</h4></div>
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Action</th>
+                <th>No</th>
+                <th>Contractor Name</th>
+                <th>Project Name</th>
+                <th>Document Type</th>
+                <th>Date of Submission</th>
+                <th>Date of Receipt</th>
+                <th>Status</th>
+                <th>Current Approving Member</th>
+                <th>Approving Member Name</th>
+                <th>Procurement Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="button" onclick="ViewDoc('@item.No');" style="background: #162f25; color: whitesmoke; border-radius: 10px; border: none; padding: 5px 10px; cursor: pointer;" value="Select" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.No)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contractor_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Project_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Document_Type)</td>
+                    <td>@(item.Date_of_Submittion != DateTime.MinValue ? item.Date_of_Submittion.ToString("dd/MM/yyyy") : "N/A")</td>
+                    <td>@(item.Date_of_Receipt != DateTime.MinValue ? item.Date_of_Receipt.ToString("dd/MM/yyyy") : "N/A")</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Current_Approving_Member)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Approving_Member_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Procurement_Comments)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+$("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });</script>
+
+

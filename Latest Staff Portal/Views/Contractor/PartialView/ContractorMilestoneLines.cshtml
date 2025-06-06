@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.MilestonesLines>
+
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+
+<div class="table-responsive">
+    <table id="datatable-buttons2" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: #183424; color: white">
+            <tr>
+                <th>Project No</th>
+                <th>Task No</th>
+                <th>Milestone Code</th>
+                <th>Milestone Description</th>
+                <th>Milestone Start Date</th>
+                <th>Milestone End Date</th>
+                <th>Notification Period</th>
+                <th>Notification Date</th>
+                <th>Actual Start Date</th>
+                <th>Actual End Date</th>
+                <th>Status</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Milestone_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Milestone_Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Milestone_Start_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Milestone_End_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notification_Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notfification_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actual_Start_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actual_End_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $("#datatable-buttons2").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>
+
+

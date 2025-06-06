@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ProjectBoqs>
+    @{ 
+        var DocNo = ViewBag.No;
+    }
+
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Project Code</th>
+                <th>Entry No</th>
+                <th>Line Type</th>
+                <th>Section</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>UOM</th>
+                <th>Unit Price</th>
+                <th>Line Amount</th>
+                <th>Executed  Quantity </th>
+                <th>Actualized Amount</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Section)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UOM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_valued_Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_valued_Amount)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div style="text-align: right">
+    <!-- Export Button with Download Icon -->
+    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ExportExcel(`@DocNo`);">
+        <i class="fa fa-download" aria-hidden="true"></i> Export From Excel
+    </button>
+
+    <!-- Import Button with Upload Icon -->
+    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ImportExcel(`@DocNo`);">
+        <i class="fa fa-upload" aria-hidden="true"></i> Import From Excel
+    </button>
+
+</div>
+
+<script>
+$("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });</script>
+
+
