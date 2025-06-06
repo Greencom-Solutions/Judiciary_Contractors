@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.DesignControlTasks>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="designControlLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <thead style="background-color:black;color:white">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HeaderNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttachmentCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DesignControlNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DesignControlType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NoOfItems)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HeaderNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EntryNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AttachmentCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DesignControlNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DesignControlType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoOfItems)
+                    </td>
+                </tr>
+            }
+        }
+    }
+    </tbody>
+</table>

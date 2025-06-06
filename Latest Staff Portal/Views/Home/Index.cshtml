@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judiciary Contractors Hub</title>
+    @*  @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Judiciary Contractors Hub">
+    <meta name="author" content="AlexaTheme">
+    <title>Judiciary Contractors Hub</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets2/img/favicon2.png">
+
+    <link rel="stylesheet" href="~/assets2/css/fontawesome.min.css">
+
+    <link rel="stylesheet" href="~/assets2/css/themify-icons.css">
+
+    <link rel="stylesheet" href="~/assets2/css/elegant-line-icons.css">
+
+    <link rel="stylesheet" href="~/assets2/css/elegant-font-icons.css">
+
+    <link rel="stylesheet" href="~/assets2/css/flaticon.css">
+
+    <link rel="stylesheet" href="~/assets2/css/animate.min.css">
+
+    <link rel="stylesheet" href="~/assets2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/assets2/css/slick.css">
+
+    <link rel="stylesheet" href="~/assets2/css/slider.css">
+
+    <link rel="stylesheet" href="~/assets2/css/odometer.min.css">
+
+    <link rel="stylesheet" href="~/assets2/css/venobox/venobox.css">
+
+    <link rel="stylesheet" href="~/assets2/css/owl.carousel.css">
+
+    <link rel="stylesheet" href="~/assets2/css/main.css">
+
+    <link rel="stylesheet" href="~/asassets2sets/css/responsive.css">
+    <script src="~/assets2/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <style>
+        .navbar {
+            background-color: #103424 !important;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+
+        /* Navbar Links */
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            color: white !important; /* Ensure white text */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+            /* Active Link */
+            .navbar-nav .nav-link.active {
+                background-color: #0c291a !important; /* Distinct background */
+                font-weight: bold;
+                border-bottom: 3px solid #ffcc00; /* Highlight with a gold/yellow underline */
+            }
+
+        /* Optional: Active Dropdown Item */
+        .dropdown-menu .dropdown-item.active {
+            background-color: #155224 !important;
+            font-weight: bold;
+        }
+
+        /* Hover & Active State */
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            background-color: #155224 !important; /* Slightly darker hover effect */
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: #0c291a !important; /* Distinct active link */
+        }
+
+        /* Account Dropdown Styling */
+        .dropdown-menu {
+            background-color: #103424;
+            border: none;
+        }
+
+            .dropdown-menu .dropdown-item {
+                color: white !important;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #155224 !important;
+                }
+
+        /* User Icon */
+        .fa-user-circle {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body style="background-color:lightgray">
+    <header class="header">
+        <div class="primary-header" style="position: fixed; top: 0; left: 0; width: 100%; background-color: #083423">
+            <div class="primary-header-inner" style="margin: 0px 20px;">
+                <div class="header-logo">
+                    <a href="/"><img src="~/assets2/img/logo-transparent.png" alt="Logo" width="100"></a>
+                </div>
+                <!-- Wrap nav links in a proper Bootstrap navbar -->
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        @{
+                            if (Session["Username"] == null)
+                            {
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Login", "Home")">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="https://jumuikatest.court.go.ke:8085/Home/Register" target="_blank">Create Account</a>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="navbar-nav">
+                                    <!-- Item 1 -->
+                                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">
+                                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                                    </li>
+                                    <!-- Item 2 -->
+                                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" && ViewContext.RouteData.Values["controller"].ToString() == "Dashboard" ? "active" : "")">
+                                        <a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")">Dashboard</a>
+                                    </li>
+                                    <!-- Item 3 -->
+                                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractsList" && ViewContext.RouteData.Values["controller"].ToString() == "Contracts" ? "active" : "")">
+                                        <a class="nav-link" href="@Url.Action("ContractsList", "Contracts")">Contracts</a>
+                                    </li>
+                                    <!-- Item 4 -->
+                                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ActiveProjectsList" && ViewContext.RouteData.Values["controller"].ToString() == "Projects" ? "active" : "")">
+                                        <a class="nav-link" href="@Url.Action("ActiveProjectsList", "Projects")">Active Projects</a>
+                                    </li>
+                                    <!-- Dropdown: Contractor Requests -->
+                                    <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "ContractorRequests" ? "active" : "")">
+
+                                        <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Contractor Requests
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="contractorRequestsDropdown">
+                                            <li><a href="@Url.Action("ContractorExtensionRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorExtensionRequests" ? "active" : "")">Contractor Extension Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorAmendmentRequests" ? "active" : "")">Contractor Amendment Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorInstructionRequests" ? "active" : "")">Contractor Instruction Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorApprovalRequests" ? "active" : "")">Contractor Approval Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorJointMeasurementRequests" ? "active" : "")">Contractor Joint Measurement Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorDelayedPaymentRequests" ? "active" : "")">Contractor Delayed Payment Requests</a></li>
+                                            <li><a href="@Url.Action("ContractorPaymentRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPaymentRequests" ? "active" : "")">Contractor Payment Requests</a></li>
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "HeadOfStationRequests" ? "active" : "")">Head Of Station Requests</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Dropdown: Account -->
+                                    <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "Home" && (ViewContext.RouteData.Values["action"].ToString() == "ChangePassword" || ViewContext.RouteData.Values["action"].ToString() == "ChangeEmail" || ViewContext.RouteData.Values["action"].ToString() == "Logout") ? "active" : "")">
+                                        <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-user-circle" style="font-size: 20px;"></i> Account
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                                            <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ChangePassword" ? "active" : "")" href="/Home/Profile">Profile</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger @(ViewContext.RouteData.Values["action"].ToString() == "Logout" ? "active" : "")" href="/Home/Logout">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            }
+                        }
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="site-preloader-wrap">
+        <div class="spinner"></div>
+    </div>
+    <div id="main-slider" class="dl-slider">
+        <div class="single-slide">
+            <div class="bg-img kenburns-top-right" style="background-image: url('../../assets2/img/judiciary.jpeg');" @*style="background-image: url(../../assets/img/slider-1.jpg);"*@></div>
+            <div class="overlay"></div>
+            <div class="slider-content-wrap d-flex align-items-center text-left">
+                <div class="container">
+                    <div class="slider-content">
+                        <div class="dl-caption big">
+                            <div class="inner-layer"><div data-animation="fade-in-left" data-delay="2s">Welcome to Judiciary contractors hub</div></div>
+                        </div>
+                        <div class="dl-btn-group">
+                            <div class="inner-layer">
+                                <a href="#" class="dl-btn" data-animation="fade-in-left" data-delay="3.5s">View Projects <i class="arrow_right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="single-slide">
+            <div class="bg-img kenburns-top-right" style="background-image: url(../../assets2/img/judiciary2.jpeg);"></div>
+            <div class="overlay"></div>
+            <div class="slider-content-wrap d-flex align-items-center text-center">
+                <div class="container">
+                    <div class="slider-content">
+                        <div class="dl-caption big">
+                            <div class="inner-layer"><div data-animation="fade-in-bottom" data-delay="2s">Welcome to Judiciary contractors hub</div></div>
+                        </div>
+                        <div class="dl-btn-group">
+                            <div class="inner-layer">
+                                <a href="#" class="dl-btn" data-animation="fade-in-bottom" data-delay="3.5s">View Projects <i class="arrow_right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="single-slide">
+            <div class="bg-img kenburns-top-right" style="background-image: url(../../assets2/img/judiciary.jpeg);"></div>
+            <div class="overlay"></div>
+            <div class="slider-content-wrap d-flex align-items-center text-right">
+                <div class="container">
+                    <div class="slider-content">
+                        <div class="dl-caption big">
+                            <div class="inner-layer"><div data-animation="fade-in-right" data-delay="2s">Welcome to Judiciary contractors hub</div></div>
+                        </div>
+
+                        <div class="dl-btn-group">
+                            <div class="inner-layer">
+                                <a href="#" class="dl-btn" data-animation="fade-in-right" data-delay="3.5s">View Projects <i class="arrow_right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <section class="widget-section padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-sm-8 sm-padding">
+                        <div class="widget-content">
+                            <h4>About Us</h4>
+                            <p>The Judiciary derives its mandate from the Constitution of Kenya, Article 159. It exercises judicial authority given to it, by the people of Kenya and delivers justice according to the Constitution and other laws. The Judiciary is expected to handle disputes in a just manner, with a view to protecting the rights and liberties of all, thereby facilitating the attainment of the ideal rule of law.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 centered col-sm-4 sm-padding">
+                        <div class="widget-content">
+                            <h4>Company</h4>
+                            <ul class="widget-links">
+                                <li><a href="">About Us</a></li>
+                                <li><a href="">Contact Us</a></li>
+                                <li><a href="">Contribute</a></li>
+                                <li><a href="">Privacy Policy</a></li>
+                                <li><a href="h">Sitemap</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </footer>
+    @*   </div>*@
+    <a data-scroll href="#header" id="scroll-to-top"><i class="arrow_carrot-up"></i></a>
+
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="~/assets2/js/vendor/jquery-1.12.4.min.js"></script>
+
+    <script src="~/assets2/js/vendor/bootstrap.min.js"></script>
+
+    <script src="~/assets2/js/vendor/tether.min.js"></script>
+
+    <script src="~/assets2/js/vendor/headroom.min.js"></script>
+
+    <script src="~/assets2/js/vendor/owl.carousel.min.js"></script>
+
+    <script src="~/assets2/js/vendor/smooth-scroll.min.js"></script>
+
+    <script src="~/assets2/js/vendor/venobox.min.js"></script>
+
+    <script src="~/assets2/js/vendor/jquery.ajaxchimp.min.js"></script>
+
+    <script src="~/assets2/js/vendor/slick.min.js"></script>
+
+    <script src="~/assets2/js/vendor/waypoints.min.js"></script>
+
+    <script src="~/assets2/js/vendor/odometer.min.js"></script>
+
+    <script src="~/assets2/js/vendor/wow.min.js"></script>
+
+    <script src="~/assets2/js/main.js"></script>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @* @RenderSection("scripts", required: false)*@
+</body>
+</html>
+

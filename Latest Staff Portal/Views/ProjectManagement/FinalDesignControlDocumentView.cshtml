@@ -1,0 +1,1462 @@
+﻿@* Bootstrap CSS *@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@* Bootstrap Bundle JS (includes Popper.js) *@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+@model Latest_Staff_Portal.ViewModel.PreliminaryDesignControl
+
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    hr {
+        margin: 4px;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+
+    .accordion-button {
+        font-size: 18px;
+        padding: 12px;
+        background-color: #fff;
+        color: #000;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="FinalDesignControlLink();">Final Design Control List</a></li>
+                <li class="breadcrumb-item active">Final Design Control Document (@Model.No)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr />
+<br />
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row mt-2 mb-3">
+            <div class="col-md-6">
+                <h4> Final Design Control Document</h4>
+            </div>
+            <div class="col-md-6" style="text-align:right;">
+                @{
+                    if (Model.Status == "Open")
+                    {
+                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitDesignToTeamLead('@Model.No');">
+                            <i class="fa fa-check" aria-hidden="true"></i> Send For Approval
+                        </button>
+                    }
+                    if (Model.Status == "Pending Approval")
+                    {
+                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="CancelDesignSubmit('@Model.No');">
+                            <i class="fa fa-check" aria-hidden="true"></i> Cancel Approval Request
+                        </button>
+                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ApproveDesign('@Model.No');">
+                            <i class="fa fa-check" aria-hidden="true"></i> Approve Design
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Request No", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Project_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Type", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Start Date", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("End Date", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Admin Unit", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Global_Dimension_2_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Global_Dimension_2_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Geographic Location Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Geographic_Location_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Geographic_Location_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Total Estimated Cost", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Total_Estimated_Cost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Total_Estimated_Cost, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Classifications", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Project_Classifications, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Classifications, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Created By", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Created_By, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Created_By, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Employee No", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Employee_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Employee_No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Employee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Employee_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Rejection Comments", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Rejection_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Rejection_Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Deferal Comments", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Deferal_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Deferal_Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Design Status", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Design_Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Design_Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <hr />
+                    @{
+                        <div align="center" id="DivUpdateButton">
+                            <input type="button" class="btn btn-primary waves-effect waves-light" style="background-color: #162f25; border: none" value="Update Header" onclick="UpdatePreliminaryDesignHeader();" />
+                        </div>
+                    }
+                    <hr style="border:1px solid black" />
+                    <br />
+                </div>
+            </div>
+
+            <div class="row mb-5 mt-2">
+                <div class="col-md-12">
+
+                    <h4>Design Approval Sequence</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Current Actioning Member", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                        @Html.EditorFor(model => model.Current_Actioning_Member, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                        @Html.ValidationMessageFor(model => model.Current_Actioning_Member, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Design Approval Stage", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                        @Html.DropDownListFor(
+                            model => model.Design_Approval_Stage,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem { Text = "Architectural", Value = "Architectural" },
+                                new SelectListItem { Text = "Structural  and Civil Engineering", Value = "Structural  and Civil Engineering" },
+                                new SelectListItem { Text = "Mechanical Engineering", Value = "Mechanical Engineering" },
+                                new SelectListItem { Text = "Electrical Engineering", Value = "Electrical Engineering" },
+                                new SelectListItem { Text = "ICT", Value = "ICT" },
+                                new SelectListItem { Text = "Quantity Surveying", Value = "Quantity Surveying" }
+                            }, "Value", "Text", Model.Design_Approval_Stage),
+                            new { @class = "form-control" }
+                        )
+
+                        @Html.ValidationMessageFor(model => model.Design_Approval_Stage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mb-5">
+                <div class="row mb-5">
+                    <h4 class="mb-3">Design Controls</h4>
+                    <hr />
+                    <div id="divDesignControls"></div>
+                    <hr />
+                    <div id="divDesignControlsAttachments"></div>
+                </div>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <!-- Accordion Item 1- Grand Summary Bill Of Quantities -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Grand Summary Bill Of Quantities
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="" style="margin: 10px 20px">
+
+                                <div id="divGrandSummaryBOQ"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2- Team Member BOQs -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Team Member BOQs
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="" style="margin: 10px 20px">
+                                <div id="divTeamMembersBOQ"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Accordion Item 3- Conceipt Note Details -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Conceipt Note Details
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="" style="margin: 10px 20px">
+                                <div id="divConceiptAnalysisForm"></div>
+                                <div class="col-md-12 text-center mt-3" id="EnableUpdateConceiptAnalysis">
+                                    <input type="button" class="btn btn-primary waves-effect waves-light" style="background-color: #162f25; border: none" value="Update Conceipt  Note Details" onclick="EnableUpdateConceiptAnalysis();" />
+                                </div>
+                                <div class="col-md-12 text-center mt-3" id="UpdateConceiptAnalysis" hidden>
+                                    <input type="button" class="btn btn-primary waves-effect waves-light" style="background-color: #162f25; border: none" value="Submit" onclick="UpdateConceiptAnalysis();" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 4- Attachnments -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Attachments
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div id="" style="margin: 10px 20px">
+                                <div id="divAttachDocs"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*//////////////////////design Control Attachment Modal View////////////////////////////*@
+<div class="modal fade" id="designControlsAttachmentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachment</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="designControlsAttachmentModalBody" style="width:100%;height:450px">Test</div>
+        </div>
+    </div>
+</div>
+
+
+@*//////////////////////Add line Modal////////////////////////////*@
+<div class="modal" id="addLineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Line</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="addLineModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*//////////////////////Update Line Modal////////////////////////////*@
+<div class="modal" id="updateLineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Line</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="updateLineModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="myModal2" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Member BOQ Line</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody2">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" style="background-color: #162f25; border: none" onclick="SubmitUpdatedTeamMemberBQLine();">Submit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*//////////////////////Add attachment modal////////////////////////////*@
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myModalLabel"><label id="labelF"></label></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal View Doc -->
+<div class="modal fade" id="myModalAttachment" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachment</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalAttachmentBody" style="width:100%;height:450px"></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        LoadDesignControls(`@Model.No`);
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+        GetDocumentAttachments();
+        $('.select2').select2();
+    });
+
+    var LoadDesignControls = function (No) {
+            ShowProgress();
+            var status = `@Model.Status`;
+
+            $.ajax({
+                async: true,
+                type: "POST",
+                datatype: "html",
+                contentType: "application/json; charset = utf-8",
+                processData: false,
+                data: JSON.stringify({ No: No, status: status }),
+                url: "/ProjectManagement/DesignControlsLines",
+                success: function (data) {
+                    $("#divDesignControls").html(data);
+                    LoadGrandSummaryBOQ(`@Model.No`);
+                    LoadTeamMembersBOQ(`@Model.No`);
+                    LoadConceiptAnalysisForm(`@Model.No`);
+                },
+                error: function () {
+                    LoadGrandSummaryBOQ(`@Model.No`);
+                    LoadTeamMembersBOQ(`@Model.No`);
+                    LoadConceiptAnalysisForm(`@Model.No`);
+
+                    Swal.fire("There is some problem to process your request. Please try after some time");
+                }
+            });
+        };
+    var LoadGrandSummaryBOQ = function (No) {
+        var status = `@Model.Status`;
+        var Design_Approval_Stage = `@Model.Design_Approval_Stage`;
+         $.ajax({
+             async: true,
+             type: "POST",
+             datatype: "html",
+             contentType: "application/json; charset = utf-8",
+             processData: false,
+             data: JSON.stringify({ No: No, status: status, Design_Approval_Stage: Design_Approval_Stage }),
+             url: "/ProjectManagement/GrandSummaryBOQLines",
+             success: function (data) {
+                 $("#divGrandSummaryBOQ").html(data);
+                 LoadTeamMembersBOQ(`@Model.No`);
+                 LoadConceiptAnalysisForm(`@Model.No`);
+             },
+             error: function () {
+                 LoadTeamMembersBOQ(`@Model.No`);
+                 LoadConceiptAnalysisForm(`@Model.No`);
+
+                 Swal.fire("There is some problem to process your request. Please try after some time");
+             }
+         });
+     };
+    var LoadTeamMembersBOQ = function (No) {
+
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ Design_Code: No }),
+            url: "/ProjectManagement/TeamMembersBOQLines",
+            success: function (data) {
+                $("#divTeamMembersBOQ").html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var LoadConceiptAnalysisForm = function (No) {
+
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No }),
+            url: "/ProjectManagement/ConceiptAnalysisForm",
+            success: function (data) {
+                $("#divConceiptAnalysisForm").html(data);
+                HideProgress();
+            },
+            error: function () {
+
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    var AddSummaryBOQLine = function () {
+        var Project_No = '@Model.No';
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/NewSummaryBOQLine',
+            data: {
+                Project_No, Project_No
+            },
+            success: function (data) {
+                $("#addLineModalBody").html(data);
+                HideProgress();
+                $("#addLineModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function SubmitSummaryBOQLine() {
+        var isValid = true;
+
+        // Collect data from the form
+        var Description = $("#Description").val();
+        var Quantity = $("#Quantity").val();
+        var Unit_Cost = $("#Unit_Cost").val();
+        var Total_Cost = $("#Total_Cost").val();
+
+        // Validation checks
+        if (!Description) {
+            Swal.fire('Warning', 'Enter Description.', 'warning');
+            isValid = false;
+        }
+        if (!Quantity) {
+            Swal.fire('Warning', 'Enter Quantity.', 'warning');
+            isValid = false;
+        }
+        if (!Unit_Cost) {
+            Swal.fire('Warning', 'Enter Unit Cost.', 'warning');
+            isValid = false;
+        }
+        if (!Total_Cost) {
+            Swal.fire('Warning', 'Enter Total Cost.', 'warning');
+            isValid = false;
+        }
+
+        // Exit if validation fails
+        if (!isValid) {
+        return;
+        }
+
+      // Prepare data object
+        var formData = {
+           Header_No : `@Model.No`,
+           Description: Description,
+           Quantity: Quantity,
+           Unit_Cost: Unit_Cost,
+           Total_Cost: Total_Cost
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/SubmitSummaryBOQLine",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+     }
+
+    var EditGrandSummaryBOQ = function (Header_No, Line_No, Description, Quantity, Unit_Cost, Total_Cost) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/EditGrandSummaryBOQLine',
+            data: { Header_No, Line_No, Description, Quantity, Unit_Cost, Total_Cost },
+            success: function (data) {
+                $("#updateLineModalBody").html(data);
+                HideProgress();
+                $("#updateLineModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function SubmitUpdatedSummaryBOQLine() {
+        var isValid = true;
+
+        // Collect data from the form
+        var Header_No = `@Model.No`;
+        var Line_No = $("#Line_No").val();
+            var Description = $("#Description").val();
+            var Quantity = $("#Quantity").val();
+            var Unit_Cost = $("#Unit_Cost").val();
+            var Total_Cost = $("#Total_Cost").val();
+
+            // Validation checks
+            if (!Description) {
+                Swal.fire('Warning', 'Enter Description.', 'warning');
+                isValid = false;
+            }
+            if (!Quantity) {
+                Swal.fire('Warning', 'Enter Quantity.', 'warning');
+                isValid = false;
+            }
+            if (!Unit_Cost) {
+                Swal.fire('Warning', 'Enter Unit Cost.', 'warning');
+                isValid = false;
+            }
+            if (!Total_Cost) {
+                Swal.fire('Warning', 'Enter Total Cost.', 'warning');
+                isValid = false;
+            }
+
+            // Exit if validation fails
+            if (!isValid) {
+            return;
+            }
+
+            // Prepare data object
+        var formData = {
+            Header_No: Header_No,
+            Line_No: Line_No,
+            Description: Description,
+            Quantity: Quantity,
+            Unit_Cost: Unit_Cost,
+            Total_Cost: Total_Cost
+            };
+
+            // Show progress indicator
+            ShowProgress();
+            $.ajax({
+                type: "POST",
+                url: "/ProjectManagement/SubmitUpdatedSummaryBOQLine",
+                data: JSON.stringify(formData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    HideProgress();
+                    if (data.success) {
+                        Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                            ViewDoc(data.message);
+                            /*windows.location.reload();*/
+                        });
+                    } else {
+                        Swal.fire('Warning', data.message, 'warning');
+                    }
+                },
+                error: function (err) {
+                    HideProgress();
+                    Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+                }
+            });
+        }
+
+    var AddTeamMemberBQLine = function () {
+         var Project_No = '@Model.No';
+         ShowProgress();
+         $.ajax({
+             async: true,
+             type: "GET",
+             dataType: "html",
+             url: '/ProjectManagement/NewTeamMemberBQLine',
+             data: {
+                 Project_No, Project_No
+             },
+             success: function (data) {
+                 $("#addLineModalBody").html(data);
+                 HideProgress();
+                 $("#addLineModal").modal("show");
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText, 'warning');
+             }
+         });
+    }
+
+    function SubmitTeamMemberBOQLine() {
+        var isValid = true;
+
+        // Collect data from the form
+        var Design_Code = `@Model.No`;
+        var Member_No = $("#Member_No").val();
+        var Description = $("#Description").val();
+        var quantity = $("#Quantity").val();
+        var Unit_Price = $("#Unit_Cost").val();
+        var Total_Amount = $("#Total_Amount").val();
+
+        // Validation checks
+       /* if (!Member_No) {
+            Swal.fire('Warning', 'Select Member.', 'warning');
+            isValid = false;
+        }*/
+        if (!Description) {
+            Swal.fire('Warning', 'Enter Description.', 'warning');
+            isValid = false;
+        }
+        if (!quantity) {
+            Swal.fire('Warning', 'Enter Quantity.', 'warning');
+            isValid = false;
+        }
+        if (!Unit_Price) {
+            Swal.fire('Warning', 'Enter Unit Price.', 'warning');
+            isValid = false;
+        }
+
+
+        // Exit if validation fails
+        if (!isValid) {
+        return;
+        }
+
+        // Prepare data object
+        var formData = {
+            Design_Code: Design_Code,
+            Member_No: Member_No,
+            Description: Description,
+            quantity: quantity,
+            Unit_Price: Unit_Price,
+            Total_Amount: Total_Amount
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/SubmitTeamMemberBOQLine",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+    }
+
+
+
+    var EditTeamMemberBQLine = function (Design_Code, Member_No, Entry_No, Design_Stage, Description, quantity, Unit_Price, Total_Amount) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/EditTeamMemberBOQLine',
+            data: {
+                Design_Code, Member_No, Entry_No, Design_Stage, Description, quantity, Unit_Price, Total_Amount
+            },
+            success: function (data) {
+                $("#modalBody2").html(data);
+                HideProgress();
+                $("#myModal2").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function SubmitUpdatedTeamMemberBQLine() {
+        var isValid = true;
+
+        // Collect data from the form
+        var Design_Code = `@Model.No`;
+        var Member_No = $("#Member_No").val();
+        var Entry_No = $("#Entry_No").val();
+        var Design_Stage = $("#Design_Stage").val();
+        var Description = $("#Description").val();
+        var quantity = $("#quantity").val();
+        var Unit_Price = $("#Unit_Price").val();
+        var Total_Amount = $("#Total_Amount").val();
+
+        // Validation checks
+
+
+        if (!Design_Stage) {
+            Swal.fire('Warning', 'Select Design Stage.', 'warning');
+            isValid = false;
+        }
+        if (!Description) {
+            Swal.fire('Warning', 'Enter Description.', 'warning');
+            isValid = false;
+        }
+        if (!quantity) {
+            Swal.fire('Warning', 'Enter Quantity.', 'warning');
+            isValid = false;
+        }
+        if (!Unit_Price) {
+            Swal.fire('Warning', 'Enter Unit Price.', 'warning');
+            isValid = false;
+        }
+
+
+        // Exit if validation fails
+        if (!isValid) {
+        return;
+        }
+
+        // Prepare data object
+        var formData = {
+            Design_Code: Design_Code,
+            Member_No: Member_No,
+            Entry_No: Entry_No,
+            Design_Stage: Design_Stage,
+            Description: Description,
+            quantity: quantity,
+            Unit_Price: Unit_Price
+
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/SubmitUpdatedTeamMemberBOQLine",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+    }
+
+
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/ProjectManagement/FinalDesignControlDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+
+    var ViewDesignControlAttachments = function (attachmentCode) {
+        @*var DocNo = `@Model.No`;*@
+        ShowProgress();
+        var DocNo = attachmentCode;
+        $("#attachmentCode").val(attachmentCode);
+        @*var status = `@Model.Status`;*@
+        var status = 'Open';
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: DocNo, documentStatus: status }),
+            url: "/Common/EdmsDocumentAttachmentList2",
+            success: function (data) {
+                HideProgress();
+                $("#divDesignControlsAttachments").empty();
+                $("#divDesignControlsAttachments").html(data);
+                /* $("#designControlsAttachmentModalBody").html(data);
+                $("#designControlsAttachmentModal").modal("show");*/
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    // Function to enable editing
+    function EnableUpdateConceiptAnalysis() {
+        $("#EnableUpdateConceiptAnalysis").hide();
+        $("#UpdateConceiptAnalysis").removeAttr("hidden");
+        var inputFields = document.querySelectorAll('.form-control');
+        inputFields.forEach(function (inputElement) {
+            inputElement.removeAttribute("readonly");
+            inputElement.style.backgroundColor = "white";
+        });
+    }
+    function UpdateConceiptAnalysis() {
+        var isValid = true;
+
+            // Collect data from the form
+        var Project_No = `@Model.No`;
+        var situationAnalysis = $("#situationAnalysis").val();
+        var relevance = $("#relevance").val();
+        var projectScope = $("#projectScope").val();
+        var logicalFramework = $("#logicalFramework").val();
+        var goal = $("#goal").val();
+        var objectives = $("#objectives").val();
+        var projectOutput = $("#projectOutput").val();
+        var activitiesInput = $("#activitiesInput").val();
+
+        var InstitutionalMandate = $("#InstitutionalMandate").val();
+        var ProjectManagement = $("#ProjectManagement").val();
+        var Monitoring = $("#Monitoring").val();
+        var Risk = $("#Risk").val();
+        var ProjectSustainability = $("#ProjectSustainability").val();
+        var ProjectStakeholders = $("#ProjectStakeholders").val();
+        var ProjectReadiness = $("#ProjectReadiness").val();
+
+
+
+        // Validation checks
+        if (!situationAnalysis) {
+            Swal.fire('Warning', 'Enter Situation Analysis.', 'warning');
+            isValid = false;
+        }
+
+        // Exit if validation fails
+        if (!isValid) {
+            return;
+        }
+
+        // Prepare data object
+        var formData = {
+
+            Project_No: Project_No,
+            situationAnalysis: situationAnalysis,
+            relevance: relevance,
+            projectScope: projectScope,
+            logicalFramework: logicalFramework,
+            goal: goal,
+            objectives: objectives,
+            projectOutput: projectOutput,
+            activitiesInput: activitiesInput,
+
+            InstitutionalMandate: InstitutionalMandate,
+            ProjectManagement: ProjectManagement,
+            Monitoring: Monitoring,
+            Risk: Risk,
+            ProjectSustainability: ProjectSustainability,
+            ProjectStakeholders: ProjectStakeholders,
+            ProjectReadiness: ProjectReadiness
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/UpdateConceiptAnalysis",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        // windows.location.reload()
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+
+
+
+
+    }
+
+    var GetDocumentAttachments = function () {
+        var DocNo = `@Model.No`;
+        @*var status = `@Model.Status`;*@
+        var status = 'Open';
+        $.ajax({
+        async: true,
+        type: "POST",
+        datatype: "json",
+        contentType: "application/json; charset = utf-8",
+        processData: false,
+                data: JSON.stringify({ DocNo: DocNo, documentStatus: status }),
+                url: "/Common/EdmsDocumentAttachmentList",
+        success: function (data) {
+	        $("#divAttachDocs").html(data);
+        },
+        error: function () {
+	        Swal.fire("There is some problem to process your request. Please try after some time");
+        }
+        });
+    };
+
+    //these functions are from common controller
+    var AddDesignControlAttachment = function (AttachmentCode) {
+        $("#labelF").text("File Upload");
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            datatype: "html",
+            data: { AttachmentCode: AttachmentCode },
+            url: '/Common/FileUploadForm2',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    };
+    var SaveDesignControlAttachmentFile = function (AttachmentCode) {
+        var DocNo = AttachmentCode;
+        var DocNo2='@Model.No'
+        var filename; var base64String; var filetype;
+        var files = document.getElementById('AttachmentFile').files;
+        if (files.length) {
+        var file = files[0];
+            if (file.size > 50000000) {
+                Swal.fire('Warning', 'Please only files less than 50MB allowed. Thanks!!', 'warning');
+            }
+        else {
+            var blob = file.slice();
+            filetype = file.type;
+            filename = file.name;
+            var reader = new FileReader();
+            reader.onloadend = function (evt) {
+            if (evt.target.readyState == FileReader.DONE) {
+                var cont = evt.target.result
+                base64String = getB64Str(cont);
+                ShowProgress();
+                $.ajax({
+                    type: "POST",
+                    url: "/Common/SaveAttachedFile",
+                    data: JSON.stringify({ DocNo: DocNo, base64Upload: base64String, fileName: filename, Extn: filetype, TableID: 77352, module: "PJM", documentType:"User Request"}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+                            HideProgress();
+                            $("#myModal").modal("hide");
+                            Swal.fire('Success', data.message, 'success');
+                            GetDocumentAttachments();
+                            ViewDesignControlAttachments(DocNo);
+                            ViewDoc(DocNo2);
+                        }
+                        else {
+                            HideProgress();
+                            GetDocumentAttachments();
+                            ViewDesignControlAttachments(DocNo);
+                            Swal.fire('Warning', data.message, 'warning');
+                            ViewDoc(DocNo2);
+
+                        }
+                    },
+                    error: function (err) {
+                        HideProgress();
+                        Swal.fire('Warning', err, 'warning');
+                    }
+                    });
+                }
+                };
+                reader.readAsArrayBuffer(blob);
+            }
+        }
+    };
+
+    var AddAttachment = function () {
+        $("#labelF").text("File Upload");
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            datatype: "html",
+            url: '/Common/FileUploadForm',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    };
+    var SaveAttachmentFile = function () {
+        var DocNo = `@Model.No`;
+        var filename; var base64String; var filetype;
+        var files = document.getElementById('AttachmentFile').files;
+        if (files.length) {
+        var file = files[0];
+                if (file.size > 50000000) {
+                    Swal.fire('Warning', 'Please only files less than 50MB allowed. Thanks!!', 'warning');
+                }
+        else {
+	        var blob = file.slice();
+	        filetype = file.type;
+	        filename = file.name;
+	        var reader = new FileReader();
+	        reader.onloadend = function (evt) {
+		        if (evt.target.readyState == FileReader.DONE) {
+			        var cont = evt.target.result
+			        base64String = getB64Str(cont);
+			        ShowProgress();
+			        $.ajax({
+				        type: "POST",
+				        url: "/Common/SaveAttachedFile",
+                                data: JSON.stringify({ DocNo: DocNo, base64Upload: base64String, fileName: filename, Extn: filetype, TableID: 77352, module: "PJM", documentType:"User Request"}),
+				        contentType: "application/json; charset=utf-8",
+				        dataType: "json",
+				        success: function (data) {
+					        if (data.success) {
+						        HideProgress();
+						        $("#myModal").modal("hide");
+						        Swal.fire('Success', data.message, 'success');
+                                GetDocumentAttachments();
+                                ViewDoc(DocNo)
+
+					        }
+                            else {
+                                HideProgress();
+                                GetDocumentAttachments();
+                                Swal.fire('Warning', data.message, 'warning');
+
+
+					        }
+				        },
+				        error: function (err) {
+					        HideProgress();
+                            Swal.fire('Warning', err, 'warning');
+
+				        }
+			        });
+		        }
+	        };
+	        reader.readAsArrayBuffer(blob);
+        }
+        }
+    };
+
+    function getB64Str(buffer) {
+        var binary = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+    var DeleteAttachment = function (docId, line) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify({
+                documentId: docId,
+                lineNo: line
+            }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            url: '/Common/RemoveFileAsync',
+            success: function (data) {
+                HideProgress();
+                if (data.success === true) {
+                    Swal.fire('Success', data.message, 'success');
+                    GetDocumentAttachments();
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                    GetDocumentAttachments();
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    };
+    var ViewAttachment = function (moduleCheck, docNo, docId) {
+        $.ajaxSetup({ cache: false });
+        ShowProgress();
+        var viewer = $("#modalAttachmentBody");
+        viewer.empty();
+
+        $.ajax({
+            url: '/Common/GetEdmsDocuments',
+            type: "GET",
+            datatype: "json",
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            data: {
+                module: moduleCheck,
+                documentNo: docNo,
+                documentType: "User request",
+                documentId: docId
+            },
+            success: function (data) {
+                if (data.success) {
+                    if (data.base64) {
+                        var mimeType = data.mimeType || 'application/pdf';
+
+                        if (mimeType.startsWith('application/pdf')) {
+
+                            var byteCharacters = atob(data.base64);
+                            var byteNumbers = new Array(byteCharacters.length);
+                            for (var i = 0; i < byteCharacters.length; i++) {
+                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                            }
+                            var byteArray = new Uint8Array(byteNumbers);
+                            var blob = new Blob([byteArray], { type: mimeType });
+                            var blobUrl = URL.createObjectURL(blob);
+
+
+                            viewer.html('<iframe src="' + blobUrl + '" style="width:100%; height:500px;" frameborder="0"></iframe>');
+                        } else if (mimeType.startsWith('image/')) {
+
+                            viewer.html('<img src="data:' + mimeType + ';base64,' + data.base64 + '" style="width:100%;"/>');
+                        } else {
+                            var blob = b64toBlob(data.base64, mimeType);
+                            var url = window.URL.createObjectURL(blob);
+                            window.open(url, '_blank');
+                        }
+                        $("#myModalAttachment").modal("show");
+                    } else {
+
+                        window.location = '/Common/AttachmentDownload?fileName=' + data.message;
+                        Swal.fire('Success', 'Document Downloaded successfully', 'success');
+                    }
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+                HideProgress();
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', err.responseText || 'An error occurred', 'error');
+            }
+        });
+    };
+    function b64toBlob(base64, contentType) {
+        var byteCharacters = atob(base64);
+        var byteArrays = [];
+        for (var offset = 0; offset < byteCharacters.length; offset += 512) {
+            var slice = byteCharacters.slice(offset, offset + 512);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        return new Blob(byteArrays, { type: contentType });
+    }
+
+    var SubmitDesignToTeamLead = function (DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/ProjectManagement/SubmitDesignToTeamLead',
+            success: function (data) {
+                if (data.success == true) {
+                    HideProgress();
+                    Swal.fire('Success', "Record submitted successfully", 'success').then(() => {
+                        ViewDoc(data.message);
+                        //window.location.reload;
+                    });
+                } else {
+                    HideProgress();
+                    Swal.fire('Error', data.message, 'error');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+    var CancelDesignSubmit = function (DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/ProjectManagement/CancelDesignSubmit',
+            success: function (data) {
+                if (data.success == true) {
+                    HideProgress();
+                    Swal.fire('Success', "Record submitted successfully", 'success').then(() => {
+                        ViewDoc(data.message);
+                        //window.location.reload;
+                    });
+                } else {
+                    HideProgress();
+                    Swal.fire('Error', data.message, 'error');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+
+    var ApproveDesign = function (DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/ProjectManagement/ApproveDesign',
+            success: function (data) {
+                if (data.success == true) {
+                    HideProgress();
+                    Swal.fire('Success', "Record submitted successfully", 'success').then(() => {
+                        ViewDoc(data.message);
+                        //window.location.reload;
+                    });
+                } else {
+                    HideProgress();
+                    Swal.fire('Error', data.message, 'error');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+
+</script>

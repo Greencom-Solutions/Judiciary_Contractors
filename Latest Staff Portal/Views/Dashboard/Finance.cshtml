@@ -1,0 +1,173 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                if (widget.style.display === "none") {
+                    widget.style.display = "block";
+                } else {
+                    widget.style.display = "none";
+                }
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+</script>
+
+<div class="tab-container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="Dashboard/Dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Finance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-3 pb-3 pl-3 pr-1" style="background-color: rgb(255, 255, 255); border-radius: 10px;">
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('workplansWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Planning & Budgeting</h5>
+                            <div class="dash-count">
+                                <h5 class="menu-item-count" style="color:#fff;"></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="workplansWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="ResourceRequirementsLink();"><i class="fas fa-cogs"></i> Resource Requirements</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="DraftWorkPlansLink();"><i class="fas fa-edit"></i> Draft Work-Plans</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="SuppWorkPlansLink();"><i class="fas fa-edit"></i> Supplementary Work-Plans</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="ReallocationLink();"><i class="fas fa-edit"></i> Budget Reallocation</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('reportsWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Expenditure Management</h5>
+                            <div class="dash-count">
+                                <h5 class="menu-item-count" style="color:#fff;"></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="reportsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="AIE();"><i class="fas fa-cogs"></i>Authority to Incur Expenses</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="SpecialAie();"><i class="fas fa-cogs"></i>Special Authority to Incur Expenses</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal fade" id="myModalReport" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">AIE Report</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="budget">Administrative Unit</label>
+                        <select class="form-control" id="budget" name="budget"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="class">Class</label>
+                        <select id="class" name="transactionType" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="reportType">Report Type</label>
+                        <select id="reportType" name="reportType" class="form-control">
+                            <option value="">--Select Report Type--</option>
+                            <option value="1">Excel</option>
+                            <option value="0">PDF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.dash-count .menu-item-count');
+            if (!countElement) {
+                var dashCount = parentElement.querySelector('.dash-count');
+                if (dashCount) {
+                    countElement = document.createElement('h3');
+                    countElement.classList.add('menu-item-count');
+                    countElement.style.color = '#fff';
+                    dashCount.appendChild(countElement);
+                }
+            }
+            if (countElement) {
+                countElement.textContent = menuItemCount;
+            }
+        });
+    }
+
+    window.addEventListener('load', function () {
+        updateMenuItemCount();
+    });
+</script>

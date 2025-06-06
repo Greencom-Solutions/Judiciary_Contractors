@@ -1,0 +1,382 @@
+﻿@model Latest_Staff_Portal.ViewModel.DesignControlHeader
+
+@{
+    ViewBag.Title = "DesignControlDocumentView";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    hr {
+        margin: 4px;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#" onclick="DesignControlLink();">Design Control List</a>
+                </li>
+                <li class="breadcrumb-item active">Design Control List(@Model.ProjectNo)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProjectNo, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProjectNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProjectNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDate, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndDate, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AdministrativeUnit, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AdministrativeUnit, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AdministrativeUnit, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GeographicLocation, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.GeographicLocation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.GeographicLocation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalEstimatedCost, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TotalEstimatedCost, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TotalEstimatedCost, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProjectClassification, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProjectClassification, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProjectClassification, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeNo, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EmployeeNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmployeeNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeName, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CurrentActioningMember, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CurrentActioningMember, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CurrentActioningMember, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DesignApprovalStage, new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DesignApprovalStage, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DesignApprovalStage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divDesignControlLines">
+            <hr style="border:1px solid black"/>
+            <b>Design Control </b>
+            <hr/>
+            <div id="divDesignControlLine"></div>
+            <hr style="border:1px solid black"/>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Attachments</b>
+                    <div id="divAttachDocs"></div>
+                </div>
+            </div>
+            <hr style="border:1px solid black"/>
+
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <label id="labelF"></label>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/assets/js/pdfobject.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadDesignControlLines(`@Model.ProjectNo`, `@Model.Status`);
+        var status = `@Model.Status`;
+        HideHeaderEditInput(status);
+
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+    });
+    var LoadDesignControlLines = function (DocNo, Status) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: DocNo, Status: Status }),
+			url: "/Projects/PurchaseDocumentLines",
+            success: function (data) {
+                $("#divDesignControlLine").html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var DesignControlLink = function () {
+        ShowProgress();
+        window.location = "/Projects/DesignControl";
+    }
+    var AddAttachment = function () {
+        $("#lblTitl").text("File Upload");
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            datatype: "html",
+            url: '/Projects/FileAttachmentForm',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    };
+    var SaveAttachmentFile = function () {
+        var DocNo = `@Model.ProjectNo`;
+        var filename; var base64String; var filetype;
+        var files = document.getElementById('DesignControlfileAttachment').files;
+        if (files.length) {
+            var file = files[0];
+            if (file.size > 10000000) {
+                Swal.fire('Warning', 'Please only files less than 10MB allowed. Thanks!!', 'warning');
+            }
+            else {
+                var blob = file.slice();
+                filetype = file.type;
+                filename = file.name;
+                var reader = new FileReader();
+                reader.onloadend = function (evt) {
+                    if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+                        var cont = evt.target.result
+                        base64String = getB64Str(cont);
+                        ShowProgress();
+                        //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: "/Projects/SubmitDesignControl",
+                            data: JSON.stringify({ DocNo: DocNo, base64Upload: base64String, fileName: filename }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.success) {
+                                    HideProgress();
+                                    $("#myModal").modal("hide");
+                                    Swal.fire('Success', data.message, 'success');
+                                }
+                                else {
+                                    Swal.fire('Warning', data.message, 'warning');
+                                    HideProgress();
+                                }
+                            },
+                            error: function (err) {
+                                HideProgress();
+                                Swal.fire('Warning', err, 'warning');
+                            }
+                        });
+                    }
+                };
+                reader.readAsArrayBuffer(blob);
+            }
+        }
+    };
+    function getB64Str(buffer) {
+        var binary = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+	var SendDocForApproval = function (DocNo) {
+        //var rowCount1 = $('#DocumentAttachmnts').length;
+        //if (rowCount1 == 0) {
+        //    Swal.fire('Warning', 'Document should have an attachment before sending for approval', 'warning');
+        //    return;
+        //}
+		var rowCount = $('#PurchaseRequisitionLine1 tr').length;
+        if (rowCount < 1)
+        {
+            rowCount = $('#PurchaseRequisitionLine1 tr').length;
+        }
+        if (rowCount < 1) {
+            Swal.fire('Warning', 'You have not Added any Purchase Requisition line(s)', 'warning');
+            return;
+        }
+        else {
+            ShowProgress();
+            $.ajax({
+                async: true,
+                type: "POST",
+                datatype: "json",
+                data: JSON.stringify({ DocNo: DocNo }),
+                contentType: "application/json; charset = utf-8",
+                processData: false,
+                url: '/Purchase/SendPurchaseAppForApproval',
+                success: function (data) {
+                    if (data.success == true) {
+                        HideProgress();
+                        window.location = "/Purchase/PurchaseRequisitionList";
+                    }
+                    else {
+                        HideProgress();
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                },
+                error: function (err) {
+                    HideProgress();
+                    Swal.fire('Warning', err, 'warning');
+                }
+            });
+        }
+    }
+
+
+
+</script>

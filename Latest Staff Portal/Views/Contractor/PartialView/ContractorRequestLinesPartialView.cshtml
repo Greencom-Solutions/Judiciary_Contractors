@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ContractorExtensionRequestLines>
+@{
+    var DocNo = ViewBag.DocNo;
+
+}
+
+<div class="table-responsive">
+    <table id="extensionLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Header_No</th>
+                <th>Line No</th>
+                <th>Request description</th>
+                <th>Assistant Director</th>
+                <th>Assistant Director Name</th>
+                <th>Deadline</th>
+                <th>Review Status</th>
+                <th>Date Submitted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Header_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Request_Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assistant_Director)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assistant_Director_Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Review_Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_Submitted)
+                    </td>
+                    <td>
+                        @*<button class="btn btn-primary  btn-sm ml-3" style="background-color: #b8a603; border: none " onclick="EditItem('@item.Header_No', @item.Line_No);">Update</button>*@
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*<div style="text-align: right">
+    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AddExtensionReqLine(`@DocNo`);">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Record
+    </button>
+</div>
+*@
+<script>
+    var table = $("#extensionLines").DataTable({
+        lengthChange: true,
+        order: [[1, 'desc']],
+        lengthMenu: [5, 10, 25, 50, 100],
+        "bDestroy": true
+    });
+
+
+    function AddExtensionReqLine(DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/NewExtensionReqLine',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+
+    function EditItem(Document_No, Entry_No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ Document_No: Document_No, Entry_No: Entry_No }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Contractor/AssignAssistantDirector',
+            success: function (data) {
+                $("#assignEmployeeModalBody").html(data);
+                HideProgress();
+                $("#assignEmployeeModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+
+    }
+
+</script>

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.StakeholderFeedback>
+
+@{
+    var isManager = ViewBag.isManager3;
+}
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.No)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Line_No)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Suggestion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Proponent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status_Of_Suggestion)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Suggestion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Proponent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status_Of_Suggestion)
+                    </td>
+                    <td>
+
+                        @{
+                            if (isManager)
+                            {
+                                <button class="btn btn-success  btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"
+                                        onclick="EditItem('@item.No', '@item.Line_No',  '@item.Suggestion', '@item.Location', '@item.Proponent', '@item.Status_Of_Suggestion');">
+                                    Edit Line
+                                </button>
+
+                                <button class="btn btn-danger  btn-sm ml-3" data-toggle="tooltip" data-placement="top" title="Delete" onclick="RemoveItem('@item.No');">Delete</button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div style="text-align:right; margin-top: 10px">
+    @{
+        /*if (@isManager)
+        {*/
+            <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddStakeholderFeedback();">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Feedback
+            </button>
+        @*}*@
+    }
+
+</div>
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

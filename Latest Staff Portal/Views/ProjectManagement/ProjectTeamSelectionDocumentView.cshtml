@@ -1,0 +1,420 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectTeamSelections
+
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    var isManager = ViewBag.isManager;
+}
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    hr {
+        margin: 4px;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="ProjectTeamSelectionLink();">Project Team Selection</a></li>
+                <li class="breadcrumb-item active">Project Team Selection Document (@Model.No)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr />
+<br />
+
+
+<div class="card">
+    <div class="card-header">
+        <h4> Project Team Selection Document</h4>
+        <div style="text-align:right; margin-bottom: 20px">
+            @{
+                if (!@Model.Appointed)
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AppointTeamMember('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Appoint Team
+                    </button>
+                }
+
+                if (@Model.Section_Lead_Area == "Asst. Director Architectural" && @Model.Appointed && !@Model.Design_Created)
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="CreateStakeholderMeeting('@Model.No');">
+                        <i class="fa fa-handshake" aria-hidden="true"></i> Create Stakeholder Meeting
+                    </button>
+                }
+            }
+
+
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Code", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Project_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Project_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*  <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Date of Meeting", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        @Html.EditorFor(model => model.Date_of_Meeting, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                        @Html.ValidationMessageFor(model => model.Date_of_Meeting, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Geographical Unit Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Geographical_Unit_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Geographical_Unit_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Team Lead", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Team_Lead, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Team_Lead, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Section Lead Area", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Section_Lead_Area, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Section_Lead_Area, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        @{
+            <div align="center" id="DivUpdateButton">
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Update Header" onclick="UpdateProjectTeamHeader();" />
+            </div>
+        }
+        <div id="DivPurchaseRegLines" style="margin: 10px 20px">
+            <hr style="border:1px solid black" />
+            <b>Project Team Lines</b>
+            <hr />
+            <div id="divProjectTeamLines"></div>
+            <hr style="border:1px solid black" />
+        </div>
+    </div>
+</div>
+
+
+
+@*//////////////////////Update header Modal////////////////////////////*@
+<div class="modal fade" id="updateHeader" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Document</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody2">
+                <!-- Content injected here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitUpdatedPMMUHeader();">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*//////////////////////Add Team Member Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">New Team Member</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Submit" onclick="SubmitTeamMember();" />
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*//////////////////////Update Team Member Modal////////////////////////////*@
+<div class="modal" id="editTeamMemberModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Team Member</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editTeamMemberModalBody">
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Update" onclick="UpdateTeamMember();" />
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var isManager = true;
+    $(document).ready(function () {
+        LoadProjectTeamLines(`@Model.No`, isManager);
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+             Swal.fire('Success', Successmsg, 'success', true);
+             $.ajax({
+                 type: "POST",
+                 url: "/Common/NullibySessions"
+             });
+        }
+    });
+
+    var LoadProjectTeamLines = function (No, isManager) {
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No, isManager: isManager}),
+            url: "/ProjectManagement/ProjectTeamLines",
+            success: function (data) {
+                $("#divProjectTeamLines").html(data);
+                HideProgress();
+                //GetDocumentAttachments();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    function ProjectTeamSelectionLink() {
+        window.location.href = "ProjectTeamSelection";
+    }
+
+    function AppointTeamMember() {
+        var No = '@Model.No';
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/AppointTeamMember",
+            data: JSON.stringify({ No: No }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Team appointment successful.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+    }
+
+    function CreateStakeholderMeeting() {
+     var No = '@Model.No';
+     ShowProgress();
+     $.ajax({
+         type: "POST",
+         url: "/ProjectManagement/CreateStakeholderMeeting",
+         data: JSON.stringify({ No: No }),
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         success: function (data) {
+             HideProgress();
+             if (data.success) {
+                 Swal.fire('Success', 'Stakeholder Meeting successfully created.', 'success').then(() => {
+                     ViewDoc(data.message);
+                     /*windows.location.reload();*/
+                 });
+             } else {
+                 Swal.fire('Warning', data.message, 'warning');
+             }
+         },
+         error: function (err) {
+             HideProgress();
+             Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+         }
+     });
+ }
+
+    var AddProjectMemberLine = function () {
+
+        var Project_No = '@Model.No';
+         ShowProgress();
+         $.ajax({
+             async: true,
+             type: "GET",
+             dataType: "html",
+             url: '/ProjectManagement/NewTeamMemberLine',
+             data: { Project_No, Project_No },
+             success: function (data) {
+                 $("#modalBody").html(data);
+                 HideProgress();
+                 $("#myModal").modal("show");
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText, 'warning');
+             }
+         });
+    }
+
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/ProjectManagement/ProjectTeamSelectionDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+
+   function SubmitTeamMember() {
+      var isValid = true;
+
+      // Collect data from the form
+       var Project_No = `@Model.No`;
+       var Resource = $("#Member").val();
+       var Expertise = $("#Expertise").val();
+       var Involvement_Stage = $("#Involvement_Stage").val();
+
+      // Validation checks
+       if (!Resource) {
+      Swal.fire('Warning', 'Select Resource.', 'warning');
+      isValid = false;
+       }
+
+       if (!Expertise) {
+           Swal.fire('Warning', 'Select Expertise.', 'warning');
+           isValid = false;
+       }
+
+       if (!Involvement_Stage) {
+           Swal.fire('Warning', 'Select Involvement Stage.', 'warning');
+           isValid = false;
+       }
+
+      // Exit if validation fails
+      if (!isValid) {
+      return;
+      }
+
+      // Prepare data object
+      var newTeamLead = {
+        Design_No: Project_No,
+        No: Resource,
+        Expertise: Expertise,
+        Involvement_Stage: Involvement_Stage
+
+      };
+
+      // Show progress indicator
+      ShowProgress();
+      $.ajax({
+              type: "POST",
+              url: "/ProjectManagement/SubmitTeamMember",
+             data: JSON.stringify(newTeamLead),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+          success: function (data) {
+              HideProgress();
+              if (data.success) {
+                  Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                      ViewDoc(data.message);
+                      /*windows.location.reload();*/
+                  });
+              } else {
+                Swal.fire('Warning', data.message, 'warning');
+              }
+          },
+          error: function (err) {
+              HideProgress();
+              Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+          }
+      });
+  }
+
+    var EditItem = function (Design_No, itemNo) {
+        ShowProgress()
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: "/ProjectManagement/UpdateTeamMemberLine",
+            data: { Design_No: Design_No, itemNo: itemNo },
+            success: function (data) {
+                $("#editTeamMemberModalBody").html(data);
+                HideProgress();
+                $("#editTeamMemberModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    };
+
+</script>
+

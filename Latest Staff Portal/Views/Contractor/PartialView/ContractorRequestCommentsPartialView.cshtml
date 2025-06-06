@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ContractorRequestComments>
+
+
+<table class="table">
+    <tr>
+      
+        <th>Comments</th>
+        <th>Written By</th>
+        <th>Written At</th>
+        <th>Author Title </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Written_By)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Written_At)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author_Title)
+        </td>
+      
+    </tr>
+}
+
+</table>

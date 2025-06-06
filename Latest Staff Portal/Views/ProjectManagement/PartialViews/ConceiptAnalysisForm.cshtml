@@ -1,0 +1,125 @@
+﻿@model Latest_Staff_Portal.ViewModel.PreliminaryDesignControl
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Situation Analysis", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Situation_Analysis, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id= "situationAnalysis" } })
+            @Html.ValidationMessageFor(model => model.Situation_Analysis, "", new { @class = "text-danger" })
+        </div> 
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Relevance Of Project Idea", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Relevance_of_proj_Idea, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "relevance" } })
+            @Html.ValidationMessageFor(model => model.Relevance_of_proj_Idea, "", new { @class = "text-danger" })
+        </div>     
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Scope", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Scope_of_the_project, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "projectScope" } })
+            @Html.ValidationMessageFor(model => model.Scope_of_the_project, "", new { @class = "text-danger" })
+        </div>   
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Logical Framework", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Logical_Framework, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;", @id = "logicalFramework" } })
+            @Html.ValidationMessageFor(model => model.Logical_Framework, "", new { @class = "text-danger" })
+        </div>    
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Goal", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Goal, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;", @id = "goal" } })
+            @Html.ValidationMessageFor(model => model.Goal, "", new { @class = "text-danger" })
+        </div>  
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Objectives / Outcome", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Project_Objectives_Outcome, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;", @id = "objectives" } })
+            @Html.ValidationMessageFor(model => model.Project_Objectives_Outcome, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Proposed Project Output", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Proposed_Project_Outputs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;", @id = "projectOutput" } })
+            @Html.ValidationMessageFor(model => model.Proposed_Project_Outputs, "", new { @class = "text-danger" })
+        </div>  
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Activities & Input", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Project_Activities_and_Inputs, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "activitiesInput" } })
+            @Html.ValidationMessageFor(model => model.Project_Activities_and_Inputs, "", new { @class = "text-danger" })
+        </div>
+       
+    </div>
+
+</div>
+<div class="row mt-3">
+    <hr />
+    <div class="col-md-12 mt-3 mb-3">
+        <h4>Other Conceipts</h4>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Institutional Mandate", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.institutional_Mandate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;", @id = "InstitutionalMandate" } })
+            @Html.ValidationMessageFor(model => model.institutional_Mandate, "", new { @class = "text-danger" })
+        </div>
+       
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Management of the Project", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Management_of_the_Project, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "ProjectManagement" } })
+            @Html.ValidationMessageFor(model => model.Management_of_the_Project, "", new { @class = "text-danger" })
+        </div>
+       
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Monitoring and Evaluation", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Monitoring_and_Evaluation, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "Monitoring" } })
+            @Html.ValidationMessageFor(model => model.Monitoring_and_Evaluation, "", new { @class = "text-danger" })
+        </div> 
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Risk and Mitigation Measures", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Risk_and_Mitigation_Measures, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id= "Risk" } })
+            @Html.ValidationMessageFor(model => model.Risk_and_Mitigation_Measures, "", new { @class = "text-danger" })
+        </div>  
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Sustainability", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Project_Sustainability, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "ProjectSustainability" } })
+            @Html.ValidationMessageFor(model => model.Project_Sustainability, "", new { @class = "text-danger" })
+        </div>
+       
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Stakeholders and Collaborators", htmlAttributes: new { @class = "control-label col-md-12" })
+            @Html.EditorFor(model => model.Project_Stakeholders_and_Collaborators, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "ProjectStakeholders" } })
+            @Html.ValidationMessageFor(model => model.Project_Stakeholders_and_Collaborators, "", new { @class = "text-danger" })
+        </div>      
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Project Readiness", htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Project_Readiness, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly", @style = "background-color: #dedebd;", @id = "ProjectReadiness" } })
+            @Html.ValidationMessageFor(model => model.Project_Readiness, "", new { @class = "text-danger" })
+        </div>
+      
+    </div>
+
+</div>
+

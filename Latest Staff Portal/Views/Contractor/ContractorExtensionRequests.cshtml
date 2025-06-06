@@ -1,0 +1,204 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    string title = ViewBag.title;
+}
+
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    .selectedTableRow {
+        background-color: #74788d;
+        color: white;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="page-headers">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="DashboardLink();">Dashboard</a></li>
+                <li class="breadcrumb-item active">Contractor Extension Requests List</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                 @*   <select class="form-control" onchange="filterRequests(this.value)">
+                        <option value="New">New</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Received">Received</option>
+                    </select>*@
+                </div>
+            </div>
+            <div class="col-md-6" style="text-align:right">
+                <button class="btn btn-primary" style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="NewRequest();">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> New Request
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div id="divContractorExtensionRequestsList"></div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">New Request</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Submit Request" onclick="SubmitRequest();" />
+
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal Links////////////////////////////*@
+<div class="modal fade" id="myModalLinks" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Actions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyLinks">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/ShowProgression.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var status = urlParams.get('status') || "New";
+        LoadContractorExtensionRequestsList(status);
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+    });
+
+    function filterRequests(selectedStatus) {
+        LoadContractorExtensionRequestsList(selectedStatus);
+    }
+
+    var LoadContractorExtensionRequestsList = function (selectedStatus) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            dataType: 'HTML',
+            data: JSON.stringify({ status: selectedStatus }),
+            contentType: "application/json",
+            url: "/Contractor/ContractorExtensionRequestsListPartialView",
+            success: function (data) {
+                $("#divContractorExtensionRequestsList").empty().html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    }
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/Contractor/ContractorExtensionRequestsDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+    function DashboardLink() {
+        window.location.href="/Dashboard/Dashboard/"
+    }
+
+
+    function NewRequest() {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            datatype: "html",
+            url: '/Contractor/NewRequest',
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+    function SubmitRequest() {
+        var Project_No = document.getElementById('Project_No').value;
+        var Contractor_No = document.getElementById('Contractor_No').value;
+        var docType = 6;
+
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: '/Contractor/SubmitRequest',
+            data: { Project_No: Project_No, Contractor_No: Contractor_No, docType: docType },
+            success: function (response) {
+                HideProgress();
+                if (response.success) {
+                    Swal.fire('Success', 'Record submitted', 'success');
+                    ViewDoc(response.message);
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText || 'An error occurred', 'warning');
+            }
+        });
+    }
+</script>
+
+
+
+

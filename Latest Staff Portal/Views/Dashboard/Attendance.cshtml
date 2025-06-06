@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.Attendance>
+
+@{
+    ViewBag.Title = "Attendance";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    .selectedTableRow {
+        background-color: #74788d;
+        color: white;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<!--
+<link href="~/assets/css/Loader.css" rel="stylesheet" />
+<div class="loading" align="center" id="divLoader">
+    <br />
+    <img src="~/assets/images/ajax-loader.gif" alt="" />
+</div>
+-->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#" onclick="DashBoardLink();">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Attendance</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div id="divAttendanceList"></div>
+</div>
+<script src="~/assets/js/ShowProgression.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadAttendanceList();
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+    });
+    var LoadAttendanceList = function () {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: 'HTML',
+            contentType: false,
+            processData: false,
+            url: "/Dashboard/AttendanceList",
+            success: function (data) {
+                $("#divAttendanceList").empty().html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    }
+
+  
+
+   
+
+    //var ViewDoc = function (DocNo) {
+    //    ShowProgress();
+    //    window.location = "/Fuel/FuelRechargeCardDocument?DocNo=" + DocNo;
+    //}
+    
+</script>

@@ -1,0 +1,139 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectProposals
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Requester No", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @id = "No", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Requester", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.RequesterName, new { htmlAttributes = new { @class = "form-control", @id = "RequesterName", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.RequesterName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Request Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "Name", } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Administration Unit Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.DropDownListFor(m => m.Administration_Unit_Name, Model.ListOfAdminUnits, new { @class = "form-control", @id = "Administration_Unit_Name", })
+                @Html.ValidationMessageFor(model => model.Administration_Unit_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("County", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(m => m.County, Model.ListOfCounties, "Select Option--", new { @class = "form-control select2", @id = "Counties", onchange = "GetSubCounties(this.value)" })
+                @Html.ValidationMessageFor(model => model.County, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Sub County", htmlAttributes: new { @class = "control-label col-md-2" })
+                <select id="Sub_Counties" class="form-control select2">
+                    <option value="">--Select Option--</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.Sub_County, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Request Source", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(m => m.Request_Source, Model.ListOfRequestSource, "Select Option--", new { @class = "form-control", @id = "Request_Source" })
+                @* @Html.EditorFor(model => model.Request_Source, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Request_Source, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Request Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextAreaFor(model => model.Request_Description, new { @class = "form-control", @id = "Request_Description", @rows = "3", @cols = "50" })
+                @Html.ValidationMessageFor(model => model.Request_Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Justification, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = "Justification", @rows = "3", @cols = "50" })
+                @Html.ValidationMessageFor(model => model.Justification, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // When the Outcome dropdown changes, populate the Strategic_Objective dropdown
+        $("#Counties").change(function () {
+            var county = $(this).val();
+            GetSubCounties(county);
+        });
+
+
+        $("#County","#Sub_Counties").select2({
+            width: '100%'
+        });
+
+    });
+
+    function GetSubCounties(county) {
+        if (county) {
+       
+            ShowProgress();
+            $.ajax({
+                url: '@Url.Action("GetSubCounties", "ProjectManagement")',
+                type: 'GET',
+                data: { county },
+                success: function (response) {
+                    populateDropdown("#Sub_Counties", response.ListOfSubCounties, "Select Sub County");
+                    HideProgress();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error occurred: ' + error);
+                    HideProgress();
+                }
+            });
+        } else {
+            $("#Sub_Counties").html('<option value="">-- Select Sub-County --</option>'); // Reset strategies if objectives are cleared
+            HideProgress();
+        }
+    }
+   
+    function populateDropdown(dropdownSelector, items, defaultText) {
+        var dropdown = $(dropdownSelector);
+        dropdown.empty(); // Clear existing options
+        if (items && items.length > 0) {
+            dropdown.append($("<option></option>").val("").text("-- " + defaultText + " --")); // Default option
+            $.each(items, function (index, item) {
+                var option = document.createElement('option');
+                option.value = item.Value;
+                option.text = item.Text;
+                dropdown.append(option);
+            });
+        } else {
+            dropdown.append($("<option></option>").val("").text("No Records Found"));
+        }
+    }
+
+</script>
+

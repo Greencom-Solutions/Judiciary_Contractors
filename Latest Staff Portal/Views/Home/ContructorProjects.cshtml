@@ -1,0 +1,161 @@
+﻿@model dynamic
+
+@{
+    //ViewBag.Title = "ContructorProjects";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h4>Home/ContractorsProjects</h4>
+<div class="card">
+    <div class="padding">
+        @*  <div class="row">
+                @if (Model.Projects.Count == 0)
+                {
+                <div class="alert alert-danger" id="alert-danger" role="alert">
+                   Sorry! you dont have any existing project at the moment
+                </div>
+                }
+            </div>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Bill To Customer Number</th>
+                                <th>Description</th>
+                                <th>Cost</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Projects)
+                            {
+                                <tr>
+                                    <td>@item.No</td>
+                                    <td>@item.Bill_to_Customer_No</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Actual_Project_Costs</td>
+
+                                    <td>@item.Status</td>
+                                    @*<td> <a href="@Url.Action("InstructionRequest", "Home", new { tendernumber = @item.No,description=item.Description,status=item.Status })" class="btn btn-success" )><i class="fa fa-share m-r-10"></i>Make Request</a></td>*@
+                                    <td>
+                                        <a href="#" class="btn btn-primary" onclick="openRequestModal('@item.No')">
+                                            <i class="fa fa-share m-r-10"></i>Make Request
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal Structure -->
+    <div id="header_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center justify-content-center" role="document" stylee="display:flex; min-height: calc(100% - 1rem);">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">New Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <label for="vendorNo">Contructor Number</label>
+                            <input type="text" class="form-control" value="@Session["vendorNo"]" id="vendorNo" placeholder="" />
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <label for="projectNo">Project Number</label>
+                            <input type="text" class="form-control" id="projectNo" placeholder="" />
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <label for="documentType">Request Type</label>
+
+                            <select id="documentType" class="form-control">
+                                <option value="0">Instructions</option>
+                                <option value="1">Approval</option>
+                                <option value="2">Payment</option>
+                                <option value="3">Joint Measurement</option>
+                                <option value="4">Claims on delayed payments</option>
+                                <option value="5">Amentment</option>
+                                <option value="6">Extension</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitRequestHeader()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+ 
+    function submitRequestHeader() {
+        //alert("started");
+        var data = {
+            vendorNo: $("#vendorNo").val(),
+            projectNo: $("#projectNo").val(),
+            documentType: $("#documentType").val()
+        };
+
+        $.ajax({
+            url: '/Home/InsertInstructionRequestHeader',
+            type: 'POST',
+            data: data,
+        }).done(function (status) {
+            var registerstatus = status.split('*');
+            status = registerstatus[0];
+            var tendorNo = registerstatus[1];
+            console.log(JSON.stringify(status))
+            switch (status) {
+                case "success":
+
+                    Swal.fire
+                        ({
+                            title: "Success!",
+                            text: "Request Added Successfully!",
+                            icon: "success"
+                        }).then((result) => {
+                            window.location.href = "/Home/RequestCard?tendorNo=" + tendorNo;
+                        });
+                    break;
+                default:
+
+                    Swal.fire
+                        ({
+                            title: "Error!!!",
+                            text: status,
+                            icon: "error"
+                        })
+            }
+        });
+    }
+    function openRequestModal(projectNo) {
+        $('#projectNo').val(projectNo);
+        $('#header_modal').modal('show');
+    }
+
+    function showSpinner() {
+        document.querySelector('spinner-overlay').style.display = 'block';
+    }
+
+    function hideSpinner() {
+        document.querySelector('spinner-overlay').style.display = 'none';
+    }
+</script>

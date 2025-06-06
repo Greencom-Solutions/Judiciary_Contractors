@@ -1,0 +1,207 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ContractLines>
+
+@{
+    ViewBag.Title = "ContractsLines";
+
+}
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: #183424; color: white">
+            <tr>
+                <th>Document No</th>
+                <th>Line No</th>
+                <th>Type</th>
+                <th>No</th>
+                <th>Cross Reference No</th>
+                <th>Variant Code</th>
+                <th>VAT Prod Posting Group</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit of Measure Code</th>
+                <th>Unit of Measure</th>
+                <th>Fee Type</th>
+                <th>Direct Unit Cost</th>
+                <th>Indirect Cost Percent</th>
+                <th>Unit Cost LCY</th>
+                <th>Budget</th>
+                <th>Budget Line</th>
+                <th>Shortcut Dimension 1 Code</th>
+                <th>Unit Price LCY</th>
+                <th>Line Discount Percent</th>
+                <th>Line Amount</th>
+                <th>Line Discount Amount</th>
+                <th>Location Code</th>
+                <th>Allow Invoice Disc</th>
+                <th>Qty to Receive</th>
+                <th>Quantity Received</th>
+                <th>Quantity Invoiced</th>
+                <th>Expected Receipt Date</th>
+                <th>Shortcut Dimension 2 Code</th>
+                <th>Shortcut Dim Code 3</th>
+                <th>Shortcut Dim Code 4</th>
+                <th>Shortcut Dim Code 5</th>
+                <th>Shortcut Dim Code 6</th>
+                <th>Shortcut Dim Code 7</th>
+                <th>Shortcut Dim Code 8</th>
+                <th>Amount Before Discount</th>
+                <th>Invoice Discount Amount</th>
+                <th>Invoice Disc Pct</th>
+                <th>Total Amount Excl VAT</th>
+                <th>Total VAT Amount</th>
+                <th>Total Amount Incl VAT</th>
+              
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Document_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cross_Reference_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Variant_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VAT_Prod_Posting_Group)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_of_Measure_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_of_Measure)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fee_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Direct_Unit_Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Indirect_Cost_Percent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Cost_LCY)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Budget)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Budget_Line)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Shortcut_Dimension_1_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Price_LCY)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Discount_Percent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Discount_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Allow_Invoice_Disc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty_to_Receive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity_Received)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity_Invoiced)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Expected_Receipt_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Shortcut_Dimension_2_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_3_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_4_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_5_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_6_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_7_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortcutDimCode_x005B_8_x005D_)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AmountBeforeDiscount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoice_Discount_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoice_Disc_Pct)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_Amount_Excl_VAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_VAT_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_Amount_Incl_VAT)
+                    </td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

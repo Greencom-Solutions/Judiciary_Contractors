@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ProjectTeam>
+
+@{
+    var isManager = ViewBag.isManager;
+}
+<div class="table-responsive">
+    <table id="teamLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: black; color: white;">
+            <tr>
+                <th>Design No </th>
+                <th>No </th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Expertise </th>
+               @* <th>Approval Sequence </th>*@
+                <th>Involvement Stage</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Expertise)
+                    </td>
+                 @*   <td>
+                        @Html.DisplayFor(modelItem => item.Approval_Sequence)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Involvement_Stage)
+                    </td>
+                    <td>
+                        @{
+                            /*if (@isManager)
+                            {*/
+                            <button class="btn btn-success  btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"
+                                    onclick="EditItem('@item.Design_No', '@item.No')">
+                                Edit Line
+                            </button>
+                            @* }*@
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    /*  if (@isManager==true)
+      {*/
+    <div style="text-align:right; margin-top: 10px">
+        <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddProjectMemberLine();">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add Team Member
+        </button>
+    </div>
+    @*}*@
+}
+
+<script>
+    $("#teamLines").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });
+</script>

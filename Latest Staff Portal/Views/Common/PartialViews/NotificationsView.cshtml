@@ -1,0 +1,32 @@
+﻿@model Latest_Staff_Portal.ViewModel.NotificationsViewModel
+
+@{
+    var noticeCounter = 1;
+    var memoCounter = 1;
+}
+
+<div id="divNotice" style="display:block">
+    @foreach (var notice in Model.Notices)
+    {
+        <a href="#" class="notice-item" onclick="openNotification(@notice.No)">
+            <strong>@noticeCounter</strong> @notice.Title<br/>
+        </a>
+        <hr/>
+        noticeCounter++;
+    }
+    @*<input value="@noticeCounter" id="totNotices" />*@
+
+</div>
+
+<div id="divMemos" style="display:block">
+    @foreach (var memo in Model.Memos)
+    {
+        <a href="#" class="memo-item" onclick="openNotification(@memo.No)">
+            <strong>@memoCounter</strong> @memo.Title<br/>
+        </a>
+        <hr/>
+        memoCounter++;
+    }
+    @*<input value="@memoCounter" id="totMemos" />*@
+
+</div>

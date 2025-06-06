@@ -1,0 +1,362 @@
+﻿﻿
+@using Latest_Staff_Portal.Models;
+@{
+	Layout = "~/Views/Shared/Sitemaster.cshtml";
+	string imgSrc = "", gender = "", Name = "";
+	bool IsICT = false;
+
+    bool isSupervisor = ViewBag.isSupervisor;
+
+
+
+
+	if (Session["Username"] == null)
+	{
+		Html.Action("Login", "Login");
+	}
+	else
+	{
+		if (Session["ImgProfile"] == null)
+		{
+			var base64 = CommonClass.ProfilePicture(Session["Username"].ToString());
+			if (base64 != "")
+			{
+				imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+				Session["ImgProfile"] = imgSrc;
+			}
+		}
+		else
+		{
+			imgSrc = Session["ImgProfile"].ToString();
+		}
+
+		if (Session["StaffDetails"] == null)
+		{
+			string[] s = CommonClass.GetStaffDetails(Session["Username"].ToString());
+			gender = s[0];
+			Name = s[1];
+
+			Session["StaffDetails"] = s;
+		}
+		else
+		{
+			string[] s = (string[])Session["StaffDetails"];
+			gender = s[0];
+			Name = s[1];
+		}
+		IsICT = CommonClass.IsICTStaff(Session["Username"].ToString());
+	}
+}
+
+
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+	function toggleWidget(widgetId) {
+		var widgets = document.querySelectorAll('.widget-content');
+		widgets.forEach(function (widget) {
+			if (widget.id === widgetId) {
+				if (widget.style.display === "none") {
+					widget.style.display = "block";
+				} else {
+					widget.style.display = "none";
+				}
+			} else {
+				widget.style.display = "none";
+			}
+		});
+	}
+</script>
+
+
+<div class="page-header">
+	<div class="row">
+		<div class="col-sm-12">
+			<ul class="breadcrumb">
+				<li class="breadcrumb-item"><a href="Dashboard/Dashboard">Dashboard</a></li>
+				<li class="breadcrumb-item active">Human Resource</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- /Page Header -->
+@*<div style="text-align:right" id="HideEditButton">
+		<input type="button" style="background: #162f25; color:whitesmoke; border-radius:10px" id="btnEdit" value="HR Information"  onclick="HRInformation();"/>
+	</div>*@
+
+<div class="row pt-3 pb-3 pl-3 pr-1" style="background-color: rgb(255, 255, 255); border-radius: 10px;">
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('leaveWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Leave</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="leaveWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="LeavePlanner();">Leave Planner</a></li>
+                    <li><a href="#" onclick="LeaveRequisitionLink();">Leave Application</a></li>
+                    @{
+                        int leaveOutstandingBal;
+                        if (int.TryParse(Session["LeaveOutstandingBal"]?.ToString(), out leaveOutstandingBal) && leaveOutstandingBal >= 15)
+                        {
+                            <li><a href="#" onclick="LeaveReimbursement();">Leave Reimbursement</a></li>
+                        }
+
+
+                    }
+                    @*<li><a href="#" onclick="TimeOffLieu();">Time off</a></li>*@
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Payslip Management Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('payslipWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Payslip Management</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="payslipWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="PayslipViewLink();"><i class="fas fa-file-invoice"></i> Payslip</a></li>
+                    <li><a href="#" onclick="P9ViewLink();"><i class="fas fa-file-alt"></i> P9</a></li>
+                    <li><a href="#" onclick="AdvancedSalary();"><i class="fas fa-hand-holding-usd"></i> Salary Advance</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Welfare Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('welfareWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Welfare</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="welfareWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="CarLoan();"><i class="fas fa-car"></i> Car Loan</a></li>
+                    <li><a href="#" onclick="MortgageLoan();"><i class="fas fa-home"></i> Mortgage Loan</a></li>
+                    <li><a href="#" onclick="MedicalCardReplacement();"><i class="fas fa-id-card"></i> Medical Card Replacement</a></li>
+                    <li><a href="#" onclick="DependantsChangeRequest();"><i class="fas fa-id-card"></i> Dependants Change Request</a></li>
+                    <li><a href="/WelfareManagement/IncidenceReporting"><i class="fas fa-exclamation-triangle"></i> Incidence Reporting</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Mobility Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('mobilityWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Mobility</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="mobilityWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="SelfEmpTransferLink();"><i class="fas fa-user"></i> Self Transfers</a></li>
+                    @if ((Session["HeadofStation"] is bool headofStation && headofStation) ||
+(Session["ICT_Help_Desk_Admin"] is bool ictHelpDeskAdmin && ictHelpDeskAdmin))
+                    {
+                        <li><a href="/Mobility/TransfersReleaseList"> <i class="fas fa-dumpster"></i> Transfers Awaiting Release </a></li>
+                        <li><a href="/Mobility/TransfersConfirmationList"> <i class="fas fa-dumpster"></i> Transfers Awaiting Confirmation</a></li>
+                        <li><a href="#" onclick="ManagementTransferLink();"><i class="fas fa-user-tie"></i> Management Transfers</a></li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Recruitment Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('recruitmentWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Recruitment</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            @if ((Session["HeadofStation"] is bool headofStations && headofStations) ||
+(Session["ICT_Help_Desk_Admin"] is bool ictHelpDeskAdmins && ictHelpDeskAdmins))
+            {
+                <div id="recruitmentWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li><a href="#" onclick="EmployeeRequisitionLink();"><i class="fas fa-clipboard-list"></i> Employee Requisition</a></li>
+                    </ul>
+                </div>
+            }
+            </div>
+    </div>
+
+    <!-- Performance Appraisal Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('appraisalWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Performance Appraisal</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="appraisalWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="PerformanceAppraisalSystem();"><i class="fas fa-clipboard-check"></i> Performance Appraisal System</a></li>
+                    <li><a href="#" onclick="AppraisalRequisitiontLink();"><i class="fas fa-clipboard-list"></i> Appraisal Requisition</a></li>
+                    @*<li><a href="#" onclick="SupervisorRequisitiontReviewLink();"><i class="fas fa-user-tie"></i> Supervisor Review List</a></li>*@
+                    @if (isSupervisor)
+                    {
+                        <li>
+                            <a href="#" onclick="SupervisorRequisitiontReviewLink();">
+                                <i class="fas fa-user-tie"></i> Supervisor Review List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="PASReportLink();">
+                                <i class="fas fa-print"></i> Employee PAS Report
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="TargetNotSetReportLink();">
+                                <i class="fas fa-print"></i> Target Not Set Report
+                            </a>
+                        </li>
+
+                    }
+
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <!-- Training Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('trainingWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Training</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="trainingWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="TrainingNeedsLink();"><i class="fas fa-book"></i> Training Needs Request</a></li>
+                    <li><a href="/Training/DutyStationNeedsList" <i class="fas fa-dumpster"></i> Duty Station Needs</a></li>
+                    <li><a href="#" onclick="ConsolidatedTrainingNeeds();"><i class="fas fa-dumbbell"></i> Consolidated Training Needs</a></li>
+                    <li><a href="#" onclick="TrainingRequisitiontLink();"><i class="fas fa-clipboard"></i> Training Requisition</a></li>
+                    <li><a href="#" onclick="TrainingExtensionLink();"><i class="fas fa-clipboard-check"></i> Training Extension</a></li>
+                    <li><a href="#" onclick="TrainingFeedbackLink();"><i class="fas fa-comments"></i> Training Feedback</a></li>
+                    <li><a href="#" onclick="TrainingEvaluationLink();"><i class="fas fa-poll-h"></i> Training Evaluation</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('displinaryWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Disciplinary</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            <div id="displinaryWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="/Disciplinary/HRDicsiplinaryCasesList" onclick="HRDisciplinaryCaseLink();">Employee Disciplinary</a></li>
+                    <li><a href="/Disciplinary/DisciplineDocumentsList" onclick="HRDisciplinaryCaseLink();">Disciplinary Documents</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Facilities Administration Widget -->
+    <!-- ICT Widget -->
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ictWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">ICT</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div><div id="ictWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li><a href="#" onclick="ICTRequisitionlink();"><i class="fas fa-headset"></i> User Support Request</a></li>
+                    <li><a href="#" onclick="ICTAssetRequisitionlink();"><i class="fas fa-desktop"></i> ICT Asset Requisition</a></li>
+                    @if (IsICT)
+                    {
+                        <li><a href="#" style="color: #fcb900" onclick="ICTAssignmentlink();">Assigned ICT Requests</a></li>
+                        <li><a href="#" style="color: #fcb900" onclick="ICTAssetServicing_Maintancelink();">Service/Maintenance</a></li>
+                    }
+                    <!-- Additional ICT widget content here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ 

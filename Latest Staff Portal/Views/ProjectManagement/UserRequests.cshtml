@@ -1,0 +1,258 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectProposals
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    string title =ViewBag.title;
+}
+
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    .selectedTableRow {
+        background-color: #74788d;
+        color: white;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="ProjectManagementLink();">Project Management</a></li>
+                <li class="breadcrumb-item active">User Requests</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr /><br />
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>@title</h4>
+            </div>
+            <div class="col-md-6" style="text-align:right">
+                <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="NewRequest();">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> New Request
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @*<div class="row">
+            <div class="col-md-6">
+                  <select class="form-control" onchange="LoadUserRequestsList(this.value)">
+                      <option value="Open">Open User Requests</option>
+                      <option value="Submitted">Submitted User Requests</option>
+                  </select>
+              </div>
+        </div>*@
+       
+        <div id="divUserRequestsList"></div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">New Request</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+            
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Submit Request" onclick="SubmitRequest();" />
+           
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal Links////////////////////////////*@
+<div class="modal fade" id="myModalLinks" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Actions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyLinks">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/ShowProgression.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const defaultStatus = urlParams.get('status'); 
+        LoadUserRequestsList(defaultStatus);
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+    });
+
+    var LoadUserRequestsList = function (status) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: 'HTML',
+            data: {status: status},
+            contentType: false,  
+            url: "/ProjectManagement/UserRequestsList",
+            success: function (data) {
+                $("#divUserRequestsList").empty().html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    }
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/ProjectManagement/UserRequestsDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+    var NewRequest= function () {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET", // Use GET as you're not sending data to the server
+            url: "/ProjectManagement/NewRequest", // Ensure the correct URL
+            dataType: "html", // Expecting an HTML response
+            success: function (data) {
+                $("#modalBody").html(data); // Inject the returned partial view into the modal body
+                HideProgress();
+                $("#myModal").modal("show"); // Show the modal
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', 'An error occurred while loading the form. Please try again.', 'warning');
+            }
+        });
+    };
+    function SubmitRequest() {
+        var isValid = true;
+
+        //get form details
+        var Name = $("#Name").val();
+        var Administration_Unit_Name = $("#Administration_Unit_Name").val();
+        var Counties = $("#Counties").val();
+        var Sub_County = $("#Sub_Counties").val();
+        var Request_Description = $("#Request_Description").val();
+        var Justification = $("#Justification").val();
+        var Request_Source = $("#Request_Source").val();
+
+        if (!Name) {
+            Swal.fire('Warning', 'Enter Name.', 'warning');
+            isValid = false;
+        }
+
+        if (!Administration_Unit_Name) {
+            Swal.fire('Warning', 'Select Administration Unit.', 'warning');
+            isValid = false;
+        }
+
+        if (!Counties) {
+            Swal.fire('Warning', 'Select County.', 'warning');
+            isValid = false;
+        }
+
+
+        if (!Sub_County) {
+            Swal.fire('Warning', 'Select SubCounty.', 'warning');
+            isValid = false;
+        }
+
+        if (!Request_Description) {
+            Swal.fire('Warning', 'Enter Request Description .', 'warning');
+            isValid = false;
+        }
+        if (!Justification) {
+            Swal.fire('Warning', 'Enter Justification.', 'warning');
+            isValid = false;
+        }
+        if (!Request_Source) {
+            Swal.fire('Warning', 'Select request Source.', 'warning');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return;
+        }
+
+        var request = {
+            Name: Name,
+            Administration_Unit_Name: Administration_Unit_Name,
+            County: Counties,
+            Sub_County: Sub_County,
+            Request_Description: Request_Description,
+            Justification: Justification,
+            Request_Source: Request_Source,
+        };
+
+        ShowProgress();
+
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/NewRequest",
+            data: JSON.stringify(request),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Request submitted', 'success');
+                    //window.location.reload;
+                    ViewDoc(data.message);
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function ProjectManagementLink() {
+        window.location = "/Dashboard/Projects";
+    }
+</script>
+
+
+

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.DesignControlsLines>
+
+
+<div class="table-responsive">
+    <table id="designControlLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: black; color: white;">
+            <tr>
+                <th>Header No</th>
+                <th>Entry No</th>
+                <th>Attachment Code</th>
+                <th>Design Control No</th>
+                <th>Design Control Type</th>
+                <th>Name</th>
+                <th>No of Items</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Header_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Attachment_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_Control_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_Control_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No_of_Items)
+                    </td>
+                    <td>
+
+                        <button class="btn btn-primary btn-sm" style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="ViewDesignControlAttachments('@item.Attachment_Code');">
+                            <i class="fa fa-eye" aria-hidden="true"></i> View Attachnents
+                        </button>                         
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@{
+    /*if (Model.Status == "Open")
+    {*/
+    @*<div style="text-align:right; margin-top: 10px">
+        <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddSummaryBOQLine();">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add Line
+        </button>
+    </div>*@
+    @*}*@
+}
+
+<script>
+    $("#designControlLines").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });
+</script>
+

@@ -1,0 +1,143 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                widget.style.display = widget.style.display === "none" ? "block" : "none";
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+
+
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.menu-item-count');
+            countElement.innerText = menuItemCount;
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        updateMenuItemCount();
+    });
+</script>
+
+
+<div class="tab-container">
+    <div class="card">
+
+        <div class="card-header">
+            <h4>COntractor Instruction Requests</h4>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                @*Contractor requests*@
+                <div class="col-md-4" style="border-right: 12px solid white;">
+                    <div class="row">
+                        <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ContractorRequestsWidget');">
+                            <a href="#">
+                                <div class="dash-widget-header">
+                                    <h3 style="color:whitesmoke">Contractor Requests</h3>
+                                    <div class="dash-count">
+                                        <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div id="ContractorRequestsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                            <ul class="widget-list">
+                                <li>
+                                    <a href="#" onclick="NewContractorRequestsLink();">
+                                        <i class="fas fa-user-plus"></i> New Contractor Requests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="SubmittedContractorRequestsLink();">
+                                        <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="ReceivedContractorRequestsLink();">
+                                        <i class="fas fa-inbox"></i> Received Contractor Requests
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @*Team Approval Requests*@
+                <div class="col-md-4" style="border-right: 12px solid white;">
+                    <div class="row">
+                        <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('TeamApprovalRequestsWidget');">
+                            <a href="#">
+                                <div class="dash-widget-header">
+                                    <h3 style="color:whitesmoke">Team Approval Requests</h3>
+                                    <div class="dash-count">
+                                        <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div id="TeamApprovalRequestsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                            <ul class="widget-list">
+                                <li>
+                                    <a href="#" onclick="TeamApprovalRequestsLink();">
+                                        <i class="fas fa-user-check"></i> Team Approval Requests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="TeamApprovalRequestsReviewLink();">
+                                        <i class="fas fa-search"></i> Team Approval Requests - Review
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="TeamApprovalRequestsApprovedLink();">
+                                        <i class="fas fa-thumbs-up"></i> Team Approval Requests - Approved
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="CRJApprovalRequestsLink();">
+                                        <i class="fas fa-clipboard-check"></i> CRJ Approval Requests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="RejectedApprovalRequestsLink();">
+                                        <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="ProcurementApprovalRequestsLink();">
+                                        <i class="fas fa-shopping-cart"></i> Procurement Approval Requests
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

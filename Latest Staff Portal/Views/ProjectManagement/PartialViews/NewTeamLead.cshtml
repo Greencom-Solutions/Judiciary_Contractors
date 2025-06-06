@@ -1,0 +1,46 @@
+﻿@model Latest_Staff_Portal.ViewModel.TeamLeads
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Project No", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.Project_No, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Project_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Resource", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.DropDownListFor(m => m.Resource_No, Model.ListOfEmployees, "--Select Option--", new { @class = "form-control select2", @id = "resource" })
+            @Html.ValidationMessageFor(model => model.Resource_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Specialty", htmlAttributes: new { @class = "control-label col-md-2" })
+           
+            <select class="form-control" name="Specialty" id="specialty" required>
+                <option value="" selected hidden>Select Option</option>
+                <option value="1">Project Manager</option>
+                <option value="2">Ass. Director Engineer</option>
+                <option value="3">Ass. Director Architectural</option>
+                <option value="4">Ass. Director Survey</option>
+            </select>
+            @Html.ValidationMessageFor(model => model.Specialty, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#resource").select2({
+            width: '100%'
+        });
+
+    });
+</script>
+

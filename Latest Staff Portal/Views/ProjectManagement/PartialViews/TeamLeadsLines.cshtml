@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.TeamLeads>
+
+@{
+    var isManager = ViewBag.isManager;
+    var Sent_to_team_Leads = ViewBag.Sent_to_team_Leads;
+}
+<div class="table-responsive">
+    <table id="teamLeadLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: black; color: white;">
+            <tr>
+                <th>Project No</th>
+                <th>Resource No</th>
+                <th>Resource Name </th>
+                <th>Specialty </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resource_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resource_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialty)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div style="text-align:right; margin-top: 10px">
+        @{
+            if (@isManager && !@Sent_to_team_Leads)
+            {
+                <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddTeamLead();">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Add Team Lead
+                </button>
+            }
+        }
+
+    </div>
+</div>
+
+
+<script>
+    $("#teamLeadLines").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });
+</script>

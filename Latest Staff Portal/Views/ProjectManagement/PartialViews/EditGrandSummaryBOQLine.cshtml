@@ -1,0 +1,79 @@
+﻿@model Latest_Staff_Portal.ViewModel.GrandSummaryBOQLines
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Header No", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Header_No, new { htmlAttributes = new { @class = "form-control", @id = "Header_No", @disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Header_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Line No", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Line_No, new { htmlAttributes = new { @class = "form-control", @id = "Line_No", @disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Line_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Description", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "Description" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Quantity", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "Quantity" } })
+            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Unit Cost", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Unit_Cost, new { htmlAttributes = new { @class = "form-control", @id = "Unit_Cost" } })
+            @Html.ValidationMessageFor(model => model.Unit_Cost, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Total Cost", htmlAttributes: new { @class = "control-label col-md-12" })
+
+            @Html.EditorFor(model => model.Total_Cost, new { htmlAttributes = new { @class = "form-control", @id = "Total_Cost", @readonly = "readonly", @style = "background-color: #ccc" } })
+            @Html.ValidationMessageFor(model => model.Total_Cost, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div style="text-align:center">
+        <button type="button" class="btn btn-primary" style="background-color: #162f25; border: none" onclick="SubmitUpdatedSummaryBOQLine();">Submit</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        function calculateTotalCost() {
+            // Get values of Quantity and Unit Cost
+            var quantity = parseFloat($("#Quantity").val()) || 0;
+            var unitCost = parseFloat($("#Unit_Cost").val()) || 0;
+
+            // Calculate total cost
+            var totalCost = quantity * unitCost;
+
+            // Set the value of Total Cost
+            $("#Total_Cost").val(totalCost.toFixed(2));
+        }
+
+        // Attach event listeners for change/input on Quantity and Unit Cost
+        $("#Quantity, #Unit_Cost").on("input", function () {
+            calculateTotalCost();
+        });
+    });
+</script>

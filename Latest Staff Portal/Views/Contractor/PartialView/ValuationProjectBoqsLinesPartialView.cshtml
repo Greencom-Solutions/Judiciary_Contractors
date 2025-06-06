@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ValuationProjectBoqs>
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Project Code</th>
+                <th>Entry No</th>
+                <th>Line Type</th>
+                <th>Section</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>UOM</th>
+                <th>Unit Price</th>
+                <th>Line Amount</th>
+                <th>Executed Quantity</th>
+                <th>Actualised Amount</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Section)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UOM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Executed_Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actualised_Amount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+
+            </tbody>
+</table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

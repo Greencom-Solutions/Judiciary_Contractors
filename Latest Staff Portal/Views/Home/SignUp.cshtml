@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:46 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>ESS - Login</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/img/logo.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <script src="~/assets/js/jquery2.0.3.min.js"></script>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <script src="~/assets/js/jquery2.0.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body id="body">
+    <link href="~/assets/css/Loader.css" rel="stylesheet" />
+    <div class="loading" align="center" id="divLoader">
+        <div class="loader-container">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script src="~/assets/js/ObfuscateSite.js"></script>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper login-body mt-2">
+        <div class="login-wrapper">
+            <div class="container">
+                <div class="container d-flex justify-content-center align-items-center" ">
+                    <div class="card p-3" style="width: 100%; ">
+                        @if (TempData["error"] != null)
+                        {
+
+                            <div class="alert alert-danger" id="alert-danger" role="alert">
+                                @TempData["error"]
+                            </div>
+
+                        }
+
+                        <div class="card-header">
+
+                            <center class="mt-2">
+                                <img class="img-fluid" src="/assets2/img/logo-dark.png" alt="Logo" style="height: 40px;">
+                                <div class="mt-3">
+                                    <h2>Create Account</h2>
+                                    <p>Fill in the details below to create an account</p>
+                                </div>
+
+                            </center>
+                        </div>
+                        <div class="card-body">
+                            <form id="supplierForm" novalidate>
+                                <div class="row">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6 pr-md-4">
+                                        <div class="form-group">
+                                            <label for="supplierbusinessname" class="form-label required-label">Registered Business Name</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-building"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="supplierbusinessname"
+                                                       name="supplierbusinessname"
+                                                       required
+                                                       autocomplete="organization"
+                                                       placeholder="Enter your registered business name">
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter your registered business name
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="supplieremailaddress" class="form-label required-label">Primary Email Address</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="email"
+                                                       class="form-control"
+                                                       id="supplieremailaddress"
+                                                       name="supplieremailaddress"
+                                                       required
+                                                       autocomplete="email"
+                                                       placeholder="email@example.com">
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter a valid email address
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="contactperson" class="form-label required-label">Contact Person (Name)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="contactperson"
+                                                       name="contactperson"
+                                                       required
+                                                       autocomplete="name"
+                                                       placeholder="Full name of primary contact">
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter the contact person's name
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column -->
+                                    <div class="col-md-6 pl-md-4">
+                                        <div class="form-group">
+                                            <label for="taxregistration" class="form-label required-label">Tax Registration (PIN) No</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-id-card"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="taxregistration"
+                                                       name="taxregistration"
+                                                       required
+                                                       maxlength="11"
+                                                       pattern=".{11}"
+                                                       placeholder="Enter your tax registration number"
+                                                       title="Tax registration number must be 11 characters">
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter a valid 11-character tax registration number
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="phonenumber" class="form-label required-label">Mobile Phone No</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="tel"
+                                                       class="form-control"
+                                                       id="phonenumber"
+                                                       name="phonenumber"
+                                                       required
+                                                       autocomplete="tel"
+                                                       placeholder="254XXXXXXXXX"
+                                                       pattern="[0-9]+"
+                                                       inputmode="numeric"
+                                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter a valid phone number containing only digits
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="actions-container mt-3">
+                                <a href="/Home/index" class="btn btn-outline-secondary">
+                                    <i class="fa fa-arrow-left mr-2"></i> Cancel
+                                </a>
+                                <button type="submit" form="supplierForm" class="btn btn-primary" id="btn_supplierregister">
+                                    <i class="fa fa-check mr-2"></i> Submit Registration
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /Main Wrapper -->
+    <!-- jQuery -->
+    <!-- Bootstrap Core JS -->
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="/assets/js/script.js"></script>
+    <script src="~/assets/js/ShowProgression.js"></script>
+    @*<script src="~/SiteJS/LoginJS.js"></script>*@
+</body>
+
+</html>
+
+<script>
+    // Form validation
+    (function () {
+        const form = document.getElementById('supplierForm');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (!form.checkValidity()) {
+                event.stopPropagation();
+                highlightInvalidFields();
+            } else {
+                var data = {
+                    "VendorName": $("#supplierbusinessname").val(),
+                    "Phonenumber": $("#phonenumber").val(),
+                    "Email": $("#supplieremailaddress").val(),
+                    "KraPin": $("#taxregistration").val(),
+                    "ContactName": $("#contactperson").val(),
+                    //"tterms": $("invalidCheck[type='checkbox']").val()
+                }
+                console.log(data);
+                //Swal Message
+                Swal.fire({
+                    title: "Confirm Registration?",
+                    text: "Are you sure you would like to proceed with the submission?",
+                    icon: "question",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    confirmButtonText: "Yes, Proceed!",
+                    confirmButtonClass: "btn-success",
+                    confirmButtonColor: "#008000",
+                    position: "center"
+                }).then((result) => {
+                    if (result.value) {
+                        ShowProgress();
+                        $.ajax({
+                            url: "/Home/SupplierFirstRegistration",
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            contentType: "application/json",
+                            cache: false,
+                            async: true,
+                            processData: false
+                        }).done(function (status) {
+                            var registerstatus = status.split('*');
+                            status = registerstatus[0];
+                            switch (status) {
+                                case "success":
+                                    HideProgress();
+                                    Swal.fire
+                                        ({
+                                            title: "Registration Submitted Successfully",
+                                            text: "Your Account Creation Request have been successfully submitted.Kindly Check your Email Account for More Details",
+                                            icon: "success",
+                                        });
+                                    break;
+                                default:
+                                    HideProgress();
+                                    Swal.fire
+                                        ({
+                                            title: "Registration Error!!!",
+                                            text: "Your Account Creation Request could not been successfully submitted" + " " + registerstatus[1],
+                                            icon: "error"
+                                        }).then(() => {
+                                            $("#feedback").css("display", "block");
+                                            $("#feedback").css("color", "red");
+                                            $('#feedback').addClass('alert alert-danger');
+                                            $("#feedback").html("Your Account Creation Request could not been successfully submitted" + " " + registerstatus[1]);
+
+                                        });
+                                    break;
+                            }
+                        }
+                        );
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        HideProgress();
+                        Swal.fire(
+
+                            'Registration Cancelled',
+                            'You cancelled your supplier registration submission details!',
+                            'error'
+                        );
+                    }
+                });
+
+            }
+
+            form.classList.add('was-validated');
+        });
+
+        function highlightInvalidFields() {
+            const invalidInputs = form.querySelectorAll(':invalid');
+            if (invalidInputs.length > 0) {
+                invalidInputs[0].focus();
+            }
+        }
+
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function () {
+                if (!this.validity.valid) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+    })();
+</script>

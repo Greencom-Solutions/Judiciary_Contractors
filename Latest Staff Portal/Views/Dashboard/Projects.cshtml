@@ -1,0 +1,223 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<style>
+    .widget-list li {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                if (widget.style.display === "none") {
+                    widget.style.display = "block";
+                } else {
+                    widget.style.display = "none";
+                }
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+</script>
+
+<div class="tab-container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" , onclick="DashBoardLink()">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Projects</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @*User Requests*@
+        <div class="col-md-4" style="border-right: 12px solid #dbdbdb;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('staffClaimsWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">User Requests</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="staffClaimsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+
+                       @* <li>
+                            <a href="#" onclick="UserRequestLink();">
+                                <i class="fas fa-edit"></i> Open User Requests
+                            </a>
+                        </li>
+*@
+                        <li>
+                            <a href="#" onclick="OpenUserRequestLink();">
+                                <i class="fas fa-edit"></i> Open User Requests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" onclick="SubmittedUserRequestLink();">
+                                <i class="fas fa-paper-plane"></i> Submitted User Requests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" onclick="ReceivedUserRequestLink();">
+                                <i class="fas fa-inbox"></i> Received User Requests
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        @*planning and design*@
+        <div class="col-md-4" style="border-right: 12px solid #dbdbdb; ">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('workplansWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Planning and Design</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="workplansWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        @* <li>
+                                <a href="#" onclick="UserRequestLink();">
+                                    <i class="fas fa-user-edit"></i> User Requests
+                                </a>
+                            </li>*@
+                        <li>
+                            <a href="#" onclick="TeamLeadSelectionLink();">
+                                <i class="fas fa-user-tie"></i> Project Team Lead Selection
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="ProjectTeamSelectionLink();">
+                                <i class="fas fa-users"></i> Project Team Selection
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="FirstStakeholderMeetingLink();">
+                                <i class="fas fa-handshake"></i> First Stakeholder Meeting
+                            </a>
+                        </li>
+                        @* <li>
+                                <a href="#" onclick="ProjectProposalLink();"><i class="fas fa-cogs"></i>Project Proposal</a>
+                            </li>*@
+
+                        @*<li><a href="#" onclick="DraftWorkPlansLink();"><i class="fas fa-edit"></i> Draft Workplans</a></li>
+                            <li><a href="#" onclick="ExpenseRequisitionLink();"><i class="fas fa-dollar-sign"></i> Expenditure Request</a></li>*@
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        @*Design Control*@
+        <div class="col-md-4" style="border-right: 12px solid #dbdbdb;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('imprestWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Design Control</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="imprestWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="PreliminaryDesignControlLink();">
+                                <i class="fas fa-drafting-compass"></i> Preliminary Design Control
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="AnnexSevenLink();">
+                                <i class="fas fa-file-alt"></i> Annex Seven
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" onclick="ApprovedDesignControlLink();">
+                                <i class="fas fa-check"></i> Approved Design Control
+                            </a>
+                        </li>
+
+                        @*    <li>
+                                <a href="#" onclick="SubmittedDesignControlLink();">
+                                    <i class="fas fa-paper-plane"></i> Submitted Design Control
+                                </a>
+                            </li>
+                        *@
+                        <li>
+                            <a href="#" onclick="FinalDesignControlLink();">
+                                <i class="fas fa-check-circle"></i> Final Design Control
+                            </a>
+                        </li>
+
+                        @*  <li>
+                                <a href="#" onclick="DesignControl();"><i class="fas fa-file-alt"></i> Design Control List</a>
+                            </li>
+                        *@
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.dash-count .menu-item-count');
+            if (!countElement) {
+                var dashCount = parentElement.querySelector('.dash-count');
+                if (dashCount) {
+                    countElement = document.createElement('h3');
+                    countElement.classList.add('menu-item-count');
+                    countElement.style.color = '#fff';
+                    dashCount.appendChild(countElement);
+                }
+            }
+            if (countElement) {
+                countElement.textContent = menuItemCount;
+            }
+        });
+    }
+
+    window.addEventListener('load', function () {
+        updateMenuItemCount();
+    });
+
+
+</script>

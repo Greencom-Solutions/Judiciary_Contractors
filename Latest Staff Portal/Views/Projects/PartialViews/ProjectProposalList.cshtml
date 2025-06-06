@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ProjectProposal>
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Administration Unit Name</th>
+                <th>Created By</th>
+                <th>Employee No</th>
+                <th>Employee Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.No</td>
+                            <td>@item.Name</td>
+                            <td>@item.AdministrationUnitName</td>
+                            <td>@item.CreatedBy</td>
+                            <td>@item.EmployeeNo</td>
+                            <td>@item.EmployeeName</td>
+                            <td>@item.Status</td>
+                            <td>
+                                <input type="button" onclick="ViewDoc('@item.No');" style="background: #162f25; color:whitesmoke; border-radius:10px" value="Select" />
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" style="color:red">
+                            No Records Found
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

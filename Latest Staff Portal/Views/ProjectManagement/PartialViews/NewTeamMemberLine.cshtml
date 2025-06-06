@@ -1,0 +1,55 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectTeam
+
+
+
+<div class="row">
+
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Team Member Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.DropDownListFor(m => m.No, Model.ListOfEmployees, "--Select Option--", new { @class = "form-control select2", @id = "Member" })
+            @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+   
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Expertise", htmlAttributes: new { @class = "control-label col-md-2" })
+            <select class="form-control" name="Expertise" id="Expertise" required>
+                <option value="" selected hidden>Select Option</option>
+                <option value="1">Architectural</option>
+                <option value="2">Structural and Civil Engineering</option>
+                <option value="3">Mechanical Engineering</option>
+                <option value="4">Electrical Engineering</option>
+                <option value="5">ICT</option>
+                <option value="6">Quantity Surveying</option>
+            </select>
+          
+            @Html.ValidationMessageFor(model => model.Expertise, "", new { @class = "text-danger" })
+        </div>
+    </div>
+   
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Involvement Stage", htmlAttributes: new { @class = "control-label col-md-2" })
+            <select class="form-control" name="Involvement_Stage" id="Involvement_Stage" required>
+                <option value="" selected hidden>Select Option</option>
+                <option value="0">Both</option>
+                <option value="1">Preliminary</option>
+                <option value="2">Final</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#Member").select2({
+            width: '100%'
+        });
+
+    });
+</script>

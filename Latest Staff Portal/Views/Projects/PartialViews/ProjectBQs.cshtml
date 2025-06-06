@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.ProjectBQLines>
+
+
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: #183424; color: white">
+            <tr>
+                <th>Project Code</th>
+                <th>Entry No</th>
+                <th>Line Type</th>
+                <th>Section</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>UOM</th>
+                <th>Unit Price</th>
+                <th>Line Amount</th>
+                <th>Total Valued Qty</th>
+                <th>Total Valued Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Section)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UOM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_valued_Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_valued_Amount)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

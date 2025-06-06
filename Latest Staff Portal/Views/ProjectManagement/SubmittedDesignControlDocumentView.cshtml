@@ -1,0 +1,810 @@
+﻿@* Bootstrap CSS *@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@* Bootstrap Bundle JS (includes Popper.js) *@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+@model Latest_Staff_Portal.ViewModel.PreliminaryDesignControl
+
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    hr {
+        margin: 4px;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+
+    .accordion-button {
+        font-size: 18px;
+        padding: 12px;
+        background-color: #fff;
+        color: #000;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="SubmittedDesignControlLink();">Submitted Design Control List</a></li>
+                <li class="breadcrumb-item active">Submitted Design Control Document (@Model.No)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr />
+<br />
+
+
+<div class="card">
+    <div class="card-header">
+        <h4> Submitted Design Control Document</h4>
+        <div style="text-align:right; margin-bottom: 20px">
+            @{
+
+                if (Model.Status == "Open")
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendDesignForApproval('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Send For Approval
+                    </button>
+                }
+
+                if (Model.Design_Status == "New")
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitFinalDesign('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Submit
+                    </button>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Code", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Project_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Type", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Start Date", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("End Date", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Admin Unit", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Global_Dimension_2_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Global_Dimension_2_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Geographic Location Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Geographic_Location_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Geographic_Location_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Total Estimated Cost", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Total_Estimated_Cost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Total_Estimated_Cost, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Classifications", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Project_Classifications, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Classifications, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Created By", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Created_By, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Created_By, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Employee No", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Employee_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Employee_No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Employee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Employee_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Rejection Comments", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Rejection_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Rejection_Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Deferal Comments", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Deferal_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Deferal_Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="row mb-5 mt-2">
+                <div class="col-md-12">
+                    <hr /><br />
+                    <h4>Design Approval Sequence</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Current Actioning Member", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                        @Html.EditorFor(model => model.Current_Actioning_Member, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                        @Html.ValidationMessageFor(model => model.Current_Actioning_Member, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Design Approval Stage", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                        @Html.DropDownListFor(
+                            model => model.Design_Approval_Stage,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem { Text = "Architectural", Value = "Architectural" },
+                                new SelectListItem { Text = "Structural  and Civil Engineering", Value = "Structural  and Civil Engineering" },
+                                new SelectListItem { Text = "Mechanical Engineering", Value = "Mechanical Engineering" },
+                                new SelectListItem { Text = "Electrical Engineering", Value = "Electrical Engineering" },
+                                new SelectListItem { Text = "ICT", Value = "ICT" },
+                                new SelectListItem { Text = "Quantity Surveying", Value = "Quantity Surveying" }
+                            }, "Value", "Text", Model.Design_Approval_Stage),
+                            new { @class = "form-control" }
+                        )
+
+                        @Html.ValidationMessageFor(model => model.Design_Approval_Stage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <hr />
+                    @{
+                        <div align="center" id="DivUpdateButton">
+                            <input type="button" class="btn btn-primary waves-effect waves-light" value="Update Header" onclick="UpdatePreliminaryDesignHeader();" />
+                        </div>
+                    }
+                    <hr style="border:1px solid black" />
+                    <br />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="accordion" id="accordionExample">
+            <!-- Accordion Item 1- Grand Summary Bill Of Quantities -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Grand Summary Bill Of Quantities
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+
+                            <div id="divGrandSummaryBOQ"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 2- Team Member BOQs -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Team Member BOQs
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div id="divTeamMembersBOQ"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Accordion Item 3- Conceipt Note Details -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Conceipt Note Details
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div id="divConceiptAnalysisForm"></div>
+                            <div class="col-md-12 text-center mt-3" id="EnableUpdateConceiptAnalysis">
+                                <input type="button" class="btn btn-primary waves-effect waves-light" value="Enable Editing" onclick="EnableUpdateConceiptAnalysis();" />
+                            </div>
+                            <div class="col-md-12 text-center mt-3" id="UpdateConceiptAnalysis" hidden>
+                                <input type="button" class="btn btn-primary waves-effect waves-light" value="Submit" onclick="UpdateConceiptAnalysis();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Line</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitUpdatedSummaryBOQLine();">Submit</button>
+                <button type="button" class="btn btn-danger waves-effect " data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="myModal2" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Member BOQ Line</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody2">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitUpdatedTeamMemberBQLine();">Submit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        LoadGrandSummaryBOQ(`@Model.No`);
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+            Swal.fire('Success', Successmsg, 'success', true);
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullibySessions"
+            });
+        }
+    });
+
+
+    var LoadGrandSummaryBOQ = function (No) {
+        ShowProgress();
+        var status = `@Model.Status`;
+
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No, status: status }),
+            url: "/ProjectManagement/GrandSummaryBOQLines",
+            success: function (data) {
+                $("#divGrandSummaryBOQ").html(data);
+                LoadTeamMembersBOQ(`@Model.No`);
+                LoadConceiptAnalysisForm(`@Model.No`);
+            },
+            error: function () {
+                LoadTeamMembersBOQ(`@Model.No`);
+                LoadConceiptAnalysisForm(`@Model.No`);
+
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var LoadTeamMembersBOQ = function (No) {
+
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ Design_Code: No }),
+            url: "/ProjectManagement/TeamMembersBOQLines",
+            success: function (data) {
+                $("#divTeamMembersBOQ").html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var LoadConceiptAnalysisForm = function (No) {
+
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No }),
+            url: "/ProjectManagement/ConceiptAnalysisForm",
+            success: function (data) {
+                $("#divConceiptAnalysisForm").html(data);
+                HideProgress();
+            },
+            error: function () {
+
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    var EditGrandSummaryBOQ = function (Header_No, Line_No, Description, Quantity, Unit_Cost, Total_Cost) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/EditGrandSummaryBOQLine',
+            data: { Header_No, Line_No, Description, Quantity, Unit_Cost, Total_Cost },
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function SubmitUpdatedSummaryBOQLine() {
+        var isValid = true;
+
+        // Collect data from the form
+        var Header_No = `@Model.No`;
+        var Line_No = $("#Line_No").val();
+         var Description = $("#Description").val();
+         var Quantity = $("#Quantity").val();
+         var Unit_Cost = $("#Unit_Cost").val();
+         var Total_Cost = $("#Total_Cost").val();
+
+         // Validation checks
+         if (!Description) {
+             Swal.fire('Warning', 'Enter Description.', 'warning');
+             isValid = false;
+         }
+         if (!Quantity) {
+             Swal.fire('Warning', 'Enter Quantity.', 'warning');
+             isValid = false;
+         }
+         if (!Unit_Cost) {
+             Swal.fire('Warning', 'Enter Unit Cost.', 'warning');
+             isValid = false;
+         }
+         if (!Total_Cost) {
+             Swal.fire('Warning', 'Enter Total Cost.', 'warning');
+             isValid = false;
+         }
+
+         // Exit if validation fails
+         if (!isValid) {
+            return;
+         }
+
+         // Prepare data object
+        var formData = {
+            Header_No: Header_No,
+            Line_No: Line_No,
+            Description: Description,
+            Quantity: Quantity,
+            Unit_Cost: Unit_Cost,
+            Total_Cost: Total_Cost
+         };
+
+         // Show progress indicator
+         ShowProgress();
+         $.ajax({
+             type: "POST",
+             url: "/ProjectManagement/SubmitUpdatedSummaryBOQLine",
+             data: JSON.stringify(formData),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (data) {
+                 HideProgress();
+                 if (data.success) {
+                     Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                         ViewDoc(data.message);
+                         /*windows.location.reload();*/
+                     });
+                 } else {
+                     Swal.fire('Warning', data.message, 'warning');
+                 }
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+             }
+         });
+     }
+
+    var EditTeamMemberBQLine = function (Design_Code, Member_No, Entry_No, Design_Stage, Description, quantity, Unit_Price, Total_Amount) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/EditTeamMemberBOQLine',
+            data: {
+                Design_Code, Member_No, Entry_No, Design_Stage, Description, quantity, Unit_Price, Total_Amount
+            },
+            success: function (data) {
+                $("#modalBody2").html(data);
+                HideProgress();
+                $("#myModal2").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    function SubmitUpdatedTeamMemberBQLine() {
+       var isValid = true;
+
+       // Collect data from the form
+        var Design_Code = `@Model.No`;
+        var Member_No = $("#Member_No").val();
+        var Entry_No = $("#Entry_No").val();
+        var Design_Stage = $("#Design_Stage").val();
+        var Description = $("#Description").val();
+        var quantity = $("#quantity").val();
+        var Unit_Price = $("#Unit_Price").val();
+        var Total_Amount = $("#Total_Amount").val();
+
+        // Validation checks
+
+
+        if (!Design_Stage) {
+            Swal.fire('Warning', 'Select Design Stage.', 'warning');
+            isValid = false;
+        }
+       if (!Description) {
+           Swal.fire('Warning', 'Enter Description.', 'warning');
+           isValid = false;
+       }
+       if (!quantity) {
+           Swal.fire('Warning', 'Enter Quantity.', 'warning');
+           isValid = false;
+       }
+        if (!Unit_Price) {
+           Swal.fire('Warning', 'Enter Unit Price.', 'warning');
+           isValid = false;
+       }
+
+
+       // Exit if validation fails
+       if (!isValid) {
+       return;
+       }
+
+       // Prepare data object
+        var formData = {
+            Design_Code: Design_Code,
+            Member_No: Member_No,
+            Entry_No: Entry_No,
+            Design_Stage: Design_Stage,
+            Description: Description,
+            quantity: quantity,
+            Unit_Price: Unit_Price
+
+       };
+
+       // Show progress indicator
+       ShowProgress();
+       $.ajax({
+           type: "POST",
+           url: "/ProjectManagement/SubmitUpdatedTeamMemberBOQLine",
+           data: JSON.stringify(formData),
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           success: function (data) {
+               HideProgress();
+               if (data.success) {
+                   Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                       ViewDoc(data.message);
+                       /*windows.location.reload();*/
+                   });
+               } else {
+                   Swal.fire('Warning', data.message, 'warning');
+               }
+           },
+           error: function (err) {
+               HideProgress();
+               Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+           }
+       });
+   }
+
+    var AddSummaryBOQLine = function () {
+        var Project_No = '@Model.No';
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "GET",
+            dataType: "html",
+            url: '/ProjectManagement/NewSummaryBOQLine',
+            data: {
+                Project_No, Project_No
+            },
+            success: function (data) {
+                $("#modalBody").html(data);
+                HideProgress();
+                $("#myModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText, 'warning');
+            }
+        });
+    }
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/ProjectManagement/fINALDesignControlDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+    // Function to enable editing
+    function EnableUpdateConceiptAnalysis() {
+        $("#EnableUpdateConceiptAnalysis").hide();
+        $("#UpdateConceiptAnalysis").removeAttr("hidden");
+        var inputFields = document.querySelectorAll('.form-control');
+        inputFields.forEach(function (inputElement) {
+            inputElement.removeAttribute("readonly");
+            inputElement.style.backgroundColor = "white";
+        });
+    }
+
+
+    function UpdateConceiptAnalysis() {
+        var isValid = true;
+
+         // Collect data from the form
+        var Project_No = `@Model.No`;
+        var situationAnalysis = $("#situationAnalysis").val();
+        var relevance = $("#relevance").val();
+        var projectScope = $("#projectScope").val();
+        var logicalFramework = $("#logicalFramework").val();
+        var goal = $("#goal").val();
+        var objectives = $("#objectives").val();
+        var projectOutput = $("#projectOutput").val();
+        var activitiesInput = $("#activitiesInput").val();
+
+        var InstitutionalMandate = $("#InstitutionalMandate").val();
+        var ProjectManagement = $("#ProjectManagement").val();
+        var Monitoring = $("#Monitoring").val();
+        var Risk = $("#Risk").val();
+        var ProjectSustainability = $("#ProjectSustainability").val();
+        var ProjectStakeholders = $("#ProjectStakeholders").val();
+        var ProjectReadiness = $("#ProjectReadiness").val();
+
+
+
+        // Validation checks
+        if (!situationAnalysis) {
+            Swal.fire('Warning', 'Enter Situation Analysis.', 'warning');
+            isValid = false;
+        }
+
+        // Exit if validation fails
+        if (!isValid) {
+            return;
+        }
+
+        // Prepare data object
+        var formData = {
+
+            Project_No: Project_No,
+            situationAnalysis: situationAnalysis,
+            relevance: relevance,
+            projectScope: projectScope,
+            logicalFramework: logicalFramework,
+            goal: goal,
+            objectives: objectives,
+            projectOutput: projectOutput,
+            activitiesInput: activitiesInput,
+
+            InstitutionalMandate: InstitutionalMandate,
+            ProjectManagement: ProjectManagement,
+            Monitoring: Monitoring,
+            Risk: Risk,
+            ProjectSustainability: ProjectSustainability,
+            ProjectStakeholders: ProjectStakeholders,
+            ProjectReadiness: ProjectReadiness
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/UpdateConceiptAnalysis",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record submitted successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                       // windows.location.reload()
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+
+
+
+
+    }
+
+    function SendDesignForApproval() {
+        var Project_No = '@Html.Raw(Model.No)'; // Ensure Razor resolves correctly
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            url: '/ProjectManagement/SendDesignForApproval',
+            data: JSON.stringify({ Project_No: Project_No }),
+            contentType: "application/json; charset=utf-8", // Specify JSON content type
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                Swal.fire('Success', 'Design sent for approval successfully.', 'success');
+                ViewDoc(data.message)
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText || 'An error occurred.', 'warning');
+            }
+        });
+    }
+
+    function SubmitFinalDesign() {
+         var Project_No = '@Html.Raw(Model.No)';
+         ShowProgress();
+         $.ajax({
+             async: true,
+             type: "POST",
+             url: '/ProjectManagement/SubmitFinalDesign',
+             data: JSON.stringify({ Project_No: Project_No }),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (data) {
+                 HideProgress();
+                 Swal.fire('Success', 'Design submitted successfully.', 'success');
+                 ViewDoc(data.message)
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText || 'An error occurred.', 'warning');
+             }
+         });
+    }
+
+</script>
+
+

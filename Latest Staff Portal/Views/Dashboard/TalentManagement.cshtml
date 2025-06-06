@@ -1,0 +1,108 @@
+﻿@model Latest_Staff_Portal.ViewModel.TalentManagementCard
+
+@{
+    ViewBag.Title = "Talent Management View";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/Dashboard">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Talent Management</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row" style="padding: 2px">
+            <div class="col-md-6">
+                <label class="font-weight-bold" style="font-size: 12px;">Document No</label>
+                @Html.TextBox("No", Model.No, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "No" })
+            </div>
+            <div class="col-md-6">
+                <label class="font-weight-bold" style="font-size: 12px;">Full Name</label>
+                @Html.TextBox("FirstName", Model.Fullname, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "FirstName" })
+            </div>
+        </div>
+
+        <div class="row" style="padding: 2px">
+            <div class="col-md-6">
+                <label class="font-weight-bold" style="font-size: 12px;">Talent 9 Box Code</label>
+                @Html.TextBox("Talent9BoxCode", Model.Talent9BoxCode, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "Talent9BoxCode" })
+            </div>
+            <div class="col-md-6">
+                <label class="font-weight-bold" style="font-size: 12px;">Potential Level</label>
+                @Html.TextBox("PotentialLevel", Model.PotentialLevel, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "PotentialLevel" })
+            </div>
+        </div>
+
+        <div class="row" style="padding: 2px">
+            <div class="col-md-6">
+                <label class="font-weight-bold" style="font-size: 12px;">Performance Level</label>
+                @Html.TextBox("PerformanceLevel", Model.PerformanceLevel, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "PerformanceLevel" })
+            </div>
+        </div>
+    </div>
+
+    <hr style="border:1px solid black"/>
+    <b>Employee Qualification</b>
+    <div id="divEmployeeQualification"></div>
+    <br/>
+    <hr style="border:1px solid black"/>
+    <b>
+        Training History
+    </b>
+    <div id="divTrainingHistory"></div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadEmployeeQualification();
+        LoadTrainingHistory();
+
+        var successMsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (successMsg) {
+            Swal.fire('Success', successMsg, 'success');
+            $.ajax({
+                type: "POST",
+                url: "/Common/NullifySessions"
+            });
+        }
+    });
+
+    function LoadEmployeeQualification() {
+        $.ajax({
+            url: "/Dashboard/EmployeeQualification",
+            type: 'GET',
+            dataType: 'html',
+            success: function(response) {
+                $('#divEmployeeQualification').html(response);
+                
+            },
+            error: function(xhr, status, error) {
+                $('#divEmployeeQualification').html('<p>An error has occurred: ' + error + '</p>');
+            }
+        });
+    }
+    function LoadTrainingHistory() {
+        $.ajax({
+            url: "/Dashboard/TrainingHistory",
+            type: 'GET',
+            dataType: 'html',
+            success: function (response) {
+                $('#divTrainingHistory').html(response);
+
+            },
+            error: function (xhr, status, error) {
+                $('#divEmployeeQualification').html('<p>An error has occurred: ' + error + '</p>');
+            }
+        });
+    }
+</script>

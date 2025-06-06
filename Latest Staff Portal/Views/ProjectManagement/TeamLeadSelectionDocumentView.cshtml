@@ -1,0 +1,493 @@
+﻿@model Latest_Staff_Portal.ViewModel.TeamLeadSelections
+
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    
+}
+<style>
+    thead {
+        background-color: black;
+        color: white;
+    }
+
+    hr {
+        margin: 4px;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="TeamSelectionLink();">Team Lead Selection</a></li>
+                <li class="breadcrumb-item active">Team Lead Selection Document (@Model.No)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr />
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <h4>Team Lead Selection Document</h4>
+        <div style="text-align:right; margin-bottom: 20px">
+            @{
+                if (!@Model.Sent_to_team_Leads && Model.isManager)
+                {
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendForSelection('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Send For Team Selection
+                    </button>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("User Request No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.User_Request_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.User_Request_No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Administrative Unit", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Administrative_Unit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Administrative_Unit, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Committee Chair", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Committee_Chair, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Committee_Chair, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Chair Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Chair_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Chair_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Date of Meeting", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Date_of_Meeting, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Date_of_Meeting, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Caseload", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Caseload, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Caseload, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Caseload Category", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Caseload_Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Caseload_Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Code", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Project_Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Project_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Project_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Team Lead", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Team_Lead, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Team_Lead, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Section Lead Area", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Section_Lead_Area, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #dedebd;" } })
+                    @Html.ValidationMessageFor(model => model.Section_Lead_Area, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        @{
+            if (@Model.isManager)
+            {
+                <div align="center" id="DivUpdateButton">
+                    <input type="button" class="btn btn-primary waves-effect waves-light" value="Update Header" onclick="UpdateTeamLeadSelectionHeader();" />
+                </div>
+            }
+        }
+        <div id="DivPurchaseRegLines" style="margin: 10px 20px">
+            <hr style="border:1px solid black" />
+            <b>Project Team Leads</b>
+            <hr />
+            <div id="divTeamLeadsLines"></div>
+            <hr style="border:1px solid black" />
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@*//////////////////////Update header Modal////////////////////////////*@
+<div class="modal fade" id="updateHeader" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Document</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody2">
+                <!-- Content injected here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitUpdatedTeamLeadHeader();">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">New Team Lead</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitTeamLead();">Submit</button>
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        LoadTeamLeadsLines(`@Model.No`, '@Model.isManager', '@Model.Sent_to_team_Leads');
+        var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
+        if (Successmsg != "") {
+             Swal.fire('Success', Successmsg, 'success', true);
+             $.ajax({
+                 type: "POST",
+                 url: "/Common/NullibySessions"
+             });
+        }
+    });
+
+    var LoadTeamLeadsLines = function (No, isManager, Sent_to_team_Leads) {
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No, isManager: isManager, Sent_to_team_Leads: Sent_to_team_Leads }),
+            url: "/ProjectManagement/TeamLeadsLines",
+            success: function (data) {
+                $("#divTeamLeadsLines").html(data);
+                HideProgress();
+                //GetDocumentAttachments();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    function TeamSelectionLink() {
+        window.location.href = "TeamLeadSelection";
+    }
+
+    function UpdateTeamLeadSelectionHeader() {
+        var Project_No = '@Model.No';
+        var Committee_Chair = '@Model.Committee_Chair';
+        var Caseload = '@Model.Caseload';
+        var Date_of_Meeting = '@Model.Date_of_Meeting'
+        var CaseloadCategory='@Model.Caseload_Category'
+        ShowProgress();
+        $.ajax({
+             async: true,
+             type: "GET",
+             dataType: "html",
+            url: '/ProjectManagement/UpdateTeamLeadSelectionHeader',
+             data: {
+                 Project_No, Committee_Chair, Caseload, Date_of_Meeting, CaseloadCategory
+             },
+             success: function (data) {
+                 $("#modalBody2").html(data);
+                 HideProgress();
+                 $("#updateHeader").modal("show");
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText, 'warning');
+             }
+        });
+    }
+
+    function SubmitUpdatedTeamLeadHeader() {
+        var isValid = true;
+
+        // Collect data from the form
+        var No = $("#No").val();
+        var Committee_Chair = $("#committeeChair").val();
+        var Date_of_Meeting = $("#dateOfMeeting").val();
+        var Caseload = $("#caseload").val();
+        var Caseload_Category = $("#CaseloadCategory").val();
+
+        // Validation checks
+        if (!Committee_Chair) {
+            Swal.fire('Warning', 'Select Committee Chair.', 'warning');
+            isValid = false;
+        }
+
+        if (!Date_of_Meeting) {
+            Swal.fire('Warning', 'Select Date of Meeting.', 'warning');
+            isValid = false;
+        }
+
+        if (!Caseload) {
+            Swal.fire('Warning', 'Enter Caseload.', 'warning');
+            isValid = false;
+        }
+
+        if (!Caseload_Category) {
+            Swal.fire('Warning', 'Enter Caseload Category.', 'warning');
+            isValid = false;
+        }
+
+        // Exit if validation fails
+        if (!isValid) {
+        return;
+        }
+
+        // Prepare data object
+        var updatedTeamLeadHeader = {
+            No: No,
+            Committee_Chair: Committee_Chair,
+            Date_of_Meeting: Date_of_Meeting,
+            Caseload: Caseload,
+            Caseload_Category: Caseload_Category
+        };
+
+        // Show progress indicator
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/SubmitUpdatedTeamLeadHeader",
+            data: JSON.stringify(updatedTeamLeadHeader),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+            HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record updated successfully.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                  Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+    }
+
+    function SendForSelection() {
+        var No = '@Model.No';
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/ProjectManagement/SendForSelection",
+            data: JSON.stringify({ No: No }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', 'Record successfully sent for selection.', 'success').then(() => {
+                        ViewDoc(data.message);
+                        /*windows.location.reload();*/
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+            }
+        });
+    }
+
+    var AddTeamLead = function () {
+
+        var Project_No = '@Model.No';
+
+        ShowProgress();
+
+        $.ajax({
+             async: true,
+             type: "GET",
+             dataType: "html",
+             url: '/ProjectManagement/NewTeamLead',
+             data: {
+                 Project_No, Project_No
+             },
+             success: function (data) {
+                 $("#modalBody").html(data);
+                 HideProgress();
+                 $("#myModal").modal("show");
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText, 'warning');
+             }
+        });
+    }
+
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/ProjectManagement/TeamLeadSelectionDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+    function SubmitTeamLead() {
+      var isValid = true;
+
+      // Collect data from the form
+      var Project_No = `@Model.No`;
+      var Resource = $("#resource").val();
+      var Specialty = $("#specialty").val();
+
+      // Validation checks
+       if (!Resource) {
+      Swal.fire('Warning', 'Select Resource.', 'warning');
+      isValid = false;
+       }
+
+       // Validation checks
+       if (!Specialty) {
+           Swal.fire('Warning', 'Select Speciality.', 'warning');
+           isValid = false;
+       }
+
+      // Exit if validation fails
+      if (!isValid) {
+      return;
+      }
+
+      // Prepare data object
+       var newTeamLead = {
+          Project_No: Project_No,
+          Resource_No: Resource,
+          Specialty: Specialty,
+
+      };
+
+      // Show progress indicator
+      ShowProgress();
+          $.ajax({
+          type: "POST",
+          url: "/ProjectManagement/SubmitTeamLead",
+          data: JSON.stringify(newTeamLead),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function (data) {
+              HideProgress();
+              if (data.success) {
+                  Swal.fire('Success', 'Team Lead line submitted successfully.', 'success').then(() => {
+                      ViewDoc(data.message);
+                      /*windows.location.reload();*/
+                  });
+              } else {
+                Swal.fire('Warning', data.message, 'warning');
+              }
+          },
+          error: function (err) {
+              HideProgress();
+              Swal.fire('Error', 'An error occurred while submitting the request.', 'error');
+          }
+      });
+  }
+
+</script>
+

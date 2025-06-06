@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.GrandSummaryBOQLines>
+@{
+    var status = ViewBag.Status;
+    var Design_Approval_Stage = ViewBag.Design_Approval_Stage;
+}
+
+<div class="table-responsive">
+    <table id="teamLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: black; color: white;">
+            <tr>
+               
+                <th>Header No</th>
+                <th>Line No</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                @* <th>Unit of Measure</th>*@
+                <th>Unit Cost</th>
+                <th>Total Cost</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                  
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Header_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    @*  <td>
+                            @Html.DisplayFor(modelItem => item.Unit_of_Measure)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_Cost)
+                    </td>
+                    <td>
+                        @{
+                            if (@Design_Approval_Stage == "Quantity Surveying")
+                            {
+                                <button class="btn btn-success  btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"
+                                        onclick="EditGrandSummaryBOQ('@item.Header_No','@item.Line_No','@item.Description','@item.Quantity','@item.Unit_Cost','@item.Total_Cost' ) ">
+                                    Edit Line
+                                </button>
+                            }
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    if (@Design_Approval_Stage == "Quantity Surveying")
+    {
+        <div style="text-align:right; margin-top: 10px">
+            <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddSummaryBOQLine();">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Add Line
+            </button>
+        </div>
+    }
+}
+
+<script>
+    $("#teamLines").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });
+</script>

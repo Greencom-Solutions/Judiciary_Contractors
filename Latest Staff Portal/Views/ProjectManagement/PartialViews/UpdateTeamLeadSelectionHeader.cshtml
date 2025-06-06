@@ -1,0 +1,142 @@
+﻿@model Latest_Staff_Portal.ViewModel.TeamLeadSelections
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("No", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: #ccc", @id = "No" } })
+            @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @* <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.User_Request_No, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.User_Request_No, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User_Request_No, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Administrative_Unit, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Administrative_Unit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Administrative_Unit, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Committee Chair", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(m => m.Committee_Chair, Model.ListOfEmployees, "--Select Option--", new { @class = "form-control select2", @id = "Committee_Chair" })
+            @Html.ValidationMessageFor(model => model.Committee_Chair, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*  <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Chair_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Chair_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Chair_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Date of Meeting", htmlAttributes: new { @class = "control-label col-md-2" })
+            <input type="text" class="form-control" placeholder="dd/mm/yyyy" id="Date_of_Meeting" onkeydown="return false;" autocomplete="off" />
+
+            @Html.ValidationMessageFor(model => model.Date_of_Meeting, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Caseload", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Caseload, new { htmlAttributes = new { @class = "form-control", @id = "Caseload" } })
+            @Html.ValidationMessageFor(model => model.Caseload, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Caseload Category", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Caseload_Category, new { htmlAttributes = new { @class = "form-control", @id = "CaseloadCategory" } })
+            @Html.ValidationMessageFor(model => model.Caseload_Category, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @* <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project_Code, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Project_Code, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Project_Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Project_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Project_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Team_Lead, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Team_Lead, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Team_Lead, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Section_Lead_Area, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Section_Lead_Area, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Section_Lead_Area, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    *@
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#Committee_Chair').select2({
+            width: '100%'
+        });
+        // Initialize datepickers
+        $('#Date_of_Meeting, #ToDate, #GradDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            autoclose: true,
+            yearRange: '-1:+2',
+            showOtherMonths: true,
+            dateFormat: 'dd/mm/yy'
+        });
+
+        // Adjust the position of the datepicker for both fields
+        $('#Date_of_Meeting, #ToDate, #GradDate').focus(function () {
+            $("#ui-datepicker-div").position({
+                my: "left top",
+                at: "left bottom",
+                of: $(this)
+            });
+        });
+
+        /*  // Set default value to today's date
+          var today = new Date();
+          var day = ("0" + today.getDate()).slice(-2);
+          var month = ("0" + (today.getMonth() + 1)).slice(-2);
+          var todayFormatted = day + "/" + month + "/" + today.getFullYear();
+          $('#RequestDate, #TripStartDate, #TripExpectedEndDate, #ActivityDate, #DeadlineforImprestReturn').val(todayFormatted);*/
+    });
+
+
+</script>
+

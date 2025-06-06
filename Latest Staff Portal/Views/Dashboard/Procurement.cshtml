@@ -1,0 +1,270 @@
+﻿@using System.Diagnostics
+@using Latest_Staff_Portal.ViewModel
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    string imgSrc = "", gender = "", Name = "";
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                widget.style.display = (widget.style.display === "none") ? "block" : "none";
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+</script>
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#" onclick="DashBoardLink();">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Procurement</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tab-container">
+    <div class="row">
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractAdmin');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Contract Administration</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="contractAdmin" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="ContractRequisitionLink();"><i class="fas fa-file-alt"></i> Contract Administration</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('purchasesWidgets');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Purchases</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="purchasesWidgets" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="PurchaseRequisitionPendingApprovalLink();"><i class="fas fa-file-signature"></i> Purchase Requisition Pending Approval</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="ApprovedPurchaseRequisitionLink();"><i class="fas fa-check-circle"></i> Accepted Purchase Requisition</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="AssignedPurchaseRequisitionLink();"><i class="fas fa-tasks"></i> Assigned Purchase Requisition</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="PurchaseOrderLink();"><i class="fas fa-tasks"></i> Purchase Orders</a>
+                        </li>
+                    @{
+                            var essRole = Session["ESSRoleSetup"] as ESSRoleSetup;
+
+                            if (essRole.Procurement_officer || essRole.HQ_Procurement_Officer) 
+                            {
+                                <li>
+                                    <a href="#" onclick="ArchivedPurchaseOrderLink()"><i class="fa fa-archive"></i> Posted Purchase Order</a>
+                                </li>
+                            }
+                        }
+
+                        <li>
+                            <a href="#" onclick="RequestForQuotationsLink();"><i class="fas fa-handshake"></i> Request For Quotations</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="FrameworkContractLink();"><i class="fas fa-file-contract"></i> Framework Contract</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="DirectProcurementsLink();"><i class="fas fa-shopping-cart"></i> Direct Procurements</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="IFSTenderCommitteeLink();"><i class="fas fa-users-cog"></i> Tender Committee</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="DraftTenderInvitationLink();"><i class="fas fa-envelope-open-text"></i> Tender Invitation</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('procurementPlanWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Procurement Plan</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="procurementPlanWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="FunctionalProcurementPlanLink();"><i class="fas fa-list-alt"></i> Functional Procurement Plan</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="ProcurementPlanAmmendmentsLink();"><i class="fas fa-edit"></i> Procurement Plan Ammendments</a>
+                            
+                        </li>
+                      @*  <li>
+                            <a href="#" onclick="RevisionProcurementPlanLink();"><i class="fas fa-edit"></i> Revision of Procurement Plan</a>
+                        </li>*@
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <br />
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('storeWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Store</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="storeWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="StoreRequisitionLink();"><i class="fas fa-box"></i> Store Requisition</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <br />
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('bidresponse');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">Bid Response Evaluation and Award</h5>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="bidresponse" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="EvaluationTemplateLink();"><i class="fas fa-file-alt"></i> Evaluation Template </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="BidOpeningRegisterLink();"><i class="fas fa-clipboard-list"></i> Bid Opening Register</a>
+                        </li>
+                        <li>
+                            <a href="/BidEvaluation/EvaluationProcess"><i class="fas fa-clipboard-check"></i> Evaluation Process</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="FinalEvaluation();"><i class="fas fa-chart-line"></i> Evaluation Report</a>
+                        </li>
+                        @*<li>
+                                <a href="#" onclick="PremBidEvaluation();"><i class="fas fa-clipboard-check"></i> Preliminary Bid Evaluation</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="TechnicalBidEvaluation();"><i class="fas fa-flask"></i> Technical Bid Evaluation</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="FinanceBidEvaluation();"><i class="fas fa-coins"></i> Financial Bid Evaluation</a>
+                            </li>
+
+                            <li>
+                                <a href="#" onclick="ProfessionalOpinionLink();"><i class="fas fa-gavel"></i> Professional Opinion </a>
+                            </li>*@
+
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <br />
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('postedDocuments');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke"> Posted Documents</h5>
+                            <div class="dash-count">
+                                <h5 class="menu-item-count" style="color:#fff;"></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="postedDocuments" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="PostedPurchaseInvoices();"><i class="fas fa-file-invoice"></i> Posted Purchase Invoices</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.dash-count .menu-item-count');
+            if (!countElement) {
+                var dashCount = parentElement.querySelector('.dash-count');
+                if (dashCount) {
+                    countElement = document.createElement('h3');
+                    countElement.classList.add('menu-item-count');
+                    countElement.style.color = '#fff';
+                    dashCount.appendChild(countElement);
+                }
+            }
+            if (countElement) {
+                countElement.textContent = menuItemCount;
+            }
+        });
+    }
+
+    window.addEventListener('load', function () {
+        updateMenuItemCount();
+    });
+
+    function PurchaseRequisitionPendingApprovalLink() {
+        window.location.href = "/Purchase/PurchaseRequisitionsPendingApproval";
+    }
+</script>

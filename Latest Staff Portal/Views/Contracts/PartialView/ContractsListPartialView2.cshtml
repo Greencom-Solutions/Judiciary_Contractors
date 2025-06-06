@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.Contracts>
+
+@{
+    ViewBag.Title = "ContractsListPartialView";
+}
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Action</th>
+                <th>No</th>
+                <th>Document Date</th>
+                <th>Contract Description</th>
+                <th>Contract Start Date</th>
+                <th>Contract Duration</th>
+                <th>Contract End Date</th>
+                <th>Notice of Award No</th>
+                <th>Awarded Bid No</th>
+                <th>Award Tender Sum (Inc. Taxes)</th>
+                <th>IFS Code</th>
+                <th>Tender Name</th>
+                <th>Contract Type</th>
+                <th>Contract Status</th>
+                <th>Procuring Entity (PE) Name</th>
+                <th>PE Representative</th>
+                <th>Amount</th>
+                <th>Your Reference</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                   <td>
+                       <input type="button" onclick="ViewDoc('@item.No');" style="background: #162f25; color: whitesmoke; border-radius: 10px; border: none; padding: 5px 10px; cursor: pointer;" value="Select" />
+                   </td>
+                    <td>@Html.DisplayFor(modelItem => item.No)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Document_Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_Start_Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_Duration)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_End_Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Notice_of_Award_No)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Awarded_Bid_No)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Award_Tender_Sum_Inc_Taxes)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IFS_Code)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Tender_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_Type)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Contract_Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Procuring_Entity_PE_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PE_Representative)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Your_Reference)</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

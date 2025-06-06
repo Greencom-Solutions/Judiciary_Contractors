@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.TeamMembersBOQLines>
+
+<div class="table-responsive">
+    <table id="TeamMembersBOQLines" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color: black; color: white;">
+            <tr>
+                <th>Design Code</th>
+                <th>Member</th>
+                <th>Entry No</th>
+                <th>Design Stage</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Member_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Entry_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_Stage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total_Amount)
+                    </td>
+                    <td>
+                        <button class="btn btn-success  btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"
+                                onclick="EditTeamMemberBQLine('@item.Design_Code','@item.Member_No','@item.Entry_No', '@item.Design_Stage', '@item.Description' , '@item.quantity', '@item.Unit_Price', '@item.Total_Amount')">
+                            Edit Line
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div style="text-align:right; margin-top: 10px">
+        <button style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="AddTeamMemberBQLine();">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add Line
+        </button>
+    </div>
+</div>
+
+<script>
+    $("#TeamMembersBOQLines").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100]
+    });
+</script>

@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "DesignControl";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<style>
+    .selectedTableRow {
+        background-color: #74788d;
+        color: white;
+    }
+
+    .BtnPadding {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#" onclick="ProjectsLink();">Design Control List</a>
+                </li>
+                <li class="breadcrumb-item active">Design Control</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <hr/>
+    <div id="divList"></div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <label id="labelF"></label>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal Links////////////////////////////*@
+<div class="modal fade" id="myModalLinks" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Actions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyLinks">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/ShowProgression.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+        LoadDesignControl();
+	});
+	var LoadDesignControl = function () {
+		ShowProgress();
+		$.ajax({
+			async: true,
+			type: "GET",
+			dataType: 'HTML',
+			contentType: false,
+			processData: false,
+            url: "/Projects/DesignControlList",
+			success: function (data) {
+				$("#divList").html(data);
+				HideProgress();
+			},
+			error: function () {
+				HideProgress();
+				alert("There is some problem to process your request. Please try after some time");
+			}
+		});
+	}
+	var ViewDoc = function (DocNo) {
+		ShowProgress();
+        window.location = "/Projects/DesignControlDocumentView?DocNo="+DocNo;
+	}
+	var SendDocForApproval = function (DocNo) {
+		ShowProgress();
+		$.ajax({
+			async: true,
+			type: "POST",
+			datatype: "json",
+			data: JSON.stringify({ DocNo: DocNo }),
+			contentType: "application/json; charset = utf-8",
+			processData: false,
+			url: '/Purchase/SendPurchaseAppForApproval',
+			success: function (data) {
+				if (data.success == true) {
+					HideProgress();
+					LoadPurchaseRequisition();
+					$("#myModalLinks").modal("hide");
+					Swal.fire('Success', data.message, 'success');
+				}
+				else {
+					HideProgress();
+					Swal.fire('Error', data.message, 'error');
+				}
+			},
+			error: function (err) {
+				HideProgress();
+				Swal.fire('Warning', err, 'warning');
+			}
+		});
+	}
+</script>

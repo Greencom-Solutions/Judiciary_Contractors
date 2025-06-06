@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.InspectionCommitteeMembers>
+@{
+    var DocNo = ViewBag.DocNo;
+
+}
+
+<div class="table-responsive">
+    <table id="members" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Document No </th>
+                <th>Member No</th>
+                <th>Member Name</th>
+                <th>Title </th>
+                <th>Assesment </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Document_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Member_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Member_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assesment)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*
+<div style="text-align: right">
+    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AddCommitteeMember(`@DocNo`);">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Record
+    </button>
+</div>*@
+
+<script>
+    var table = $("#members").DataTable({
+        lengthChange: true,
+        order: [[1, 'desc']],
+        lengthMenu: [5, 10, 25, 50, 100],
+        "bDestroy": true
+    });
+
+    function AddCommitteeMember(DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Procurement/NewCommitteeMember',
+            success: function (data) {
+                $("#assignEmployeeModalBody").html(data);
+                HideProgress();
+                $("#assignEmployeeModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+</script>

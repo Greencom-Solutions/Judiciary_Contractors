@@ -1,0 +1,73 @@
+﻿@model Latest_Staff_Portal.ViewModel.ProjectProposal
+
+
+<div class="card-body">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Created By:", new { @class = "control-label col-md-12" })
+                @Html.TextBoxFor(m => m.CreatedBy, new { @class = "form-control", @readonly = "readonly", style = "background-color:#dedebd", id = "txtCreatedBy" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Administrative unit Code", new { @class = "control-label col-md-12" })
+                @Html.DropDownListFor(model => model.GlobalDimension2Code, Model.ListOfDim2, "--select Administrative Unit--", new { @class = "form-control", id = "ddlAdministrativeUnitCode", onchange = "GetDimension4Name()" })
+                @Html.ValidationMessageFor(model => model.GlobalDimension2Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Project Name", new { @class = "control-label col-md-12" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "txtProjectName" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Description", new { @class = "control-label col-md-12" })
+                <textarea class="form-control" id="txtDescription"></textarea>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Justification", new { @class = "control-label col-md-12" })
+                <textarea class="form-control" id="txtJustification"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<hr style="border:1px solid black"/>
+<div align="center">
+    <input type="button" class="btn btn-primary waves-effect waves-light" value="Submit" onclick="SubmitProjectProposal();"/>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#txtFromDate, #txtToDate').datepicker({
+			changeMonth: true,
+			changeYear: true,
+			autoclose: true,
+			yearRange: '-1:+2',
+			showOtherMonths: true,
+			dateFormat: 'dd/mm/yy'
+		});
+		$('#txtFromDate, #txtToDate').focus(function () {
+			$("#ui-datepicker-div").position({
+				my: "left top",
+				at: "left bottom",
+				of: $(this)
+			});
+		});
+		$("#ddlPlanningCategory, #ddlCorporateStrategicPlan, #ddlFinancialBudget, #ddlGeographicalLocation, #ddlAdministrativeUnitCode, #ddlVote, #ddlYearCode").select2({
+			width: '100%'
+		});
+	});
+</script>

@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.PaymentRequestLines>
+
+<style>
+    #datatable-buttons th, #datatable-buttons td {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+</style>
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table dt-responsive nowrap"
+           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr >
+                <th>Header No</th>
+                <th>Line No</th>
+                <th>Request Description</th>
+                <th>Section</th>
+                <th>Assistant Director</th>
+                <th>Assistant Director Name</th>
+                <th>Assigned Team Member</th>
+                <th>Resource Name</th>
+                <th>Status</th>
+                <th>Date Submitted</th>
+                <th>Deadline</th>
+                <th>No of Attachments</th>
+                <th>Comments</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Header_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Line_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Request_Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Section)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assistant_Director)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assistant_Director_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assigned_Team_Member)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resource_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_Submitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No_of_Attachments)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comments)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

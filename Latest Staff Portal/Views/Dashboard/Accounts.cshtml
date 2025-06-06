@@ -1,0 +1,854 @@
+﻿@using Latest_Staff_Portal.ViewModel
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="Dashboard/Dashboard">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Accounts</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="row pt-3 pb-3 pl-3 pr-1" style="background-color: rgb(255, 255, 255); border-radius: 10px;">
+    @{
+        var essRole = Session["ESSRoleSetup"] as ESSRoleSetup;
+
+        if (essRole.HQ_Accountant || essRole.Station_Accountant)
+        {
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('revenueManagementWidget');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Revenue Management</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="revenueManagementWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="RevenueReceiptLink();"><i class="fas fa-receipt"></i> Revenue Receipts</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="UtilizationReceiptLink();"><i class="fas fa-receipt"></i> Utilization/Forfeiture Receipts</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('depositManagementWidget');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Deposits</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="depositManagementWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="DepositReceiptsLink();"><i class="fas fa-receipt"></i> Deposit Receipts</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="UtilizationLink();"><i class="fas fa-vote-yea"></i> Utilization Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ForfeitureLink();"><i class="fas fa-vote-yea"></i> Forfeiture Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="RefundLink();"><i class="fas fa-vote-yea"></i> Full Refund Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="CourtCollection();"><i class="fa fa-paper-plane-o"></i> Court Collection Vouchers</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('paymentProcessingWidget');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Payment Processing</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="paymentProcessingWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="DepositsLink();"><i class="fas fa-check-circle"></i> Deposit Invoices</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="EftLink();"><i class="fas fa-check-circle"></i> EFTs</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="SubmittedPurchaseOder();"><i class="fas fa-check-circle"></i> Purchase Order</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PurchaseInvoice();"><i class="fas fa-check-circle"></i> Purchase Invoice</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PvLink();"><i class="fas fa-check-circle"></i> Payment Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="TPvLink();"><i class="fas fa-check-circle"></i> Tax Payment Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="Retention();"><i class="fas fa-check-circle"></i> Retention Vouchers</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ReceiptsLink();"><i class="fas fa-check-circle"></i> Receipts</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('reportsWidget');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Reports</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="reportsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="VoteBook();"><i class="fas fa-cogs"></i>Vote Book</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="Commitment();"><i class="fas fa-cogs"></i>Commitment Report</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('cashManagemant');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Cash Management</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="cashManagemant" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="BankStatement();"><i class="fas fa-cogs"></i>Bank Statements</a>
+                            </li>
+
+
+                            <li>
+                                <a href="#" onclick="BankAccountsLink();"><i class="fas fa-cogs"></i>Bank Ledger Entries</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('PowerBiWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">PowerBi Reports</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="PowerBiWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    @*  <li><a href="#" onclick="PowerBiLink();"><i class="fas fa-file-invoice"></i> Deposits Visualisations</a></li>*@
+
+                    <li>
+                        <a href="#" onclick="AlltimeDepositLink();"><i class="fas fa-cogs"></i>Management Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="Sharepoint();"><i class="fas fa-cogs"></i>EDMS</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="AllReportsLink();"><i class="fas fa-cogs"></i>Accounts Reports</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('imprestWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Imprest Processing</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="imprestWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li>
+                        <a href="#" onclick="ImprestMemoLink();"><i class="fas fa-file-alt"></i> Approved Imprest Memos</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ImprestWarrantiesLink();"><i class="fas fa-certificate"></i> Safari Imprest Warrant/s</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="StandingImprestLink();"><i class="fas fa-hand-holding-usd"></i> Standing Imprest Warrant/s</a>
+                    </li>
+                    @* <li> *@
+                    @*     <a href="#" onclick="SpecialImprestLink();"><i class="fas fa-certificate"></i> Special Imprest Warrant/s</a> *@
+                    @* </li> *@
+                    <li>
+                        <a href="#" onclick="ImprestSurrenderLink();"><i class="fas fa-check-circle"></i> Imprest Surrender</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4" style="border-right: 12px solid white;">
+        <br />
+        <div class="row">
+            <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('staffClaimsWidget');">
+                <a href="#">
+                    <div class="dash-widget-header">
+                        <h5 style="color:whitesmoke">Staff Claims</h5>
+                        <div class="dash-count">
+                            <h5 class="menu-item-count" style="color:#fff;"></h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="staffClaimsWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                <ul class="widget-list">
+                    <li>
+                        <a href="#" onclick="StaffClaimsLink();"><i class="fas fa-file-invoice"></i> Personal Staff Claims</a>
+                    </li>
+                </ul>
+                @{
+
+                    if (essRole.Station_Accountant)
+                    {
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="OpenStaffClaimsLink();"><i class="fas fa-file-invoice"></i> Open Staff Claims</a>
+                            </li>
+                        </ul>
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="PendingStaffClaimsLink();"><i class="fas fa-file-invoice"></i> Staff Claims Pending Approval</a>
+                            </li>
+                        </ul>
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="ReleasedStaffClaimsLink();"><i class="fas fa-file-invoice"></i> Released Staff Claims</a>
+                            </li>
+                        </ul>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    @{
+        if (essRole.Station_Accountant || essRole.HQ_Accountant)
+        {
+            <div class="col-md-4" style="border-right: 12px solid white;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('postedDocuments');">
+                        <a href="#">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke"> Posted Documents</h5>
+                                <div class="dash-count">
+                                    <h5 class="menu-item-count" style="color:#fff;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="postedDocuments" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                <a href="#" onclick="PostedPurchaseInvoices();"><i class="fas fa-file-invoice"></i> Posted Purchase Invoices</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- Modal for Bank Statement Filter -->
+<div id="selectFilter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Filter Bank Statement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm">
+                    <div class="form-group">
+                        <label for="geographicalLocation">Geographical Location:</label>
+                        <select id="geographicalLocation" name="geographicalLocation" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bankAcc">Bank Account:</label>
+                        <select id="bankAcc" name="bankAcc" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fromDate">From Date:</label>
+                        <input type="date" id="fromDate" name="fromDate" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="toDate">To Date:</label>
+                        <input type="date" id="toDate" name="toDate" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="GenerateBankStatement()">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for displaying the PDF -->
+<div id="myModalUnits" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Bank Statement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe src="" frameborder="0" width="100%" height="600px"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal fade" id="myModalReport" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Vote Book Report</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="budget">Budget</label>
+                        <select class="form-control" id="budget" name="budget"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="class">Class</label>
+                        <select id="class" name="transactionType" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="adminUnit">Admin Unit</label>
+                        <select id="adminUnit" name="adminUnit" class="form-control select2"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="reportType">Report Type</label>
+                        <select id="reportType" name="reportType" class="form-control">
+                            <option value="">--Select Report Type--</option>
+                            <option value="1">Excel</option>
+                            <option value="0">PDF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal fade" id="myModalReportCommit" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Commitment Report</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate2" name="startDate" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate2" name="endDate" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="reportType">Report Type</label>
+                        <select id="reportType2" name="reportType" class="form-control">
+                            <option value="">--Select Report Type--</option>
+                            <option value="1">Excel</option>
+                            <option value="0">PDF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="GenerateCommitment()">Apply Filters</button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal fade" id="myModalSource" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title" id="labelF">Vote Book Report</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="myModalSourceBody">
+                <iframe id="iframe" style="width:100%;height:450px"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*//////////////////////Report Type////////////////////////////*@
+<div class="modal fade" id="myReportTModal" data-toggle="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0">Report Type</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyReportT">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#myModalReport').on('shown.bs.modal', function () {
+            setTimeout(function () {
+                $('.select2').select2({
+                    dropdownParent: $('#myModalReport'),
+                });
+            }, 200);
+        });
+    });
+	function toggleWidget(widgetId) {
+		var widgets = document.querySelectorAll('.widget-content');
+		widgets.forEach(function (widget) {
+			if (widget.id === widgetId) {
+				widget.style.display = widget.style.display === "none" ? "block" : "none";
+			} else {
+				widget.style.display = "none";
+			}
+		});
+	}
+
+	function BankStatement() {
+		$("#geographicalLocation, #bankAcc").select2({
+			width: '100%'
+		});
+		GetGeographicalLocation();
+		GetCashBooks();
+		$('#selectFilter').modal('show');
+	}
+	var GenerateBankStatement = function () {
+		var geographicalLocation = $("#geographicalLocation").val();
+		var bankAcc = $("#bankAcc").val();
+		var fromDate = $("#fromDate").val();
+		var toDate = $("#toDate").val();
+
+		ShowProgress();
+		$.ajax({
+			async: true,
+			type: "POST",
+			datatype: "json",
+			data: JSON.stringify({ geographicalLocation: geographicalLocation, bankAcc: bankAcc, fromDate: fromDate, toDate: toDate }),
+			contentType: "application/json; charset=utf-8",
+			processData: false,
+			url: '/Deposits/GenerateBankStatement',
+			success: function (data) {
+				if (data.success) {
+					$('iframe').attr('src', "data:application/pdf;base64," + data.message);
+					$("#myModalUnits").modal("show");
+					$("#selectFilter").modal("hide");
+					HideProgress();
+
+				} else {
+					Swal.fire('Error', data.message, 'error');
+					HideProgress();
+
+				}
+			},
+			error: function (err) {
+				HideProgress();
+				Swal.fire('Warning', err, 'warning');
+			}
+		});
+	}
+    var VoteBook = function () {
+        GetClassValues();
+        GetBudgets();
+        GetAdminUnits();
+        $("#myModalReport").modal("show");
+    }
+    var Commitment = function () {
+        $("#myModalReportCommit").modal("show");
+    }
+    function GenerateCommitment() {
+        ShowProgress();
+        var startDate = $('#startDate2').val();
+        var endDate = $('#endDate2').val();
+        $("#labelF").text("Commitment Report");
+        $.ajax({
+            url: '/Common/GenerateCommitmentReport',
+            type: 'GET',
+            data: {
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function (response) {
+                if (response.success) {
+                    if (reportType == "1") {
+                        var byteCharacters = atob(response.message);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
+                        var blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = `OutwardPayment.xlsx`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        HideProgress();
+                        $("#myModalReportCommit").modal("hide");
+                    } else {
+                        $("#myModalReportCommit").modal("hide");
+                        $('iframe').attr('src', "data:application/pdf;base64," + response.message);
+                        $("#myModalSource").modal("show");
+                        HideProgress();
+                    }
+                } else {
+                    $("#myModalReportCommit").modal("hide");
+                    HideProgress();
+                    Swal.fire('Warning', response.message, 'warning');
+                }
+            },
+            error: function (error) {
+                Swal.fire('Warning', error, 'warning');
+                HideProgress();
+            }
+        });
+    }
+    function applyFilters() {
+        ShowProgress();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        var reportType = $('#reportType').children("option:selected").val();
+        var budget = $('#budget').children("option:selected").val();
+        var classDim = $('#class').children("option:selected").val();
+        var admin = $('#adminUnit').children("option:selected").val();
+        $.ajax({
+            url: '/Common/GenerateVoteBookReport',
+            type: 'GET',
+            data: {
+                startDate: startDate,
+                endDate: endDate,
+                budget: budget,
+                classDimension: classDim,
+                reportType: reportType,
+                adminUnit: admin
+            },
+            success: function (response) {
+                if (response.success) {
+                    if (reportType == "1") {
+                        var byteCharacters = atob(response.message);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
+                        var blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = `VoteBook.xlsx`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        HideProgress();
+                        $("#myModalReport").modal("hide");
+                    } else {
+                        $("#myModalReport").modal("hide");
+                        $('iframe').attr('src', "data:application/pdf;base64," + response.message);
+                        $("#myModalSource").modal("show");
+                        HideProgress();
+                    }
+                } else {
+                    $("#myModalReport").modal("hide");
+                    HideProgress();
+                    Swal.fire('Warning', response.message, 'warning');
+                }
+            },
+            error: function (error) {
+                Swal.fire('Warning', error, 'warning');
+                HideProgress();
+            }
+        });
+    }
+	function GetCashBooks() {
+		var activityDropdown = document.getElementById('bankAcc');
+		ShowProgress();
+
+		if (activityDropdown) {
+			$.ajax({
+				url: '@Url.Action("GetCashBooks", "Deposits")',
+				type: 'GET',
+				success: function(response) {
+					activityDropdown.innerHTML = '<option value="">-- Select Cash Book --</option>';
+					if (response.success && response.ListOfActivities.length > 0) {
+						$.each(response.ListOfActivities, function(index, item) {
+							var option = document.createElement('option');
+							option.value = item.Value;
+							option.text = item.Text;
+							activityDropdown.add(option);
+						});
+					} else {
+						var option = document.createElement('option');
+						option.text = 'No Cashbook found';
+						option.disabled = true;
+						activityDropdown.add(option);
+					}
+					HideProgress();
+				},
+				error: function (xhr, status, error) {
+					HideProgress();
+				}
+			});
+		} else {
+			activityDropdown.innerHTML = '<option value="">-- Select Cash Book --</option>';
+			HideProgress();
+		}
+	}
+
+	function GetGeographicalLocation() {
+		var activityDropdown = document.getElementById('geographicalLocation');
+		ShowProgress();
+
+		if (activityDropdown) {
+			$.ajax({
+				url: '@Url.Action("DimensionValues", "Deposits")',
+				type: 'GET',
+				success: function(response) {
+					activityDropdown.innerHTML = '<option value="">-- Select Court Station --</option>';
+					if (response.success && response.ListOfActivities.length > 0) {
+						$.each(response.ListOfActivities, function(index, item) {
+							var option = document.createElement('option');
+							option.value = item.Value;
+							option.text = item.Text;
+							activityDropdown.add(option);
+						});
+					} else {
+						var option = document.createElement('option');
+						option.text = 'No Geographical location found';
+						option.disabled = true;
+						activityDropdown.add(option);
+					}
+					HideProgress();
+				},
+				error: function(xhr, status, error) {
+					HideProgress();
+				}
+			});
+		} else {
+			activityDropdown.innerHTML = '<option value="">-- Select Court Station --</option>';
+			HideProgress();
+		}
+	}
+    function GetClassValues() {
+	var activityDropdown = document.getElementById('class');
+
+	if (activityDropdown) {
+		$.ajax({
+			url: '@Url.Action("DimensionValues", "Common")',
+			type: 'GET',
+			success: function(response) {
+				activityDropdown.innerHTML = '<option value="">-- Select Class --</option>';
+				if (response.success && response.ListOfActivities.length > 0) {
+					$.each(response.ListOfActivities, function(index, item) {
+						var option = document.createElement('option');
+						option.value = item.Value;
+						option.text = item.Text;
+						activityDropdown.add(option);
+					});
+				} else {
+					var option = document.createElement('option');
+					option.text = 'No Class Found';
+					option.disabled = true;
+					activityDropdown.add(option);
+				}
+			},
+			error: function(xhr, status, error) {
+			}
+		});
+	} else {
+		activityDropdown.innerHTML = '<option value="">-- Select Court Station --</option>';
+		HideProgress();
+	}
+}
+    function GetAdminUnits() {
+        var activityDropdown = document.getElementById('adminUnit');
+
+	if (activityDropdown) {
+		$.ajax({
+			url: '@Url.Action("GetAdminUnit", "Common")',
+			type: 'GET',
+			success: function(response) {
+				activityDropdown.innerHTML = '<option value="">-- Select Admin Unit --</option>';
+				if (response.success && response.ListOfActivities.length > 0) {
+					$.each(response.ListOfActivities, function(index, item) {
+						var option = document.createElement('option');
+						option.value = item.Value;
+						option.text = item.Text;
+						activityDropdown.add(option);
+					});
+				} else {
+					var option = document.createElement('option');
+					option.text = 'No Admin Unit Found';
+					option.disabled = true;
+					activityDropdown.add(option);
+				}
+			},
+			error: function(xhr, status, error) {
+			}
+		});
+	} else {
+        activityDropdown.innerHTML = '<option value="">-- Select Budget --</option>';
+	}
+}
+    function GetBudgets() {
+	var activityDropdown = document.getElementById('budget');
+
+	if (activityDropdown) {
+		$.ajax({
+			url: '@Url.Action("GetBudgets", "Common")',
+			type: 'GET',
+			success: function(response) {
+				activityDropdown.innerHTML = '<option value="">-- Select Budget --</option>';
+				if (response.success && response.ListOfActivities.length > 0) {
+					$.each(response.ListOfActivities, function(index, item) {
+						var option = document.createElement('option');
+						option.value = item.Value;
+						option.text = item.Text;
+						activityDropdown.add(option);
+					});
+				} else {
+					var option = document.createElement('option');
+					option.text = 'No Budget Found';
+					option.disabled = true;
+					activityDropdown.add(option);
+				}
+			},
+			error: function(xhr, status, error) {
+			}
+		});
+	} else {
+        activityDropdown.innerHTML = '<option value="">-- Select Budget --</option>';
+	}
+}
+	function updateMenuItemCount() {
+		var widgetContents = document.querySelectorAll('.widget-content');
+		widgetContents.forEach(function (widgetContent) {
+			var ulElement = widgetContent.querySelector('ul.widget-list');
+			var menuItemCount = ulElement.getElementsByTagName('li').length;
+			var parentElement = widgetContent.previousElementSibling;
+			var countElement = parentElement.querySelector('.menu-item-count');
+			countElement.innerText = menuItemCount;
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		updateMenuItemCount();
+	});
+</script>

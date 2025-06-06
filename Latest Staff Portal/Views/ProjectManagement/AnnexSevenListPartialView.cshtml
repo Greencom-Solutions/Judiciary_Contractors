@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Latest_Staff_Portal.ViewModel.PreliminaryDesignControl>
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>Action</th>
+                <th>No</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Geographic Location Name</th>
+                <th>Project Classifications</th>
+                @*  <th>Design Status</th>*@
+                <th>Status</th>
+
+                <th>Design Approval Stage</th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="button" onclick="ViewDoc('@item.No');" style="background: #162f25; color: whitesmoke; border-radius: 10px; border: none; padding: 5px 10px; cursor: pointer;" value="Select" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Start_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.End_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Geographic_Location_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project_Classifications)
+                    </td>
+                    @*  <td>
+                            @Html.DisplayFor(modelItem => item.Design_Status)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Design_Approval_Stage)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+
+<script>
+    $("#datatable-buttons").DataTable({
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 100] // Same options for the second table
+    });
+</script>

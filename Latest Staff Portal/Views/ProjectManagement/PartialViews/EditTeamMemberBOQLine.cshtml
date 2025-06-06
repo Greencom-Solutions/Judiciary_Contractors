@@ -1,0 +1,124 @@
+﻿@model Latest_Staff_Portal.ViewModel.TeamMembersBOQLines
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Design Code", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Design_Code, new { htmlAttributes = new { @class = "form-control", @id = "Design_Code", @readonly = "readonly", @style = "background-color: #ccc" } })
+            @Html.ValidationMessageFor(model => model.Design_Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @* <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Member", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                @Html.EditorFor(model => model.Member_No, new { htmlAttributes = new { @class = "form-control", @id = "Member_No" } })
+                @Html.ValidationMessageFor(model => model.Member_No, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Entry No", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Entry_No, new { htmlAttributes = new { @class = "form-control", @id = "Entry_No", @readonly = "readonly", @style = "background-color: #ccc" } })
+            @Html.ValidationMessageFor(model => model.Entry_No, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Design Stage", htmlAttributes: new { @class = "control-label col-md-6" })
+            <select class="form-control" id="Design_Stage" name="Design_Stage">
+                <option value="">Select Option</option>
+                <option value="0">Architectural</option>
+                <option value="1">Structural and Civil Engineering</option>
+                <option value="2">Mechanical Engineering</option>
+                <option value="3">Electrical Engineering</option>
+                <option value="4">ICT</option>
+                <option value="5">Quantity Surveying</option>
+            </select>
+        </div>
+    </div>
+
+    @* <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("Design Stage", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                @Html.DropDownListFor(
+                    model => model.Design_Stage,
+                    new SelectList(
+                        new[] {
+                            new { Value = "0", Text = "Architectural" },
+                            new { Value = "1", Text = "Structural and Civil Engineering" },
+                            new { Value = "2", Text = "Mechanical Engineering" },
+                            new { Value = "3", Text = "Electrical Engineering" },
+                            new { Value = "4", Text = "ICT" },
+                            new { Value = "5", Text = "Quantity Surveying" }
+                        },
+                        "Value", // Field used for the value
+                        "Text",  // Field used for the display
+                        Model.Design_Stage // Selected value
+                    ),
+                    new { @class = "form-control", @id = "Design_Stage" }
+                )
+            </div>
+        </div>*@
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Description", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "Description" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Quantity", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control", @id = "quantity" } })
+            @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Unit Price", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Unit_Price, new { htmlAttributes = new { @class = "form-control", @id = "Unit_Price" } })
+            @Html.ValidationMessageFor(model => model.Unit_Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Total Amount", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control", @id = "Total_Amount", @readonly = "readonly", @style = "background-color: #ccc" } })
+            @Html.ValidationMessageFor(model => model.Total_Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        function calculateTotalCost() {
+            // Get values of Quantity and Unit Cost
+            var quantity = parseFloat($("#quantity").val()) || 0;
+            var unitCost = parseFloat($("#Unit_Price").val()) || 0;
+
+            // Calculate total cost
+            var totalCost = quantity * unitCost;
+
+            // Set the value of Total Cost
+            $("#Total_Amount").val(totalCost.toFixed(2));
+        }
+
+        // Attach event listeners for change/input on Quantity and Unit Cost
+        $("#quantity, #Unit_Price").on("input", function () {
+            calculateTotalCost();
+        });
+    });
+</script>

@@ -1,0 +1,133 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+	function toggleWidget(widgetId) {
+		var widgets = document.querySelectorAll('.widget-content');
+		widgets.forEach(function (widget) {
+			if (widget.id === widgetId) {
+				widget.style.display = widget.style.display === "none" ? "block" : "none";
+			} else {
+				widget.style.display = "none";
+			}
+		});
+	}
+
+
+	function updateMenuItemCount() {
+		var widgetContents = document.querySelectorAll('.widget-content');
+		widgetContents.forEach(function (widgetContent) {
+			var ulElement = widgetContent.querySelector('ul.widget-list');
+			var menuItemCount = ulElement.getElementsByTagName('li').length;
+			var parentElement = widgetContent.previousElementSibling;
+			var countElement = parentElement.querySelector('.menu-item-count');
+			countElement.innerText = menuItemCount;
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		updateMenuItemCount();
+	});
+</script>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="Dashboard/Dashboard">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">DASS</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="tab-container">
+    <div class="row">
+
+
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('fleetWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h3 style="color:whitesmoke">Fleet Management</h3>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div id="fleetWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="TransportRequisitionLink();"><i class="fas fa-truck-moving"></i>Request For Transport</a>
+                        </li>
+                        @if (Session["EmployeeJobType"]?.ToString() == "Driver" || (Session["ICT_Help_Desk_Admin"] != null && (bool)Session["ICT_Help_Desk_Admin"]))
+                        {
+                            <li>
+                                <a href="#" onclick="WorkTicketLink();"><i class="fas fa-ticket-alt"></i> Work Ticket</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="FuelRequestlink();"><i class="fas fa-gas-pump"></i> Fuel Requisition</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="FuelRequisitionlink();"><i class="fas fa-credit-card"></i> Fuel Card Recharge</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="VehicleServicing_Maintancelink();"><i class="fas fa-tools"></i> Service/Maintenance</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="VehicleIncidence();"><i class="fas fa-car-crash"></i>Report Vehicle Incidence</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-4" style="border-right: 12px solid white;">
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('facilitiesWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h3 style="color:whitesmoke">Facility Administration</h3>
+                            <div class="dash-count">
+                                <h3 class="menu-item-count" style="color:#fff;"></h3>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div id="facilitiesWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list">
+                        <li>
+                            <a href="#" onclick="PropertyListLink();"><i class="fas fa-home"></i> Property List</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="ReservationListLink();"><i class="far fa-calendar-alt"></i> Reservation List</a>
+                        </li>
+                        @{
+                            //if ()
+                            {
+                                <li>
+                                    <a href="/FacilitiesAdministration/AprrovedReservationList" onclick="ApprovedListLink();"><i class="far fa-calendar-check"></i> Approved Reservation List</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,97 @@
+﻿@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                if (widget.style.display === "none") {
+                    widget.style.display = "block";
+                } else {
+                    widget.style.display = "none";
+                }
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+</script>
+
+<div class="tab-container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" , onclick="DashBoardLink()">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">DSPOP</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row" style="margin-top: 10px">
+        <!-- DSPOP Widget -->
+        <div class="col-md-4">
+            <br />
+            <div class="row">
+                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('DSPOPWidget');">
+                    <a href="#">
+                        <div class="dash-widget-header">
+                            <h5 style="color:whitesmoke">DSPOP</h5>
+                            <div class="dash-count">
+                                <h5 class="menu-item-count" style="color:#fff;"></h5>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div id="DSPOPWidget" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                    <ul class="widget-list" style="list-style-type: none;">
+                        <li style="margin-bottom: 10px;"><a href="#" onclick="PMMULink();"><i class="fas fa-tachometer-alt"></i> PMMU</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#" onclick="AppointmentCommitteeLink();"><i class="fas fa-users"></i> Appointment Committee Vouchers</a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.dash-count .menu-item-count');
+            if (!countElement) {
+                var dashCount = parentElement.querySelector('.dash-count');
+                if (dashCount) {
+                    countElement = document.createElement('h3');
+                    countElement.classList.add('menu-item-count');
+                    countElement.style.color = '#fff';
+                    dashCount.appendChild(countElement);
+                }
+            }
+            if (countElement) {
+                countElement.textContent = menuItemCount;
+            }
+        });
+    }
+
+    window.addEventListener('load', function () {
+        updateMenuItemCount();
+    });
+</script>

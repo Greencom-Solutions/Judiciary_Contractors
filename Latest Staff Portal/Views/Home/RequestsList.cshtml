@@ -1,0 +1,77 @@
+﻿@Model
+
+@{
+    //ViewBag.Title = "ContructorProjects";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h4>Home/ContractorsProjects</h4>
+<div class="card">
+    <div class="padding">
+        @*  <div class="row">
+                @if (Model.Projects.Count == 0)
+                {
+                <div class="alert alert-danger" id="alert-danger" role="alert">
+                   Sorry! you dont have any existing project at the moment
+                </div>
+                }
+            </div>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Contractor No</th>
+                                <th>Contractor Name</th>
+                                <th>Project No</th>
+                                <th>Project Name</th>
+                                <th>Date of Submission</th>
+                                <th>Date of Receipt</th>
+                                <th>Status</th>
+                                <th>Document Type</th>
+                                <th>Current Approving Member</th>
+                                <th>Approving Member Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Count>0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.No</td>
+                                        <td>@item.ContractorNo</td>
+                                        <td>@item.ContractorName</td>
+                                        <td>@item.ProjectNo</td>
+                                        <td>@item.ProjectName</td>
+                                        <td>@item.DateOfSubmittion.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td>@item.DateOfReceipt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.DocumentType</td>
+                                        <td>@item.CurrentApprovingMember</td>
+                                        <td>@item.ApprovingMemberName</td>
+                                        <td>
+                                            <a href="@Url.Action("RequestCard", "Home", new { tendorNo = item.No })" class="btn btn-primary">
+                                                <i class="fa fa-share m-r-10"></i>View
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="11" class="text-center">No documents available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

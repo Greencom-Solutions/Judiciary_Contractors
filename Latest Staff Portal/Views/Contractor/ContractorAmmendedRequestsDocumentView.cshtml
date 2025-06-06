@@ -1,0 +1,1959 @@
+﻿@model Latest_Staff_Portal.ViewModel.ContractorExtensionRequests
+
+
+@{
+    ViewBag.Title = "ContractsDocumentView";
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+    var isDirector = ViewBag.isDirector;
+    var loggedInStaffNo = ViewBag.loggedInStaffNo;
+    var SecretaryStaffNo = ViewBag.SecretaryStaffNo;
+    var isCRJ = ViewBag.isCRJ;
+}
+
+
+@* Bootstrap CSS *@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@* Bootstrap Bundle JS (includes Popper.js) *@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background-color: #103424 !important; /* Green background */
+        color: white !important; /* White text for contrast */
+    }
+
+    .accordion-button {
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+    }
+
+    .breadcrumb-item a {
+        text-decoration: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<div class="page-headers">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="ContractorAmmendedRequestLink();" style="color: #000">Contractor Ammended Request List</a></li>
+                <li class="breadcrumb-item active">Contractor Ammended Request Document</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr />
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <h4>Contractor Ammended Request Document</h4>
+        <div style="text-align:right; margin-bottom: 20px">
+            @{
+
+                if (@Model.Status == "New")
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendRequest('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Send Request
+                    </button>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.No, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Project_No, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Project_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Project_No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Project_Name, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Project_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Project_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contractor_No, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Contractor_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Contractor_No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contractor_Name, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Contractor_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Contractor_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Document_Type, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Document_Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Document_Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date_of_Submittion, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Date_of_Submittion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Date_of_Submittion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date_of_Receipt, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Date_of_Receipt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Date_of_Receipt, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Received_By, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Received_By, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Received_By, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Project_Sum, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Project_Sum, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Project_Sum, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Retention_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Retention_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Retention_Amount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Project_Manager, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Project_Manager, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Project_Manager, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Project_Manager_Name, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                    @Html.EditorFor(model => model.Project_Manager_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Project_Manager_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @* <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Team_Approval_Status, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Team_Approval_Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Team_Approval_Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            @*   <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Key_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Key_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Key_Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            *@
+            @* <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Action_Approved, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Action_Approved, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Action_Approved, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            @* <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Extension_Period, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Extension_Period, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Extension_Period, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            @*   <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SCM_Status, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.SCM_Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.SCM_Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            @*   <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Procurement_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Procurement_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Procurement_Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            @*
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Crj_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.Crj_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Crj_Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            @* <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CRJ_General_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        @Html.EditorFor(model => model.CRJ_General_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.CRJ_General_Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="accordion" id="accordionExample">
+
+            <!-- Accordion Item 1- Comment Input Section -->
+            <div class="accordion-item" hidden>
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Comment Input Section
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-3">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Memo Notes", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Memo_Comments" value="@(Model.Memo_Comments)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Comments", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Key_Comments" value="@(Model.Key_Comments)"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 2-  QS Actions -->
+            <div class="accordion-item" hidden>
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        QS Actions
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approved_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Approved_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Approved_Amount, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approved_Variation_Addition, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Approved_Variation_Addition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Approved_Variation_Addition, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Apprroved_Variation_Omition, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Apprroved_Variation_Omition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Apprroved_Variation_Omition, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Actual_Work_Progress, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Actual_Work_Progress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Actual_Work_Progress, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approved_Certificates, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Approved_Certificates, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Approved_Certificates, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Certificate_No, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Certificate_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Certificate_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Contract_No, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Contract_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Contract_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Final_Contract_Value, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Final_Contract_Value, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Final_Contract_Value, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Previously_Paid_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Previously_Paid_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Previously_Paid_Amount, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Revised_Completion_Date, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Revised_Completion_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Revised_Completion_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Valuation_Date, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Valuation_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Valuation_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Total_Net_Variation, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Total_Net_Variation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Total_Net_Variation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Accordion Item 3- DBS Actions -->
+            <div class="accordion-item" hidden>
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        DBS Actions
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-5">
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Current_Approving_Member, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Current_Approving_Member, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Current_Approving_Member, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approving_Member_Name, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Approving_Member_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Approving_Member_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Asssigning_Employee, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Asssigning_Employee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Asssigning_Employee, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Assigning_Emplyee_Name, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Assigning_Emplyee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Assigning_Emplyee_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Team Lead General Comments", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Team_Lead_General_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Team_Lead_General_Comments" } })
+                                        @Html.ValidationMessageFor(model => model.Team_Lead_General_Comments, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Team Lead Rejection Comments", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Team_Lead_Rejection_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Team_Lead_Rejection_Comments" } })
+                                        @Html.ValidationMessageFor(model => model.Team_Lead_Rejection_Comments, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 4- Supply Chain Actions -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                        Supply Chain Actions
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Selected SCM Employee", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Selected_SCM_Employee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Selected_SCM_Employee, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Selected Employee Name", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Selected_Employee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Selected_Employee_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Selected user ID", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Selected_user_Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Selected_user_Id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                @{
+                                    if (@Model.SCM_Status == "Director SCM" && @isDirector)
+                                    {
+                                        <div class="col-md-12 text-center">
+                                            <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SelectSupplyChainOfficer('@Model.No')">Select Supply Chain Officer</button>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                            <hr style="height: 2px; background-color: #000; border: none;">
+                            <div class="row mt-5">
+                                @{
+                                    string formattedInitialContractEndDate = string.IsNullOrEmpty(Model.Initial_Contract_End_Date)
+                                        ? string.Empty
+                                        : DateTime.Parse(Model.Initial_Contract_End_Date).ToString("dd-MM-yyyy");
+                                }
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Initial Contract End Date", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @*  <input class="form-control" value="@(formattedInitialContractEndDate)" type="text" name="name" id="Initial_Contract_End_Date" />*@
+                                        @Html.EditorFor(model => model.Initial_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @id = "Initial_Contract_End_Dates", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Initial_Contract_End_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Approval Action", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <select class="form-control" id="Action_Approved">
+                                            @*<option value="">Select Option</option>*@
+                                            <option value="0">Yes</option>
+                                            <option value="1">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Extension Period", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @*<input class="form-control" value="@(formattedInitialContractEndDate)" type="text" name="name" id="Initial_Contract_End_Date" />*@
+                                        @Html.EditorFor(model => model.Extension_Period, new { htmlAttributes = new { @class = "form-control", @id = "Extension_Period" } })
+                                        @Html.ValidationMessageFor(model => model.Extension_Period, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("New Contract End Date", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.New_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.New_Contract_End_Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Director SCM Comments", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Director_SCM_Comments">@Model.Director_SCM_Comments</textarea>
+                                        @*@Html.EditorFor(model => model.Director_SCM_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Director_SCM_Comments" } })*@
+                                        @Html.ValidationMessageFor(model => model.Director_SCM_Comments, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Director SCM Advice", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Director_SCM_Advice">@Model.Director_SCM_Advice</textarea>
+                                        @* @Html.EditorFor(model => model.Director_SCM_Advice, new { htmlAttributes = new { @class = "form-control", @id = "Director_SCM_Advice" } })*@
+                                        @Html.ValidationMessageFor(model => model.Director_SCM_Advice, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @* @if (@loggedInStaffNo == @SecretaryStaffNo)
+                            {
+                                <div class="col-md-12 text-center"> <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="UpdateCommitteeReport('@Model.No')">Update Committee Report</button></div>
+                            }*@
+                            </div>
+
+                            @* <hr style="height: 2px; background-color: #000; border: none;">*@
+
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.Label("Committee Assesment Notes", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Committee_Assesment_Notes">@Model.Committee_Assesment_Notes</textarea>
+                                        @* @Html.EditorFor(model => model.Committee_Assesment_Notes, new { htmlAttributes = new { @class = "form-control", @id = "Committee_Assesment_Notes" } })*@
+                                        @Html.ValidationMessageFor(model => model.Committee_Assesment_Notes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.Label("Professional Opinion Notes", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Professional_Opinion_Notes">@Model.Professional_Opinion_Notes</textarea>
+                                        @* @Html.EditorFor(model => model.Professional_Opinion_Notes, new { htmlAttributes = new { @class = "form-control", @id = "Professional_Opinion_Notes" } })*@
+                                        @Html.ValidationMessageFor(model => model.Professional_Opinion_Notes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @if (@loggedInStaffNo == @SecretaryStaffNo)
+                                {
+                                    @* <div class="col-md-12 text-center">
+                                    <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SecretaryUpdateAssessmentAndOpinion('@Model.No')">Update Assessment & Opinion</button>
+                                </div>
+                                    *@
+                                    <div class="col-md-12 text-center">
+                                        <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="UpdateCommitteeReport('@Model.No')">Update Committee Report</button>
+                                    </div>
+
+
+                                }
+
+                            </div>
+                            <hr style="height: 2px; background-color: #000; border: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Accordion Item 5- CRJ -->
+            <div class="accordion-item" hidden>
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        CRJ
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+
+                            <div class="row mt-5">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Committee Sec No", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Committee_Sec_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Committee_Sec_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Secretary Name", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Secretary_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Secretary_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 6- Communication -->
+            <div class="accordion-item" hidden>
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        Communication
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Project_Manger_Communication, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @Html.EditorFor(model => model.Project_Manger_Communication, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Project_Manger_Communication, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="row mb-5">
+
+            <div class="row mt-5">
+                <h5 class="mb-3">Contractor Request Lines</h5>
+                <hr />
+                <div id="divContractorRequestLines"></div>
+                <hr />
+            </div>
+
+            <div class="row mt-5">
+                <h5 class="mb-3">Comments</h5>
+                <hr />
+                <div id="divComments"></div>
+                <hr />
+            </div>
+
+            <div class="row mt-5">
+                <h5 class="mb-3">Tender Evaluation Committee Members</h5>
+                <hr />
+                <div id="divCommitteeMembers"></div>
+                <hr />
+            </div>
+            <div class="row mt-5">
+                <b>Document Attachments</b>
+                <hr />
+                <div id="divAttachDocs"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title"><label id="labelF"></label></h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal View Doc -->
+<div class="modal fade" id="myModalAttachment" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachment</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalAttachmentBody" style="width:100%;height:450px"></div>
+        </div>
+    </div>
+</div>
+
+@*//////////////////////Modal////////////////////////////*@
+<div class="modal" id="assignEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Employee</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="assignEmployeeModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect " data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        LoadContractorRequestLines(`@Model.No`);
+        $('.select2').select2();
+
+
+        $('#Initial_Contract_End_Date').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            autoclose: true,
+            yearRange: '-1:+2',
+            showOtherMonths: true,
+            dateFormat: 'dd-mm-yy'
+        });
+        $("#Initial_Contract_End_Date").focus(function () {
+            $("#ui-datepicker-div").position({
+                my: "left top",
+                at: "left bottom",
+                of: $(this)
+            });
+        });
+
+        var dateVal = $('#Initial_Contract_End_Date').val();
+
+        if (dateVal && dateVal.includes('-')) {
+            var parts = dateVal.split('-'); // Expected format: yyyy-MM-dd
+            var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0]; // Convert to dd-MM-yyyy
+            $('#Initial_Contract_End_Date').val(formattedDate);
+        }
+    });
+
+    var LoadContractorRequestLines = function (No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No }),
+            url: "/Contractor/ContractorRequestLinesPartialView",
+            success: function (data) {
+                $("#divContractorRequestLines").html(data);
+                HideProgress();
+                LoadContractorRequestComments(No)
+            },
+            error: function () {
+                LoadContractorRequestComments(No);
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var LoadContractorRequestComments = function (No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No }),
+            url: "/Contractor/ContractorRequestCommentsPartialView",
+            success: function (data) {
+                $("#divComments").html(data);
+                HideProgress();
+                LoadTenderEvaluationCommittee(No);
+            },
+            error: function () {
+                HideProgress();
+                LoadTenderEvaluationCommittee(No);
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+    var LoadTenderEvaluationCommittee = function (No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "html",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ No: No }),
+            url: "/Contractor/TenderEvaluationCommitteePartialView",
+            success: function (data) {
+                $("#divCommitteeMembers").html(data);
+                HideProgress();
+                GetDocumentAttachments();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    };
+
+    function ContractorAmmendedRequestLink(status) {
+        window.location.href = `ContractorAmmendedRequests`;
+    }
+    var ViewDoc = function (DocNo) {
+        ShowProgress();
+        var form = $('<form>', {
+            action: '/Procurement/ContractorExtensionRequestsDocumentView',
+            method: 'POST'
+        }).append($('<input>', {
+            type: 'hidden',
+            name: 'No',
+            value: DocNo
+        }));
+        form.appendTo('body').submit();
+    };
+
+    //actions
+    function SendToAssignedEmployee(No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No }),
+            url: "/Procurement/SendToAssignedEmployee",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Record submitted", "success");
+                    ViewDoc(No)
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SendToDSCMForCommitteeApproval(No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No }),
+            url: "/Procurement/SendToDSCMForCommitteeApproval",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Record submitted", "success");
+                    ViewDoc(No)
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SendToAccountingOfficerForCommitteeProposal(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SendToAccountingOfficerForCommitteeProposal",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Record submitted", "success");
+                    ViewDoc(No)
+                   /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function AppointCommittee(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/AppointCommittee",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function RejectCommittee(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/RejectCommittee",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+    function SelectSupplyChainOfficer(DocNo) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            data: JSON.stringify({ DocNo: DocNo }),
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            url: '/Procurement/SelectSupplyChainOfficer',
+            success: function (data) {
+                $("#assignEmployeeModalBody").html(data);
+                HideProgress();
+                $("#assignEmployeeModal").modal("show");
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err, 'warning');
+            }
+        });
+    }
+    var SecretaryUpdateAssessmentAndOpinion = function (No) {
+        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
+        var Professional_Opinion_Notes = $('#Professional_Opinion_Notes').val();
+
+        if (!Committee_Assesment_Notes) {
+            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
+            return;
+        }
+        if (!Professional_Opinion_Notes) {
+            Swal.fire("Warning", "Professional Opinion_Notes is required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/Procurement/SecretaryUpdateAssessmentAndOpinion",
+            data: JSON.stringify({
+                DocNo: No,
+                CommitteeAssessment: Committee_Assesment_Notes,
+                ProfessionalOpinionNotes: Professional_Opinion_Notes,
+            }),
+            contentType: "application/json; charset=utf-8",  // Ensure JSON content
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', data.message, 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (xhr, status, error) {
+                HideProgress();
+                console.error("Error:", xhr.responseText);
+                Swal.fire('Error', "An error occurred while updating the report", 'error');
+            }
+        });
+
+    }
+    var UpdateCommitteeReport = function (No) {
+        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
+        var Action_Approved = $('#Action_Approved').val();
+        var Extension_Period = $('#Extension_Period').val();
+        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
+        var Professional_Opinion_Notes = $('#Professional_Opinion_Notes').val();
+
+        if (!Committee_Assesment_Notes) {
+            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
+            return;
+        }
+
+        if (!Professional_Opinion_Notes) {
+            Swal.fire("Warning", "Professional Opinion Notes required", "warning");
+            return;
+        }
+
+        if (!Action_Approved) {
+            Swal.fire("Warning", "Approval Action is required", "warning");
+            return;
+        }
+
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "/Procurement/UpdateCommitteeReport",
+            data: JSON.stringify({
+                DocNo: No,
+                CommitteeAssessment: Committee_Assesment_Notes,
+                ApprovalAction: Action_Approved,
+                ExtensionPeriod: Extension_Period
+            }),
+            contentType: "application/json; charset=utf-8",  // Ensure JSON content
+            dataType: "json",
+            success: function (data) {
+                HideProgress();
+                if (data.success) {
+                    Swal.fire('Success', data.message, 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Warning', data.message, 'warning');
+                }
+            },
+            error: function (xhr, status, error) {
+                HideProgress();
+                console.error("Error:", xhr.responseText);
+                Swal.fire('Error', "An error occurred while updating the report", 'error');
+            }
+        });
+
+    }
+
+    function SubmitInspectionReportToDirectorSCM(No) {
+        var Committee_Assesment_Notes = $('#Committee_Assesment_Notes').val();
+        var Action_Approved = $('#Action_Approved').val();
+        var Extension_Period = $('#Extension_Period').val();
+
+        if (!Committee_Assesment_Notes) {
+            Swal.fire("Warning", "Committee Assesment Notes required", "warning");
+            return;
+        }
+
+        if (!Action_Approved) {
+            Swal.fire("Warning", "Approval Action is required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({
+                DocNo: No,
+                CommitteeAssessment: Committee_Assesment_Notes,
+                ApprovalAction: Action_Approved,
+                ExtensionPeriod: Extension_Period
+            }),
+            url: "/Procurement/SubmitInspectionReportToDirectorSCM",
+
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Record submitted", "success");
+                    window.location.reload();
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SendToEmployeeFoAddendumDrafting(No) {
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No }),
+            url: "/Procurement/SendToEmployeeFoAddendumDrafting",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SubmitDraftedAddendum(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SubmitDraftedAddendum",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SubmitDraftedAddendumToLegal(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SubmitDraftedAddendumToLegal",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+
+    //legal
+    function ApproveDraftedAddendum(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/ApproveDraftedAddendum",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function RejectDraftedAddendum(No) {
+        var rejectionComments = $('#Key_Comments').val();
+        if (!rejectionComments) {
+            Swal.fire("Warning", "Rejection Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, rejectionComments: rejectionComments }),
+            url: "/Procurement/RejectDraftedAddendum",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+
+
+    function SubmitDraftedAddendumToContractor(No) {
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No}),
+            url: "/Procurement/SubmitDraftedAddendumToContractor",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SubmitSignedAddendumToDSCM(No) {
+
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No}),
+            url: "/Procurement/SubmitSignedAddendumToDSCM",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function FnSubmitSignedAddendumToCRJ(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/FnSubmitSignedAddendumToCRJ",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SubmitSignedAddendumToDSCM(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SubmitSignedAddendumToDSCM",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function FnSubmitSignedAddendumToPM(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SubmitSignedAddendumToPM",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+
+
+
+
+
+    function RejectCommitteeFindings(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/RejectCommitteeFindings",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SubmitOpinionReportToAccountingOfficer(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SubmitOpinionReportToAccountingOfficer",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function SendToPMForRevaluation(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/SendToPMForRevaluation",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+    function AcceptOpinion(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/AcceptOpinion",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+    function RejectOpinion(No) {
+        var Key_Comments = $('#Key_Comments').val();
+        if (!Key_Comments) {
+            Swal.fire("Warning", "Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Key_Comments: Key_Comments }),
+            url: "/Procurement/RejectOpinion",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Rejected", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+    function SubmitAdviceToProjectManager(No) {
+        var Team_Lead_General_Comments = $('#Team_Lead_General_Comments').val();
+        if (!Team_Lead_General_Comments) {
+            Swal.fire("Warning", "Team Lead General Comments required", "warning");
+            return;
+        }
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No, Team_Lead_General_Comments: Team_Lead_General_Comments }),
+            url: "/Procurement/SubmitAdviceToProjectManager",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Approved", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
+
+    //attachments
+    var GetDocumentAttachments = function () {
+        var DocNo = `@Model.No`;
+        var status2 = '@Model.Status';
+        if (status2 == "New") {
+            var status="Open"
+        }
+        $.ajax({
+           async: true,
+           type: "POST",
+           datatype: "json",
+           contentType: "application/json; charset = utf-8",
+           processData: false,
+                 data: JSON.stringify({ DocNo: DocNo, documentStatus: status }),
+                 url: "/Common/EdmsDocumentAttachmentList",
+           success: function (data) {
+            $("#divAttachDocs").html(data);
+           },
+           error: function () {
+            Swal.fire("There is some problem to process your request. Please try after some time");
+           }
+        });
+    };
+    var AddAttachment = function () {
+         $("#labelF").text("File Upload");
+         ShowProgress();
+         $.ajax({
+             async: true,
+             type: "GET",
+             datatype: "html",
+             url: '/Common/FileUploadForm',
+             success: function (data) {
+                 $("#modalBody").html(data);
+                 HideProgress();
+                 $("#myModal").modal("show");
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err, 'warning');
+             }
+         });
+     };
+    var SaveAttachmentFile = function () {
+      var DocNo = `@Model.No`;
+      var filename; var base64String; var filetype;
+         var files = document.getElementById('AttachmentFile').files;
+      if (files.length) {
+       var file = files[0];
+             if (file.size > 50000000) {
+                 Swal.fire('Warning', 'Please only files less than 50MB allowed. Thanks!!', 'warning');
+             }
+       else {
+        var blob = file.slice();
+        filetype = file.type;
+        filename = file.name;
+        var reader = new FileReader();
+        reader.onloadend = function (evt) {
+	        if (evt.target.readyState == FileReader.DONE) {
+		        var cont = evt.target.result
+		        base64String = getB64Str(cont);
+		        ShowProgress();
+		        $.ajax({
+			        type: "POST",
+			        url: "/Common/SaveAttachedFile",
+                             data: JSON.stringify({ DocNo: DocNo, base64Upload: base64String, fileName: filename, Extn: filetype, TableID: 77352, module: "PJM", documentType:"User Request"}),
+			        contentType: "application/json; charset=utf-8",
+			        dataType: "json",
+			        success: function (data) {
+				        if (data.success) {
+					        HideProgress();
+					        $("#myModal").modal("hide");
+					        Swal.fire('Success', data.message, 'success');
+                                     GetDocumentAttachments();
+				        }
+				        else {
+                                     GetDocumentAttachments();
+					        Swal.fire('Warning', data.message, 'warning');
+					        HideProgress();
+				        }
+			        },
+			        error: function (err) {
+				        HideProgress();
+				        Swal.fire('Warning', err, 'warning');
+			        }
+		        });
+	        }
+        };
+        reader.readAsArrayBuffer(blob);
+       }
+      }
+     };
+    function getB64Str(buffer) {
+         var binary = '';
+         var bytes = new Uint8Array(buffer);
+         var len = bytes.byteLength;
+         for (var i = 0; i < len; i++) {
+             binary += String.fromCharCode(bytes[i]);
+         }
+         return window.btoa(binary);
+     }
+    var DeleteAttachment = function (docId, line) {
+         ShowProgress();
+         $.ajax({
+             async: true,
+             type: "POST",
+             dataType: "json",
+             data: JSON.stringify({
+                 documentId: docId,
+                 lineNo: line
+             }),
+             contentType: "application/json; charset=utf-8",
+             processData: false,
+             url: '/Common/RemoveFileAsync',
+             success: function (data) {
+                 HideProgress();
+                 if (data.success === true) {
+                     Swal.fire('Success', data.message, 'success');
+                     GetDocumentAttachments();
+                 } else {
+                     Swal.fire('Error', data.message, 'error');
+                     GetDocumentAttachments();
+                 }
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Warning', err.responseText, 'warning');
+             }
+         });
+     };
+    var ViewAttachment = function (moduleCheck, docNo, docId) {
+         $.ajaxSetup({ cache: false });
+         ShowProgress();
+         var viewer = $("#modalAttachmentBody");
+         viewer.empty();
+
+         $.ajax({
+             url: '/Common/GetEdmsDocuments',
+             type: "GET",
+             datatype: "json",
+             cache: false,
+             contentType: "application/json; charset=utf-8",
+             data: {
+                 module: moduleCheck,
+                 documentNo: docNo,
+                 documentType: "User request",
+                 documentId: docId
+             },
+             success: function (data) {
+                 if (data.success) {
+                     if (data.base64) {
+                         var mimeType = data.mimeType || 'application/pdf';
+
+                         if (mimeType.startsWith('application/pdf')) {
+
+                             var byteCharacters = atob(data.base64);
+                             var byteNumbers = new Array(byteCharacters.length);
+                             for (var i = 0; i < byteCharacters.length; i++) {
+                                 byteNumbers[i] = byteCharacters.charCodeAt(i);
+                             }
+                             var byteArray = new Uint8Array(byteNumbers);
+                             var blob = new Blob([byteArray], { type: mimeType });
+                             var blobUrl = URL.createObjectURL(blob);
+
+
+                             viewer.html('<iframe src="' + blobUrl + '" style="width:100%; height:500px;" frameborder="0"></iframe>');
+                         } else if (mimeType.startsWith('image/')) {
+
+                             viewer.html('<img src="data:' + mimeType + ';base64,' + data.base64 + '" style="width:100%;"/>');
+                         } else {
+                             var blob = b64toBlob(data.base64, mimeType);
+                             var url = window.URL.createObjectURL(blob);
+                             window.open(url, '_blank');
+                         }
+                         $("#myModalAttachment").modal("show");
+                     } else {
+
+                         window.location = '/Common/AttachmentDownload?fileName=' + data.message;
+                         Swal.fire('Success', 'Document Downloaded successfully', 'success');
+                     }
+                 } else {
+                     Swal.fire('Warning', data.message, 'warning');
+                 }
+                 HideProgress();
+             },
+             error: function (err) {
+                 HideProgress();
+                 Swal.fire('Error', err.responseText || 'An error occurred', 'error');
+             }
+         });
+     };
+    function b64toBlob(base64, contentType) {
+         var byteCharacters = atob(base64);
+         var byteArrays = [];
+
+         for (var offset = 0; offset < byteCharacters.length; offset += 512) {
+             var slice = byteCharacters.slice(offset, offset + 512);
+
+             var byteNumbers = new Array(slice.length);
+             for (var i = 0; i < slice.length; i++) {
+                 byteNumbers[i] = slice.charCodeAt(i);
+             }
+
+             var byteArray = new Uint8Array(byteNumbers);
+             byteArrays.push(byteArray);
+         }
+
+         return new Blob(byteArrays, { type: contentType });
+    }
+
+
+    function SendRequest() {
+        var RequestNo = `@Model.No`;    
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: '/Contractor/SendRequestForProcessing',
+            data: { RequestNo: RequestNo},
+            success: function (response) {
+                HideProgress();
+                if (response.success) {
+                    Swal.fire('Success', 'Record successfully submitted', 'success');
+                    window.location.reload();
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText || 'An error occurred', 'warning');
+            }
+        });
+    }
+
+
+
+</script>
+
+
+
+

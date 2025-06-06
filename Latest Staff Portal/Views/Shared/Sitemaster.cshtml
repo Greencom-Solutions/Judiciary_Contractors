@@ -1,0 +1,453 @@
+﻿@using Latest_Staff_Portal.Models
+@using Latest_Staff_Portal.ViewModel
+@{
+    Layout = null;
+    string imgSrc = "", gender = "", Name = "";
+    var IsICT = false;
+    var employee = Session["EmployeeData"] as EmployeeView;
+    var essRole = Session["ESSRoleSetup"] as ESSRoleSetup;
+
+    var name = employee?.FullName;
+
+    var fname = employee?.FirstName;
+    var mname = employee?.MiddleName;
+    var sname = employee?.LastName;
+
+    /*  char firstInitial = char.ToUpper(fname[0]);
+      char middleInitial = mname.Length > 0 ? char.ToUpper(mname[0]) : ' ';*/
+    //char lastInitial = char.ToUpper(sname[0]);
+
+    var position = employee?.JobTitle2;
+
+    if (Session["Username"] == null)
+    {
+        @Html.Action("Login", "Login")
+    }
+    else
+    {
+        if (Session["ImgProfile"] == null)
+        {
+            var base64 = CommonClass.ProfilePicture(Session["Username"].ToString());
+            if (base64 != "")
+            {
+                imgSrc = $"data:image/gif;base64,{base64}";
+                Session["ImgProfile"] = imgSrc;
+            }
+        }
+        else
+        {
+            imgSrc = Session["ImgProfile"].ToString();
+        }
+
+        if (Session["StaffDetails"] == null)
+        {
+            var s = CommonClass.GetStaffDetails(Session["Username"].ToString());
+            gender = s[0];
+            Name = s[1];
+
+            Session["StaffDetails"] = s;
+        }
+        else
+        {
+            var s = (string[])Session["StaffDetails"];
+            gender = s[0];
+            Name = s[1];
+        }
+
+        IsICT = CommonClass.IsICTStaff(Session["Username"].ToString());
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judiciary Contractors Hub</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Judiciary Contractors Hub">
+    <meta name="author" content="AlexaTheme">
+    <title>Judiciary Contractors Hub</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets2/img/favicon2.png">
+
+    <link rel="stylesheet" href="~/assets2/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/assets2/css/themify-icons.css">
+    <link rel="stylesheet" href="~/assets2/css/elegant-line-icons.css">
+    <link rel="stylesheet" href="~/assets2/css/elegant-font-icons.css">
+    <link rel="stylesheet" href="~/assets2/css/flaticon.css">
+    <link rel="stylesheet" href="~/assets2/css/animate.min.css">
+    <link rel="stylesheet" href="~/assets2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets2/css/slick.css">
+    <link rel="stylesheet" href="~/assets2/css/slider.css">
+    <link rel="stylesheet" href="~/assets2/css/odometer.min.css">
+    <link rel="stylesheet" href="~/assets2/css/venobox/venobox.css">
+    <link rel="stylesheet" href="~/assets2/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/assets2/css/main.css">
+    <link rel="stylesheet" href="~/assets2/css/responsive.css">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets2/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: lightgray;
+        }
+
+        /* Navbar adjustments */
+        .header {
+            flex-shrink: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .navbar {
+            background-color: #103424 !important;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+
+        /* Navbar Links */
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            color: white !important; /* Ensure white text */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+            /* Active Link */
+            .navbar-nav .nav-link.active {
+                background-color: #0c291a !important; /* Distinct background */
+                font-weight: bold;
+                border-bottom: 3px solid #ffcc00; /* Highlight with a gold/yellow underline */
+            }
+
+        /* Optional: Active Dropdown Item */
+        .dropdown-menu .dropdown-item.active {
+            background-color: #155224 !important;
+            font-weight: bold;
+        }
+
+        /* Hover & Active State */
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            background-color: #155224 !important; /* Slightly darker hover effect */
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: #0c291a !important; /* Distinct active link */
+        }
+
+        /* Account Dropdown Styling */
+        .dropdown-menu {
+            background-color: #103424;
+            border: none;
+        }
+
+            .dropdown-menu .dropdown-item {
+                color: white !important;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #155224 !important;
+                }
+
+        /* User Icon */
+        .fa-user-circle {
+            font-size: 30px;
+        }
+
+        /* Page Content */
+        .content {
+            flex: 1;
+            padding-top: 70px; /* Adjusted to prevent content from being hidden under fixed navbar */
+        }
+
+        /* Footer */
+        footer {
+            flex-shrink: 0;
+        }
+
+        /* Spinner Overlay */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: none;
+            z-index: 1050;
+        }
+
+            /* Center the Spinner */
+            .spinner-overlay .spinner-border {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 3rem;
+                height: 3rem;
+                transform: translate(-50%, -50%);
+            }
+
+        /* Blur effect when loading */
+        body.blur-active {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+
+        a{
+           text-decoration: none;
+           color: #0c291a
+        }
+
+
+            a:hover {
+                color: #155224
+            }
+    </style>
+
+</head>
+<body>
+
+    <!--Loader-->
+    <link href="~/assets/css/Loader.css" rel="stylesheet" />
+    <div class="loading" align="center" id="divLoader">
+        <div class="loader-container">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+
+    <header class="header" style="position: fixed; top: 0; left: 0; width: 100%; z-index:999">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #103424; ">
+
+            <div class="container-fluid">
+                <!-- Logo / Brand -->
+                <div class="header-logo">
+                    <a href="/"><img src="~/assets2/img/logo-transparent.png" alt="Logo" width="100"></a>
+                </div>
+
+                <!-- Toggle Button for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!-- Item 1 -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+
+                        <!-- Item 2 -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" && ViewContext.RouteData.Values["controller"].ToString() == "Dashboard" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")">Dashboard</a>
+                        </li>
+
+                        <!-- Item 3 -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractsList" && ViewContext.RouteData.Values["controller"].ToString() == "Contracts" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("ContractsList", "Contracts")">Contracts</a>
+                        </li>
+
+                        <!-- Item 4 -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ActiveProjectsList" && ViewContext.RouteData.Values["controller"].ToString() == "Projects" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("ActiveProjectsList", "Projects")">Active Projects</a>
+                        </li>
+
+                        <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "ContractorRequests" ? "active" : "")">
+                            <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="contractorRequestsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Contractor Requests
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="contractorRequestsDropdown">
+                                <li><a href="@Url.Action("ContractorExtensionRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorExtensionRequests" ? "active" : "")">Contractor Extension Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorAmendmentRequests" ? "active" : "")">Contractor Ammendment Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorInstructionRequests" ? "active" : "")">Contractor Instruction Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorApprovalRequests" ? "active" : "")">Contractor Approval Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorJointMeasurementRequests" ? "active" : "")">Contractor Joint Measurement Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorDelayedPaymentRequests" ? "active" : "")">Contractor Delayed Payment Requests</a></li>
+                                <li><a href="@Url.Action("ContractorPaymentRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPaymentRequests" ? "active" : "")">Contractor Payment Requests</a></li>
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "HeadOfStationRequests" ? "active" : "")">Head Of Station Requests</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Item 6: Dropdown - Account -->
+                        <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "Home" && (ViewContext.RouteData.Values["action"].ToString() == "ChangePassword" || ViewContext.RouteData.Values["action"].ToString() == "ChangeEmail" || ViewContext.RouteData.Values["action"].ToString() == "Logout") ? "active" : "")">
+                            <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user-circle" style="font-size: 20px;"></i> Account
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ChangePassword" ? "active" : "")" href="/Home/Profile">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger @(ViewContext.RouteData.Values["action"].ToString() == "Logout" ? "active" : "")"
+                                      
+                                       onclick="confirmLogout(event)"
+                                       style="cursor: pointer;">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+
+    <div class="content padding" style="background-color: whitesmoke; margin-top: 30px">
+        <div class="spinner-overlay">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        @RenderBody()
+
+    </div>
+
+    <footer>
+        <section class="widget-section padding" style="padding: 10px">
+
+            <div class="row justify-content-center ">
+                <div class="col-md-4 text-center mt-5">
+                    <div class="widget-content">
+                        <div class="header-logo">
+                            <a href="index"><img src="~/assets2/img/logo-transparent.png" alt="Logo" width="200"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-left">
+                    <div class="widget-content">
+                        <h4>About Us</h4>
+                        <p>The Judiciary derives its mandate from the Constitution of Kenya, Article 159. It exercises judicial authority given to it, by the people of Kenya and delivers justice according to the Constitution and other laws. The Judiciary is expected to handle disputes in a just manner, with a view to protecting the rights and liberties of all, thereby facilitating the attainment of the ideal rule of law.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <div class="widget-content">
+                        <h4 class="">Company</h4>
+                        <ul class="widget-links ">
+                            <li><a href="">About Us</a></li>
+                            <li><a href="">Contact Us</a></li>
+                            <li><a href="">Privacy Policy</a></li>
+                            <li><a href="">Sitemap</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </section>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <a data-scroll href="#header" id="scroll-to-top"><i class="arrow_carrot-up"></i></a>
+
+    @*  <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>*@
+    @* <script src="~/assets2/js/vendor/jquery-1.12.4.min.js"></script>*@
+    <script src="~/assets2/js/vendor/bootstrap.min.js"></script>
+    <script src="~/assets2/js/vendor/tether.min.js"></script>
+    <script src="~/assets2/js/vendor/headroom.min.js"></script>
+    <script src="~/assets2/js/vendor/owl.carousel.min.js"></script>
+    <script src="~/assets2/js/vendor/smooth-scroll.min.js"></script>
+    <script src="~/assets2/js/vendor/venobox.min.js"></script>
+    <script src="~/assets2/js/vendor/jquery.ajaxchimp.min.js"></script>
+    <script src="~/assets2/js/vendor/slick.min.js"></script>
+    <script src="~/assets2/js/vendor/waypoints.min.js"></script>
+    <script src="~/assets2/js/vendor/odometer.min.js"></script>
+    <script src="~/assets2/js/vendor/wow.min.js"></script>
+    <script src="~/assets2/js/main.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="~/DatePicker/jquery-ui.min.js"></script>
+    <link href="~/DatePicker/jquery-ui.min.css" rel="stylesheet" />
+    <script src="~/assets/js/ShowProgression.js"></script>
+    <script src="~/assets/select2/js/select2.min.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentLocation = window.location.pathname;
+
+            document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+                if (link.pathname === currentLocation) {
+                    link.classList.add("active");
+                }
+            });
+
+            // Fix Dropdown Issue
+            document.querySelectorAll(".nav-item.dropdown").forEach(dropdown => {
+                let isActive = false;
+
+                dropdown.querySelectorAll(".dropdown-menu .dropdown-item").forEach(item => {
+                    if (item.pathname === currentLocation) {
+                        item.classList.add("active");
+                        isActive = true;
+                    }
+                });
+
+                // Activate dropdown toggle only if a child item is active
+                if (isActive) {
+                    dropdown.querySelector(".nav-link").classList.add("active");
+                }
+            });
+        });
+
+    </script>
+
+
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault(); // Prevent immediate navigation
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, logout!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Home/Logout"; // Redirect to logout
+                }
+            });
+        }
+    </script>
+
+
+</body>
+</html>
