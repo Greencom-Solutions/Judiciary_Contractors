@@ -64,78 +64,11 @@ namespace Contructors_Portal.Controllers
                 var isValid = true;
                 if (isValid)
                 {
-
-                    if (ConfigurationManager.AppSettings["IS_PROD"] == "PROD")
+                    Redirect = "/Dashboard/Dashboard";
+                    msg = Redirect;
+                    try
                     {
                         Redirect = "/Dashboard/Dashboard";
-                        msg = Redirect;
-                        try
-                        {
-
-
-                            Redirect = "/Dashboard/Dashboard";
-                            var page = $"PortalUsers?$filter=Authentication_Email eq '{UserName}'&format=json";
-
-                            var httpResponse = Credentials.GetOdataData(page);
-                            using var streamReader = new StreamReader(httpResponse.GetResponseStream());
-                            var result = streamReader.ReadToEnd();
-
-                            var details = JObject.Parse(result);
-
-                            if (details["value"].Any())
-                            {
-                                foreach (var jToken in details["value"])
-                                {
-                                    var config = (JObject)jToken;
-                                    if ((string)config["Authentication_Email"] != "")
-                                    {
-                                        userID = (string)config["Authentication_Email"];
-                                        var userAuth = AuthenticateUser(UserName, passwrd);
-
-
-                                        if (userAuth)
-                                        {
-                                            Session["Username"] = (string)config["Authentication_Email"];
-                                            Session["Mobile_Phone_No"] = (string)config["Mobile_Phone_No"];
-                                            var IDno = (string)config["Id_Number"];
-                                            var Email = (string)config["Authentication_Email"];
-                                            var PhoneNo = (string)config["Mobile_Phone_No"];
-                                            EmployeeData(UserName);
-                                            msg = Redirect;
-                                            success = true;
-                                        }
-                                        else
-                                        {
-                                            msg =
-                                            "Invalid Username or password";
-                                            success = false;
-                                        }
-
-
-                                    }
-                                    else
-                                    {
-                                        msg =
-                                            "No Employee Number assigned to the applied username. Contact HR / ICT";
-                                        success = false;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                msg = "No Employee Number assigned to the applied username. Contact HR / ICT";
-                                success = false;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            msg = ex.Message;
-                            success = false;
-                        }
-                    }
-                    else
-                    {
-                        Redirect = "/Home/InputOTP";
                         var page = $"PortalUsers?$filter=Authentication_Email eq '{UserName}'&format=json";
 
                         var httpResponse = Credentials.GetOdataData(page);
@@ -155,7 +88,7 @@ namespace Contructors_Portal.Controllers
                                     var userAuth = AuthenticateUser(UserName, passwrd);
 
 
-                                    if (userAuth)
+                                    if (!userAuth)
                                     {
                                         Session["Username"] = (string)config["Authentication_Email"];
                                         Session["Mobile_Phone_No"] = (string)config["Mobile_Phone_No"];
@@ -172,8 +105,6 @@ namespace Contructors_Portal.Controllers
                                         "Invalid Username or password";
                                         success = false;
                                     }
-
-
                                 }
                                 else
                                 {
@@ -188,6 +119,11 @@ namespace Contructors_Portal.Controllers
                             msg = "No Employee Number assigned to the applied username. Contact HR / ICT";
                             success = false;
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        msg = ex.Message;
+                        success = false;
                     }
                 }
                 else
@@ -410,7 +346,7 @@ namespace Contructors_Portal.Controllers
                     }
                     else
                     {
-                        // Handle case where Employee_No is empty (optional)
+                        status = false;
                     }
                 }
             }
@@ -747,7 +683,7 @@ namespace Contructors_Portal.Controllers
         {
             try
             {
-                var status="";
+                var status = "";
                 var nav = new NavConnection().ObjNav();
                 status = nav.FnReqforRegistration(signupmodel.VendorName, signupmodel.Phonenumber, signupmodel.Email, signupmodel.KraPin, signupmodel.ContactName);
 

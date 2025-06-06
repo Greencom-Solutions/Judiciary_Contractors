@@ -5,11 +5,11 @@
     <Setting Name="Setting" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Latest_Staff_Portal_NAVWS_WebService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/WebService</Value>
-    </Setting>
     <Setting Name="Latest_Staff_Portal_LiveCodeUnit_procurement" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/procurement</Value>
+    </Setting>
+    <Setting Name="Latest_Staff_Portal_NAVWS_HrPortal" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/HrPortal</Value>
     </Setting>
   </Settings>
 </SettingsFile>

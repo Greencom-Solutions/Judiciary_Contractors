@@ -17,11 +17,11 @@ namespace Latest_Staff_Portal.Models
         public static string fileDestinationPath = @"D:\PORTALS\CHS\Documents\";
         public static string fileUploadsPath = @"D:\PORTALS\CHS\Documents\";
 
-        public static WebService ObjNav
+        public static HrPortal ObjNav
         {
             get
             {
-                var ws = new WebService();
+                var ws = new HrPortal();
 
                 try
                 {

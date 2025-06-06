@@ -778,11 +778,11 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
-    <None Include="Web References\NAVWS\Reference.map">
+    <None Include="Web References\NAVWS\HrPortal.wsdl" />
+    <Content Include="Web References\NAVWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\NAVWS\WebService.wsdl" />
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -881,6 +881,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/HrPortal">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\NAVWS\</RelPath>
+      <UpdateFromURL>http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/HrPortal</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Latest_Staff_Portal_NAVWS_HrPortal</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/procurement">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\LiveCodeUnit\</RelPath>
@@ -891,17 +902,6 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Latest_Staff_Portal_LiveCodeUnit_procurement</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/WebService">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\NAVWS\</RelPath>
-      <UpdateFromURL>http://erptest2.court.go.ke:9047/Jumuika/WS/Judiciary/Codeunit/WebService</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Latest_Staff_Portal_NAVWS_WebService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>
