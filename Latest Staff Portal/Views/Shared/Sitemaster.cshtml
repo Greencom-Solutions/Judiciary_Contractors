@@ -279,14 +279,18 @@
                                 Contractor Requests
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="contractorRequestsDropdown">
-                                <li><a href="@Url.Action("ContractorExtensionRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorExtensionRequests" ? "active" : "")">Contractor Extension Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorAmendmentRequests" ? "active" : "")">Contractor Ammendment Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorInstructionRequests" ? "active" : "")">Contractor Instruction Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorApprovalRequests" ? "active" : "")">Contractor Approval Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorJointMeasurementRequests" ? "active" : "")">Contractor Joint Measurement Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorDelayedPaymentRequests" ? "active" : "")">Contractor Delayed Payment Requests</a></li>
-                                <li><a href="@Url.Action("ContractorPaymentRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPaymentRequests" ? "active" : "")">Contractor Payment Requests</a></li>
-                                <li><a class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "HeadOfStationRequests" ? "active" : "")">Head Of Station Requests</a></li>
+                                <li><a href="@Url.Action("ContractorExtensionRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorExtensionRequests" || ViewContext.RouteData.Values["action"].ToString() == "ContractorExtensionRequestsDocumentView" ? "active" : "")">Contractor Extension Requests</a></li>
+                                <li><a href="@Url.Action("ContractorAmmendedRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorAmmendedRequests"   || ViewContext.RouteData.Values["action"].ToString() == "ContractorAmmendedRequestsDocumentView" ? "active" : "")">Contractor Ammendment Requests</a></li>
+                                <li><a href="@Url.Action("ContractorInstructionRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorInstructionRequests"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorInstructionRequestsDocumentView"? "active" : "")">Contractor Instruction Requests</a></li>
+                                <li><a href="@Url.Action("ContractorApprovalRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorApprovalRequests"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorApprovalRequestsDocumentView" ? "active" : "")">Contractor Approval Requests</a></li>
+
+                                <li><a href="@Url.Action("ContractorPaymentRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPaymentRequests"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorPaymentRequestsDocumentView" ? "active" : "")">Contractor Payment Requests</a></li>
+                                <li><a href="@Url.Action("ContractorHOSRequests", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorHOSRequests"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorHOSRequestsDocumentView" ? "active" : "")">Head Of Station Requests</a></li>
+
+                                <li><a href="@Url.Action("ContractorPMCommunication", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPMCommunication"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorPMCommunicationDocumentView" ? "active" : "")">PM Communication</a></li>
+                                <li><a href="@Url.Action("ContractorPracticalCompletion", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorPracticalCompletion"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorPracticalDocumentView" ? "active" : "")">Practical Completion Requests</a></li>
+                                <li><a href="@Url.Action("ContractorGoodDefects", "Contractor")" class="dropdown-item @(ViewContext.RouteData.Values["action"].ToString() == "ContractorGoodDefects"  || ViewContext.RouteData.Values["action"].ToString() == "ContractorGoodDefectsDocumentView" ? "active" : "")">Making Good Defects Requests</a></li>
+
                             </ul>
                         </li>
 
@@ -407,8 +411,6 @@
                     link.classList.add("active");
                 }
             });
-
-            // Fix Dropdown Issue
             document.querySelectorAll(".nav-item.dropdown").forEach(dropdown => {
                 let isActive = false;
 
@@ -419,7 +421,6 @@
                     }
                 });
 
-                // Activate dropdown toggle only if a child item is active
                 if (isActive) {
                     dropdown.querySelector(".nav-link").classList.add("active");
                 }

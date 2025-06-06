@@ -60,6 +60,12 @@
                         <i class="fa fa-check" aria-hidden="true"></i> Send Request
                     </button>
                 }
+                if (@Model.SCM_Status == "Contractor"  && @Model.Addendum_Done) //remove this after testing. This should be fone on the contractors portal
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitSignedAddendumToDSCM('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i> Submit Signed Addendum
+                    </button>
+                }
             }
         </div>
     </div>

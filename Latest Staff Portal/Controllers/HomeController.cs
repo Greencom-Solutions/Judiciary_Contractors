@@ -674,8 +674,8 @@ namespace Contructors_Portal.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+       /* [HttpPost]
+        [AllowAnonymous]*/
        /* public JsonResult SupplierFirstRegistration(SignupModel signupmodel)
         {
             try
