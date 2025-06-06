@@ -576,6 +576,24 @@
     <Content Include="SiteJS\SearchLinks.js" />
     <Content Include="SiteJS\SideBarLink.js" />
     <Content Include="SiteJS\SubmitLoanApplication.js" />
+    <Content Include="Views\Contractor\PartialView\ContractorAmmendedRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorApprovalRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorExtensionRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorHOSRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorInstructionsRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorPaymentRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorRequestCommentsPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorRequestLinesPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\MakingGoodDefectRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\NewRequest.cshtml" />
+    <Content Include="Views\Contractor\PartialView\PracticalCompletionCertificationListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ProjectBOQLinesPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ProjectClosureListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ProjectManagerCommunicationListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ProjectMeetingsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\TenderEvaluationCommitteePartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ValuationProjectBoqsLinesPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ValuingMembersLinesPartialView.cshtml" />
     <Content Include="Views\Login\sdebarimg.png" />
     <Content Include="Views\Login\sidebarImg.jpg" />
     <Content Include="assets\fonts1\feathericon.eot" />
@@ -717,7 +735,7 @@
     <Content Include="Views\Home\RequestsList.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutPage1.cshtml" />
-    <Content Include="Views\Dashboard\Dashboard.cshtml" />
+    <Content Include="Views\Dashboard\Dashboard-bcp.cshtml" />
     <Content Include="Views\Contracts\ContractsList.cshtml" />
     <Content Include="Views\Contracts\PartialView\ContractsListPartialView2.cshtml" />
     <Content Include="Views\Projects\ActiveProjects.cshtml" />
@@ -731,58 +749,66 @@
     <Content Include="Views\Dashboard\ContractorAmmendments.cshtml" />
     <Content Include="Views\Dashboard\ContractorInstructions.cshtml" />
     <Content Include="Views\Contractor\ContractorExtensionRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorExtensionRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorPaymentRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorPaymentRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorPaymentRequestsDocumentView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ValuingMembersLinesPartialView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ValuationProjectBoqsLinesPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorExtensionRequestsDocumentView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorRequestCommentsPartialView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorRequestLinesPartialView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\TenderEvaluationCommitteePartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorAmmendedRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorAmmendedRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorAmmendedRequestsDocumentView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ProjectBOQLinesPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorInstructionsRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorInstructionsRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorInstructionsRequestsDocumentView.cshtml" />
     <Content Include="Views\Contractor\ContractorApprovalRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorApprovalRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorApprovalRequestsDocumentView.cshtml" />
     <Content Include="Views\Contractor\ContractorHOSRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ContractorHOSRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ProjectManagerCommunication.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ProjectManagerCommunicationListPartialView.cshtml" />
     <Content Include="Views\Contractor\ProjectMeetings.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ProjectMeetingsListPartialView.cshtml" />
     <Content Include="Views\Contractor\ContractorHOSRequestsDocumentView.cshtml" />
     <Content Include="Views\Contractor\ProjectManagerCommunicationDocumentView.cshtml" />
     <Content Include="Views\Contractor\ProjectMeetingsDocumentView.cshtml" />
     <Content Include="Views\Contractor\PracticalCompletionCertification.cshtml" />
-    <Content Include="Views\Contractor\PartialView\PracticalCompletionCertificationListPartialView.cshtml" />
     <Content Include="Views\Contractor\PracticalCompletionCertificationDocumentView.cshtml" />
     <Content Include="Views\Contractor\MakingGoodDefectRequests.cshtml" />
-    <Content Include="Views\Contractor\PartialView\MakingGoodDefectRequestsListPartialView.cshtml" />
     <Content Include="Views\Contractor\MakingGoodDefectRequestsDocumentView.cshtml" />
     <Content Include="Views\Contractor\ProjectClosure.cshtml" />
-    <Content Include="Views\Contractor\PartialView\ProjectClosureListPartialView.cshtml" />
     <Content Include="Views\Contractor\ProjectClosureDocumentView.cshtml" />
-    <Content Include="Views\Contractor\PartialView\NewRequest.cshtml" />
     <Content Include="Views\Projects\PartialViews\ProjectBQs.cshtml" />
     <Content Include="Views\Home\InputOTP.cshtml" />
     <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\Contractor\ClosedProjects.cshtml" />
+    <Content Include="Views\Contractor\ClosedProjectsDocumentView.cshtml" />
+    <Content Include="Views\Contractor\ContractorGoodDefects.cshtml" />
+    <Content Include="Views\Contractor\ContractorGoodDefectsDocumentView.cshtml" />
+    <Content Include="Views\Contractor\ContractorInstructionRequests.cshtml" />
+    <Content Include="Views\Contractor\ContractorInstructionRequestsDocumentView.cshtml" />
+    <Content Include="Views\Contractor\ContractorPMCommunication.cshtml" />
+    <Content Include="Views\Contractor\ContractorPMCommunicationDocumentView.cshtml" />
+    <Content Include="Views\Contractor\ContractorPracticalCompletion.cshtml" />
+    <Content Include="Views\Contractor\ContractorPracticalDocumentView.cshtml" />
+    <Content Include="Views\Contractor\ProjectAssignmentEntries.cshtml" />
+    <Content Include="Views\Contractor\PartialView\AssignAssistantDirector.cshtml" />
+    <Content Include="Views\Contractor\PartialView\AssignEmployee.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ClosedProjectBoqsLinesPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ClosedProjectsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorAmendedRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorGoodDefectsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorInstructionRequestsListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorMilestoneLines.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorPMCommunicationListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorPracticalListPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\FileAttachmentForm.cshtml" />
+    <Content Include="Views\Contractor\PartialView\NewExtensionReqLine.cshtml" />
+    <Content Include="Views\Contractor\PartialView\PaymentValuationProjectBoqsLinesPartialView.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ProjectAssignmentEntriesPartialView.cshtml" />
+    <Content Include="Views\Dashboard\Dashboard.cshtml" />
     <None Include="Web References\LiveCodeUnit\procurement.wsdl" />
     <Content Include="Web References\LiveCodeUnit\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
     <None Include="Web References\NAVWS\HrPortal.wsdl" />
-    <Content Include="Web References\NAVWS\Reference.map">
+    <None Include="Web References\NAVWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

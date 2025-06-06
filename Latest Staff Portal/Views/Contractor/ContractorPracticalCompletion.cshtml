@@ -1,7 +1,8 @@
 ﻿
+
 @{
     Layout = "~/Views/Shared/Sitemaster.cshtml";
-    //string title = ViewBag.title;
+    string title = ViewBag.title;
 }
 
 <style>
@@ -26,35 +27,39 @@
         <div class="col-sm-12">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" onclick="DashboardLink();">Dashboard</a></li>
-                <li class="breadcrumb-item active">Contractor Payment Requests List</li>
+                <li class="breadcrumb-item active">Contractor Practical Completion Certifications List</li>
             </ul>
         </div>
     </div>
 </div>
 
-
-
 <div class="card">
+
     <div class="card-header">
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                  @*  <select class="form-control" onchange="filterPaymentRequests(this.value)">
-                        <option value="New">New</option>
-                        <option value="Submitted">Submitted</option>
-                    </select>*@
-                </div>               
+                @* @if (Model.status == "Team Approval")
+                    {
+                        <div class="form-group">
+                            <select class="form-control" onchange="filterRequests(this.value)">
+                                <option value="New">New</option>
+                                <option value="Submitted">Submitted</option>
+                                <option value="Received">Received</option>
+                            </select>
+                        </div>
+                    }*@
+
             </div>
             <div class="col-md-6" style="text-align:right">
-                 <button class="btn btn-primary" style="background: #162f25; color:whitesmoke; border-radius:10px; border:none" onclick="NewRequest();">
+                <button class="btn btn-primary" style="background: #162f25; color:whitesmoke; border-radius:10px" onclick="NewRequest();">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i> New Request
-                 </button>
+                </button>
             </div>
         </div>
     </div>
     <div class="card-body">
 
-        <div id="divContractorRequestsList"></div>
+        <div id="divContractorExtensionRequestsList"></div>
     </div>
 </div>
 @*//////////////////////Modal////////////////////////////*@
@@ -99,15 +104,25 @@
     </div>
 </div>
 
+
+
 <script src="~/assets/js/ShowProgression.js"></script>
-
-
 
 <script type="text/javascript">
     $(document).ready(function () {
         var urlParams = new URLSearchParams(window.location.search);
-        var status = urlParams.get('status') || "New";
-        LoadContractorPaymentRequestsList(status);
+        var status = urlParams.get('status') || "Submitted";
+        var teamApprovalStatus = urlParams.get('teamApprovalStatus') || "New";
+
+        //alert(teamApprovalStatus)
+
+        if (status === "Team Approval") {
+            LoadContractorPracticalTeamApprovalList(teamApprovalStatus);
+        }
+        else {
+            LoadContractorPracticalList(status);
+        }
+
         var Successmsg = '@Request.RequestContext.HttpContext.Session["SuccessMsg"]';
         if (Successmsg != "") {
             Swal.fire('Success', Successmsg, 'success', true);
@@ -118,25 +133,46 @@
         }
     });
 
-    function filterPaymentRequests(selectedStatus) {  
-        LoadContractorPaymentRequestsList(selectedStatus);
+    function filterRequests(selectedStatus) {
+        LoadContractorPracticalList(selectedStatus);
     }
 
-    var LoadContractorPaymentRequestsList = function (status) {
+    var LoadContractorPracticalList = function (selectedStatus) {
         ShowProgress();
         $.ajax({
+            async: true,
             type: "POST",
-            url: "/Contractor/ContractorPaymentRequestsListPartialView",
-            data: JSON.stringify({ status: status }),
-            contentType: "application/json", // Fixing contentType
-            dataType: "html", // Expecting HTML as response
+            dataType: 'HTML',
+            data: JSON.stringify({ status: selectedStatus }),
+            contentType: "application/json",
+            url: "/Contractor/ContractorPracticalListPartialView",
             success: function (data) {
-                $("#divContractorRequestsList").html(data);
+                $("#divContractorExtensionRequestsList").empty().html(data);
                 HideProgress();
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function () {
                 HideProgress();
-                Swal.fire("Error!", `Unable to process request: ${textStatus}`, "error");
+                Swal.fire("There is some problem to process your request. Please try after some time");
+            }
+        });
+    }
+
+    function LoadContractorPracticalTeamApprovalList(selectedTeamApprovalStatus) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            dataType: 'HTML',
+            data: JSON.stringify({ teamApprovalStatus: selectedTeamApprovalStatus }),
+            contentType: "application/json",
+            url: "/Contractor/ContractorPracticalTeamApprovalListPartialView",
+            success: function (data) {
+                $("#divContractorExtensionRequestsList").empty().html(data);
+                HideProgress();
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("There is some problem to process your request. Please try after some time");
             }
         });
     }
@@ -144,7 +180,7 @@
     var ViewDoc = function (DocNo) {
         ShowProgress();
         var form = $('<form>', {
-            action: '/Contractor/ContractorPaymentRequestsDocumentView',
+            action: '/Contractor/ContractorPracticalDocumentView',
             method: 'POST'
         }).append($('<input>', {
             type: 'hidden',
@@ -153,9 +189,11 @@
         }));
         form.appendTo('body').submit();
     };
+
     function DashboardLink() {
-        window.location.href="/Dashboard/Dashboard/"
+        window.location.href = "/Dashboard/Dashboard/"
     }
+
 
     function NewRequest() {
         ShowProgress();
@@ -167,8 +205,7 @@
             success: function (data) {
                 $("#modalBody").html(data);
                 HideProgress();
-                var modal = new bootstrap.Modal(document.getElementById("myModal"));
-                modal.show();
+                $("#myModal").modal("show");
             },
             error: function (err) {
                 HideProgress();
@@ -176,12 +213,10 @@
             }
         });
     }
-
-
     function SubmitRequest() {
         var Project_No = document.getElementById('Project_No').value;
         var Contractor_No = document.getElementById('Contractor_No').value;
-        var docType = 2;
+        var docType = 10;
 
         ShowProgress();
         $.ajax({
@@ -202,9 +237,8 @@
         });
     }
 
-
-
 </script>
+
 
 
 

@@ -1,0 +1,888 @@
+﻿
+
+@using System.Diagnostics
+@using Latest_Staff_Portal.ViewModel
+@{
+    Layout = "~/Views/Shared/Sitemaster.cshtml";
+
+}
+
+<script src="~/assets/js/ShowProgression.js"></script>
+<script src="~/SiteJS/SideBarLink.js"></script>
+
+<script>
+    function toggleWidget(widgetId) {
+        var widgets = document.querySelectorAll('.widget-content');
+        widgets.forEach(function (widget) {
+            if (widget.id === widgetId) {
+                widget.style.display = (widget.style.display === "none") ? "block" : "none";
+            } else {
+                widget.style.display = "none";
+            }
+        });
+    }
+</script>
+<div class="page-headers">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#" onclick="HomeLink();">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12">
+
+        <h4>Project Implementation</h4>
+        <hr />
+    </div>
+</div>
+<div class="content" style="padding: 10px">
+    <div class="tab-container mb-5">
+        <div class="row">
+
+            @*contracts*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractAdmin');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contract Administration</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="contractAdmin" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                @*<a href="#" onclick="ContractRequisitionLink();"><i class="fas fa-file-alt"></i> Contract Administration</a>*@
+                                <a href="#" onclick="ContractsLink();"><i class="fas fa-file-alt"></i> Contracts</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @*Active  projects*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ActiveProjects');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Active Projects</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="ActiveProjects" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list">
+                            <li>
+                                @*<a href="#" onclick="ContractRequisitionLink();"><i class="fas fa-file-alt"></i> Contract Administration</a>*@
+                                <a href="#" onclick="ActiveProjectsLink();"><i class="fas fa-file-alt"></i> Active Projects</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @* extenson request*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorExtensionRequests');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contractor Extension Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="contractorExtensionRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">   
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i> New Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('QS');">
+                                    <i class="fas fa-balance-scale"></i> QS Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('ADQS');">
+                                    <i class="fas fa-user-check"></i> ADQS Review List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('PM');">
+                                    <i class="fas fa-clipboard-list"></i> Project Manager Approval List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('CRJ');">
+                                    <i class="fas fa-comments"></i> CRJ Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Rejected');">
+                                    <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('DSCM');">
+                                    <i class="fas fa-gavel"></i> Procurement Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Project Manager');">
+                                    <i class="fas fa-user-tie"></i> Project Manager Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ExtensionRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Acknowledged Contractor Requests
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            @* ammmendment request*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorAmmendedRequests');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contractor Ammended Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="contractorAmmendedRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i> New Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Requests
+                                </a>
+                            </li>
+                           @* <li>
+                                <a href="#" onclick="AmmendedRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('QS');">
+                                    <i class="fas fa-balance-scale"></i> QS Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('ADQS');">
+                                    <i class="fas fa-user-check"></i> ADQS Review List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('PM');">
+                                    <i class="fas fa-clipboard-list"></i> Project Manager Approval List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('CRJ');">
+                                    <i class="fas fa-comments"></i> CRJ Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Rejected');">
+                                    <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('DSCM');">
+                                    <i class="fas fa-gavel"></i> Procurement Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Project Manager');">
+                                    <i class="fas fa-user-tie"></i> Project Manager Contractor Requests
+                                </a>
+                            </li>*@
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="AmmendedRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Acknowledged Contractor Requests
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            @* instruction*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorInstructionsRequests');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contractor Instruction Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="contractorInstructionsRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i>New Contractor Instruction Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Instruction Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Instruction Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Approval Contractor Instruction Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Instruction Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="InstructionRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Actioned Acknowledged Contractor Instruction Requests
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            @* Approval*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorApprovalRequests');">
+                        <a>
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contractor Approval Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="contractorApprovalRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i>New Contractor Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Approval Contractor Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ApprovalRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Actioned Acknowledged Contractor Approval Requests
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            @* payment request*@
+            <div class="col-md-4 mb-4" style="border-right: 12px solid white;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('paymentsRequests');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Payments Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="paymentsRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                       
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i> New Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('QS');">
+                                    <i class="fas fa-balance-scale"></i> QS Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('ADQS');">
+                                    <i class="fas fa-user-check"></i> ADQS Review List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('PM');">
+                                    <i class="fas fa-clipboard-list"></i> Project Manager Approval List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('CRJ');">
+                                    <i class="fas fa-comments"></i> CRJ Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Rejected');">
+                                    <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('DSCM');">
+                                    <i class="fas fa-gavel"></i> Procurement Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Project Manager');">
+                                    <i class="fas fa-user-tie"></i> Project Manager Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PaymentRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Acknowledged Contractor Requests
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            @* Head of Station*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('HOSRequests');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Head Of Station Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="HOSRequests" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i>New Head Of Station Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Head Of Station Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Head Of Station Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Approval Head Of Station Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Head Of Station Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="HOSRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Actioned Acknowledged Head Of Station Requests
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+
+            @* PM Communication*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('PMCommunication');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Project Manager Communication</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="PMCommunication" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="PMCommunicationLink('New');">
+                                    <i class="fas fa-plus-circle"></i>New Project Manager Communication
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PMCommunicationLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Project Manager Communication
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PMCommunicationLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Project Manager Communication
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+
+            @* Meetings*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ProjectMeetings');">
+                        <a style="cursor: pointer;">
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Project Meetings</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="ProjectMeetings" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="ProjectMeetingsLink('New');">
+                                    <i class="fas fa-plus-circle"></i>New Project Meetings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ProjectMeetingsLink('Team Approval');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Project Meetings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="ProjectMeetingsLink('Actioned');">
+                                    <i class="fas fa-inbox"></i> Received Project Meetings
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+
+            <h4>Project Closure</h4>
+            <hr />
+        </div>
+    </div>
+
+
+
+    <div class="tab-container mb-5">
+        <div class="row">
+
+
+            @* practical completion*@
+            <div class="col-md-4 mb-4" style="border-right: 12px solid white;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('practicalcompletionrequest');">
+                        <a>
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Practical Completion Requests</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="practicalcompletionrequest" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i> New Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('QS');">
+                                    <i class="fas fa-balance-scale"></i> QS Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('ADQS');">
+                                    <i class="fas fa-user-check"></i> ADQS Review List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('PM');">
+                                    <i class="fas fa-clipboard-list"></i> Project Manager Approval List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('CRJ');">
+                                    <i class="fas fa-comments"></i> CRJ Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Rejected');">
+                                    <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('DSCM');">
+                                    <i class="fas fa-gavel"></i> Procurement Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Project Manager');">
+                                    <i class="fas fa-user-tie"></i> Project Manager Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="PracticalRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Acknowledged Contractor Requests
+                                </a>
+                            </li>
+                        </ul>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            @* making good defects*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorMakingGoodDefects');">
+                        <a>
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Contractor Making Good Defects</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="contractorMakingGoodDefects" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('New');">
+                                    <i class="fas fa-plus-circle"></i> New Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Submitted');">
+                                    <i class="fas fa-paper-plane"></i> Submitted Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Received');">
+                                    <i class="fas fa-inbox"></i> Received Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Team Approval');">
+                                    <i class="fas fa-users"></i> Team Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('QS');">
+                                    <i class="fas fa-balance-scale"></i> QS Valuation List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('ADQS');">
+                                    <i class="fas fa-user-check"></i> ADQS Review List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('PM');">
+                                    <i class="fas fa-clipboard-list"></i> Project Manager Approval List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('CRJ');">
+                                    <i class="fas fa-comments"></i> CRJ Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Rejected');">
+                                    <i class="fas fa-times-circle"></i> Rejected Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('DSCM');">
+                                    <i class="fas fa-gavel"></i> Procurement Approval Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Project Manager');">
+                                    <i class="fas fa-user-tie"></i> Project Manager Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Actioned');">
+                                    <i class="fas fa-check-circle"></i> Actioned Contractor Requests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="MakingGoodDefectsRequestLink('Actioned Acknowledged');">
+                                    <i class="fas fa-handshake"></i> Acknowledged Contractor Requests
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+
+            @* project closure*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ProjectClosure');">
+                        <a>
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Project Closure</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="ProjectClosure" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="ProjectClosureLink();">
+                                    <i class="fas fa-chess-king"></i> Project Closure Requests
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @* Closed Projects*@
+            <div class="col-md-4" style="border-right: 12px solid transparent;">
+                <br />
+                <div class="row">
+                    <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ClosedProjects');">
+                        <a>
+                            <div class="dash-widget-header">
+                                <h5 style="color:whitesmoke">Closed Projects</h5>
+                                <div class="dash-count">
+                                    <h3 class="menu-item-count" style="color:#fff;"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="ClosedProjects" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
+                        <ul class="widget-list" style="list-style: none; text-decoration: none;">
+                            <li>
+                                <a href="#" onclick="ClosedProjectsLink2();">
+                                    <i class="fas fa-chess-king"></i> Closed Projects
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function updateMenuItemCount() {
+        var widgetContents = document.querySelectorAll('.widget-content');
+        widgetContents.forEach(function (widgetContent) {
+            var ulElement = widgetContent.querySelector('ul.widget-list');
+            var menuItemCount = ulElement.getElementsByTagName('li').length;
+            var parentElement = widgetContent.previousElementSibling;
+            var countElement = parentElement.querySelector('.dash-count .menu-item-count');
+            if (!countElement) {
+                var dashCount = parentElement.querySelector('.dash-count');
+                if (dashCount) {
+                    countElement = document.createElement('h3');
+                    countElement.classList.add('menu-item-count');
+                    countElement.style.color = '#fff';
+                    dashCount.appendChild(countElement);
+                }
+            }
+            if (countElement) {
+                countElement.textContent = menuItemCount;
+            }
+        });
+    }
+
+    window.addEventListener('load', function () {
+        updateMenuItemCount();
+    });
+
+    function PurchaseRequisitionPendingApprovalLink() {
+        window.location.href = "/Purchase/PurchaseRequisitionsPendingApproval";
+    }
+</script>
+
+

@@ -54,7 +54,6 @@ namespace Contructors_Portal.Controllers
             var staffNo = "";
             var Redirect = "";
 
-
             try
             {
                 //using var pc = new PrincipalContext(ContextType.Domain, ConfigurationManager.AppSettings["AD_Server"]);
@@ -86,8 +85,6 @@ namespace Contructors_Portal.Controllers
                                 {
                                     userID = (string)config["Authentication_Email"];
                                     var userAuth = AuthenticateUser(UserName, passwrd);
-
-
                                     if (!userAuth)
                                     {
                                         Session["Username"] = (string)config["Authentication_Email"];
@@ -679,7 +676,7 @@ namespace Contructors_Portal.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult SupplierFirstRegistration(SignupModel signupmodel)
+       /* public JsonResult SupplierFirstRegistration(SignupModel signupmodel)
         {
             try
             {
@@ -701,10 +698,7 @@ namespace Contructors_Portal.Controllers
             {
                 return Json("danger*" + ex.Message, JsonRequestBehavior.AllowGet);
             }
-        }
-
-
-
+        }*/
         public ActionResult Logout()
         {
             // Clear the session
