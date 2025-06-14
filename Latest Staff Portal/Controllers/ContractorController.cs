@@ -48,7 +48,7 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"ExtensionRequestCard?$filter=Document_Type eq 'Extension' and Status eq '{status}'&$format=json";
+            page = $"ExtensionRequestCard?$filter=Document_Type eq 'Extension' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1082,7 +1082,6 @@ namespace Latest_Staff_Portal.Controllers
             }
         }
 
-
         public PartialViewResult ProjectBOQLinesPartialView(string No)
         {
             EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
@@ -1127,7 +1126,6 @@ namespace Latest_Staff_Portal.Controllers
             }
             return PartialView("~/Views/Contractor/PartialView/ProjectBOQLinesPartialView.cshtml", variationProjectBoqList);
         }
-
 
         //contractor Ammended
         public ActionResult ContractorAmmendedRequests()
@@ -4204,7 +4202,7 @@ namespace Latest_Staff_Portal.Controllers
 
                     #region projects
                     List<DropdownList> projectsList = new List<DropdownList>();
-                    string pageProjects = "ProjectList?$format=json";
+                    string pageProjects = $"ProjectList?$filter=Contractor_No eq '{employeeView.No}'&$format=json";
 
                     HttpWebResponse httpResponseProjects = Credentials.GetOdataData(pageProjects);
                     using (var streamReader = new StreamReader(httpResponseProjects.GetResponseStream()))
@@ -4293,7 +4291,7 @@ namespace Latest_Staff_Portal.Controllers
                 //string userId = employee.UserID;
 
                 string docNo = Credentials.ObjNav.FnCreateContractorRequestHeader(
-                    Contractor_No,
+                    employeeView.No,
                     Project_No,
                     docType
                 );
