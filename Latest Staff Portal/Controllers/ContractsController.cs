@@ -43,7 +43,7 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"Contract?$filter=Document_Type eq 'Blanket Order' and Status eq 'Open' and Contract_Status eq 'signed'&$format=json";
+            page = $"Contract?$filter=Document_Type eq 'Blanket Order' and Status eq 'Open' and Contract_Status eq 'signed' and Buy_from_Vendor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))

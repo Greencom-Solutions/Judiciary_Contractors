@@ -992,6 +992,35 @@ namespace Latest_Staff_Portal.Controllers
             }
         }
 
+        public JsonResult AcknowledgeAction(string DocNo)
+        {
+            try
+            {
+                EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
+
+                string staffNo = Session["Username"].ToString();
+                string msg = "";
+                string userId = employeeView.UserID;
+                bool result = false;
+                /*result = Credentials.ObjNav.FnAcknowledgeRequest();*/
+                if (result)
+                {
+                    msg = "Record Rejected";
+                    return Json(new { message = msg, success = true }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    msg = "Request Not submitted. Try again";
+                    return Json(new { message = msg, success = false }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex.Message.Replace("'", ""), success = false },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
 
         //contractor ammended actions
         public JsonResult SendToContractorForUpload(string DocNo, string Key_Comments)
@@ -1156,7 +1185,7 @@ namespace Latest_Staff_Portal.Controllers
             ViewBag.title = title;
 
 
-            string page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq '{status}'&$format=json";
+            string page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1244,7 +1273,7 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}'&$format=json";
+            page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1322,7 +1351,7 @@ namespace Latest_Staff_Portal.Controllers
             EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
             List<AmendmendRequestCard> ExtensionRequestsList = new List<AmendmendRequestCard>();
 
-            string title = "Contractor";
+            string title = ContractorStatus;
 
             ViewBag.title = title;
             ViewBag.teamApprovalStatus = ContractorStatus;
@@ -1332,7 +1361,7 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq 'Contractor' and Contractor_Status eq '{ContractorStatus}'&$format=json";
+            page = $"AmendmendRequestCard?$filter=Document_Type eq 'Amendmend' and Status eq 'Contractor' and Contractor_Status eq '{ContractorStatus}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1391,6 +1420,7 @@ namespace Latest_Staff_Portal.Controllers
                         Director_SCM_Comments = (string)config["Director_SCM_Comments"],
                         Professional_Opinion_Notes = (string)config["Professional_Opinion_Notes"],
                         SCM_Status = (string)config["SCM_Status"],
+                        Contractor_Status= (string)config["Contractor_Status"],
                         Procurement_Comments = (string)config["Procurement_Comments"],
                         Committee_Sec_No = (string)config["Committee_Sec_No"],
                         Secretary_Name = (string)config["Secretary_Name"],
@@ -1403,7 +1433,7 @@ namespace Latest_Staff_Portal.Controllers
 
                 }
             }
-            return PartialView("~/Views/Contractor/PartialView/ContractorAmendedRequestsListPartialView.cshtml", ExtensionRequestsList);
+            return PartialView("~/Views/Contractor/PartialView/ContractorAmmendedContractorListPartialView.cshtml", ExtensionRequestsList);
         }
         [HttpPost]
         public ActionResult ContractorAmmendedRequestsDocumentView(string No)
@@ -1541,7 +1571,7 @@ namespace Latest_Staff_Portal.Controllers
 
             ViewBag.title = title;
 
-            string page = $"InstructionRequestCard?$filter=Document_Type eq 'Instructions' and Status eq '{status}'&$format=json";
+            string page = $"InstructionRequestCard?$filter=Document_Type eq 'Instructions' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1777,7 +1807,7 @@ namespace Latest_Staff_Portal.Controllers
 
             ViewBag.title = title;
 
-            string page = $"ApprovalRequestCard?$filter=Document_Type eq 'Approval' and Status eq '{status}'&$format=json";
+            string page = $"ApprovalRequestCard?$filter=Document_Type eq 'Approval' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -1928,7 +1958,7 @@ namespace Latest_Staff_Portal.Controllers
                         Date_of_Receipt = (DateTime?)config["Date_of_Receipt"] ?? default,
                         Received_By = (string)config["Received_By"],
                         Status = (string)config["Status"],
-                       
+
 
                     };
                     ContractorPaymentRequests.Add(contractorPaymentRequest);
@@ -1966,7 +1996,7 @@ namespace Latest_Staff_Portal.Controllers
             ViewBag.title = title;
 
 
-            string page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq '{status}'&$format=json";
+            string page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq '{status}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -2058,11 +2088,11 @@ namespace Latest_Staff_Portal.Controllers
 
             if (teamApprovalStatus == "New")
             {
-                page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Current_Approving_Member eq '{StaffNo}' &$format=json";
+                page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Current_Approving_Member eq '{StaffNo}'  and Contractor_No eq '{employeeView.No}'&$format=json";
             }
             else
             {
-                page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Asssigning_Employee eq '{StaffNo}' &$format=json";
+                page = $"PaymentRequestCard?$filter=Document_Type eq 'Payments' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Asssigning_Employee eq '{StaffNo}'  and Contractor_No eq '{employeeView.No}'&$format=json";
             }
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
@@ -2581,7 +2611,7 @@ namespace Latest_Staff_Portal.Controllers
 
             ViewBag.title = title;
 
-            string page = $"ProjectManagerInstCard?$filter=Document_Type eq 'Project Manager Instructions' and Status eq '{status}'&$format=json";
+            string page = $"ProjectManagerInstCard?$filter=Document_Type eq 'Project Manager Instructions' and Status eq '{status}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -2729,7 +2759,7 @@ namespace Latest_Staff_Portal.Controllers
             ViewBag.title = title;
 
 
-            string page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq '{status}'&$format=json";
+            string page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -2820,12 +2850,12 @@ namespace Latest_Staff_Portal.Controllers
 
             if (teamApprovalStatus == "New")
             {
-                page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Current_Approving_Member eq '{StaffNo}'&$format=json";
+                page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Current_Approving_Member eq '{StaffNo}'  and Contractor_No eq '{employeeView.No}'&$format=json";
             }
             else
             {
 
-                page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Asssigning_Employee eq '{StaffNo}'&$format=json";
+                page = $"PracticalCompletionForm?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}' and Asssigning_Employee eq '{StaffNo}'  and Contractor_No eq '{employeeView.No}'&$format=json";
             }
 
 
@@ -3021,7 +3051,7 @@ namespace Latest_Staff_Portal.Controllers
             ViewBag.title = title;
 
 
-            string page = $"MakingGoodDefectCard?$filter=Document_Type eq 'Making Good' and Status eq '{status}'&$format=json";
+            string page = $"MakingGoodDefectCard?$filter=Document_Type eq 'Making Good' and Status eq '{status}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -3109,7 +3139,7 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"MakingGoodDefectCard?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}'&$format=json";
+            page = $"MakingGoodDefectCard?$filter=Document_Type eq 'Practical Completion' and Status eq 'Team Approval' and Team_Approval_Status eq '{teamApprovalStatus}'  and Contractor_No eq '{employeeView.No}'&$format=json";
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -3301,7 +3331,7 @@ namespace Latest_Staff_Portal.Controllers
             string title = status;
             ViewBag.title = title;
 
-            string page = $"ProjectClosure?$format=json";
+            string page = $"ProjectClosure?$filter= Contractor_No eq '{employeeView.No}'&$format=json";
 
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
@@ -3397,9 +3427,7 @@ namespace Latest_Staff_Portal.Controllers
             string title = status;
             ViewBag.title = title;
 
-            string page = $"JobCard?$format=json";
-
-
+            string page = $"JobCard?$filter=Contractor_No eq '{employeeView.No}'&$format=json";
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {

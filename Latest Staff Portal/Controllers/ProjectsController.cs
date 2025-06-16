@@ -430,14 +430,16 @@ namespace Latest_Staff_Portal.Controllers
         public PartialViewResult ActiveProjectsListPartialView()
         {
             var StaffNo = Session["Username"].ToString();
-            var employee = Session["EmployeeData"] as EmployeeView;
-            var userId = employee.UserID;
+            EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
+            var userId = employeeView.UserID;
 
-
+            string staffName = employeeView.Name;
+  
+            string UserID = employeeView.UserID;
             var activeProjects = new List<ActiveProjects>();
 
           /*  var pageProject = "JobCard?$filter=Created_By eq '" + userId + "' &$format=json";*/
-            var pageProject = "JobCard?$format=json";
+            var pageProject = $"JobCard?$filter=Contractor_No eq '{employeeView.No}'&$format=json";
 
             var httpResponse = Credentials.GetOdataData(pageProject);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))

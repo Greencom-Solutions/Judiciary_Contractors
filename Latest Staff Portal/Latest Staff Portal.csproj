@@ -799,6 +799,7 @@
     <Content Include="Views\Contractor\PartialView\PaymentValuationProjectBoqsLinesPartialView.cshtml" />
     <Content Include="Views\Contractor\PartialView\ProjectAssignmentEntriesPartialView.cshtml" />
     <Content Include="Views\Dashboard\Dashboard.cshtml" />
+    <Content Include="Views\Contractor\PartialView\ContractorAmmendedContractorListPartialView.cshtml" />
     <None Include="Web References\LiveCodeUnit\procurement.wsdl" />
     <Content Include="Web References\LiveCodeUnit\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>

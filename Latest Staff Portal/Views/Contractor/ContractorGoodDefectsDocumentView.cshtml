@@ -60,63 +60,10 @@
                         <i class="fa fa-check" aria-hidden="true"></i> Submit Request
                     </button>
                 }
-                if (@isManager)
+                if (@Model.Status == "Actioned") //done on contractor portal
                 {
-                    if (@Model.Status == "Submitted")
-                    {
-
-
-                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ReceiveContractorExtensionRequest('@Model.No');">
-                            <i class="fa fa-check" aria-hidden="true"></i> Receive
-                        </button>
-                    }
-
-                    if (@Model.Status == "Received" && !@Model.Sent_to_Ast_Directors)
-                    {
-                        <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendExtensionReqToAssistantDirector('@Model.No');">
-                            <i class="fa fa-check" aria-hidden="true"></i>Send To Assistant Director
-                        </button>
-                    }
-                }
-
-                if (@Model.Status == "Team Approval" && Model.Team_Approval_Status == "New" && @loggedInUserID == Model.Current_Approving_Member)
-                {
-                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitToTeamLeadForApproval('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i>Submit To Team Lead For Approval
-                    </button>
-                }
-
-
-                if (@Model.Status == "Team Approval" && @Model.Team_Approval_Status == "Submitted" && @loggedInUserID == Model.Asssigning_Employee)
-                {
-                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="TeamLeadApproveExtSubmission('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i>Approve Submission
-                    </button>
-
-                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="TeamLeadRejectExtSubmission('@Model.No');">
-                        <i class="fa fa-close" aria-hidden="true"></i>Reject Submission
-                    </button>
-                }
-
-                if (@Model.Status == "PM" && @isManager)
-                {
-                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="ApproveAndSubmitToCRJ('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i>Approve and Submit To CJ
-                    </button>
-
-                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="PMRejectSubmission('@Model.No');">
-                        <i class="fa fa-close" aria-hidden="true"></i>PM Reject Submission
-                    </button>
-                }
-
-                if (@Model.Status == "CRJ" && @isManager)
-                {
-                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendToSupplyChain('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i>Send To Supply Chain
-                    </button>
-
-                    <button class="btn btn-danger btn-sm" style="color: whitesmoke; border-radius: 10px" onclick="CRJRejectSubmission('@Model.No');">
-                        <i class="fa fa-close" aria-hidden="true"></i>CRJ Reject Submission
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AcknowledgeAction('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Acknowledge Action
                     </button>
                 }
             }
@@ -309,7 +256,7 @@
         <div class="accordion" id="accordionExample">
 
             <!-- Accordion Item 1- Comment Input Section -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Comment Input Section
@@ -469,7 +416,7 @@
 
 
             <!-- Accordion Item 3- DBS Actions -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         DBS Actions
@@ -545,7 +492,7 @@
             </div>
 
             <!-- Accordion Item 4- Supply Chain Actions -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingFour">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                         Supply Chain Actions
@@ -630,7 +577,7 @@
             </div>
 
             <!-- Accordion Item 5- CRJ -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingFive">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                         CRJ
@@ -669,7 +616,7 @@
             </div>
 
             <!-- Accordion Item 6- Communication -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingSix">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                         Communication
@@ -697,7 +644,7 @@
 
         <div class="row mb-5">
 
-            <div class="row mt-5">
+            @*<div class="row mt-5">
                 <h5 class="mb-3">Contractor Request Lines</h5>
                 <hr />
                 <div id="divContractorRequestLines"></div>
@@ -716,7 +663,7 @@
                 <hr />
                 <div id="divCommitteeMembers"></div>
                 <hr />
-            </div>
+            </div>*@
             <div class="row mt-5">
                 <b>Document Attachments</b>
                 <hr />
@@ -1366,6 +1313,33 @@
      }
 
 
+    function AcknowledgeAction(No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No }),
+            url: "/Contractor/AcknowledgeAction",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Acknowledgement successful", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
 
 
 </script>

@@ -56,7 +56,13 @@
                 if (@Model.Status == "New")
                 {
                     <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendRequest('@Model.No');">
-                        <i class="fa fa-check" aria-hidden="true"></i> Send Request
+                        <i class="fa fa-check" aria-hidden="true"></i> Submit Request
+                    </button>
+                }
+                if (@Model.Status == "Actioned") //done on contractor portal
+                {
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="AcknowledgeAction('@Model.No');">
+                        <i class="fa fa-check" aria-hidden="true"></i>Acknowledge Action
                     </button>
                 }
             }
@@ -476,7 +482,7 @@
             </div>
 
             <!-- Accordion Item 4- Supply Chain Actions -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingFour">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                         Supply Chain Actions
@@ -677,7 +683,7 @@
 
 
         <div class="row mb-5">
-            <div class="row mt-5">
+           @* <div class="row mt-5">
                 <h5 class="mb-3">Project BOQs</h5>
                 <hr />
                 <div id="divProjectBOQLines"></div>
@@ -704,7 +710,7 @@
                 <hr />
                 <div id="divCommitteeMembers"></div>
                 <hr />
-            </div>
+            </div>*@
             <div class="row mt-5">
                 <b>Document Attachments</b>
                 <hr />
@@ -1636,6 +1642,34 @@
               }
           });
       }
+
+    function AcknowledgeAction(No) {
+        ShowProgress();
+        $.ajax({
+            async: true,
+            type: "POST",
+            datatype: "json",
+            contentType: "application/json; charset = utf-8",
+            processData: false,
+            data: JSON.stringify({ DocNo: No }),
+            url: "/Contractor/AcknowledgeAction",
+            success: function (data) {
+                if (data.success) {
+                    HideProgress();
+                    Swal.fire("Success", "Document Acknowledgement successful", "success");
+                    ViewDoc(No)
+                    /* window.location.reload;*/
+                } else {
+                    HideProgress();
+                    Swal.fire("Warning", data.message, "warning");
+                }
+            },
+            error: function () {
+                HideProgress();
+                Swal.fire("Warning", "There is some problem to process your request. Please try after some time", "warning");
+            }
+        });
+    }
 
 </script>
 

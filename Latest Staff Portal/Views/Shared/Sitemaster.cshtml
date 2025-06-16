@@ -274,7 +274,7 @@
                             <a class="nav-link" href="@Url.Action("ActiveProjectsList", "Projects")">Active Projects</a>
                         </li>
 
-                        <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "ContractorRequests" ? "active" : "")">
+                      @*  <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "ContractorRequests" ? "active" : "")">
                             <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="contractorRequestsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Contractor Requests
                             </a>
@@ -293,7 +293,7 @@
 
                             </ul>
                         </li>
-
+*@
                         <!-- Item 6: Dropdown - Account -->
                         <li class="nav-item dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "Home" && (ViewContext.RouteData.Values["action"].ToString() == "ChangePassword" || ViewContext.RouteData.Values["action"].ToString() == "ChangeEmail" || ViewContext.RouteData.Values["action"].ToString() == "Logout") ? "active" : "")">
                             <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

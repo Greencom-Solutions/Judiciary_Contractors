@@ -140,6 +140,8 @@ namespace Latest_Staff_Portal.ViewModel
         public string Director_SCM_Comments { get; set; }
         public string Professional_Opinion_Notes { get; set; }
         public string SCM_Status { get; set; }
+
+        public string Contractor_Status { get; set; }
         public string Procurement_Comments { get; set; }
         public string Committee_Sec_No { get; set; }
         public string Secretary_Name { get; set; }

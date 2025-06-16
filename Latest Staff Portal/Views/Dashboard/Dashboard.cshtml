@@ -459,58 +459,7 @@
             </div>
         </div>
 
-        @*Contractor HOS requests*@
-        <div class="col-md-4 mt-3" style="border-right: 12px solid #dbdbdb;">
-            <div class="row">
-                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('contractorHOSRequest');">
-                    <a style="text-decoration: none; cursor: pointer;">
-                        <div class="dash-widget-header">
-                            <h5 style="color:whitesmoke">Contractor Head Of Station Requests</h5>
-                            <div class="dash-count">
-                                <h3 class="menu-item-count" style="color:#fff;"></h3>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div id="contractorHOSRequest" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
-                    <ul class="widget-list">
-                        <li>
-                            <a href="#" onclick="ContractorHOSLink('New');">
-                                <i class="fas fa-file-upload"></i> New Head Of Station Requests
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" onclick="ContractorHOSLink('Submitted');">
-                                <i class="fas fa-file-upload"></i> Submitted Head Of Station Requests
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" onclick="ContractorHOSLink('Received');">
-                                <i class="fas fa-inbox"></i> Received Head Of Station Requests
-                            </a>
-                        </li>
-                        @* <li>
-                                <a href="#" onclick="ContractorHOSLink('Team Approval');">
-                                    <i class="fas fa-users"></i> Team Action Head Of Station Requests
-                                </a>
-                            </li>*@
-
-                        <li>
-                            <a href="#" onclick="ContractorHOSLink('Actioned');">
-                                <i class="fas fa-check-circle"></i> Actioned Head Of Station Requests
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" onclick="ContractorHOSLink('Actioned Acknowledged');">
-                                <i class="fas fa-handshake"></i> Acknowledged Head Of Station Requests
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
+      
         @*PM Communication requests*@
         <div class="col-md-4 mt-3" style="border-right: 12px solid #dbdbdb;">
             <div class="row">
@@ -563,44 +512,7 @@
             </div>
         </div>
 
-        @* Meetings*@
-        <div class="col-md-4 mt-3" style="border-right: 12px solid transparent;">
-            <div class="row">
-                <div class="card-body" style="background-color: #162f25; color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px; height: auto;" onclick="toggleWidget('ProjectMeetings');">
-                    <a style="text-decoration: none; cursor: pointer;">
-                        <div class="dash-widget-header">
-                            <h5 style="color:whitesmoke">Project Meetings</h5>
-                            <div class="dash-count">
-                                <h3 class="menu-item-count" style="color:#fff;"></h3>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div id="ProjectMeetings" class="col-md-12 pt-3 pb-3 widget-content" style="border: 1px solid #b8a603; border-top: 0px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: none;">
-                    <ul class="widget-list" style="list-style: none; text-decoration: none;">
-                        <li>
-                            <a href="#" onclick="ProjectMeetingsLink('New');">
-                                <i class="fas fa-plus-circle"></i>New Project Meetings
-                            </a>
-                        </li>
-                      @*  <li>
-                            <a href="#" onclick="ProjectMeetingsLink('Team Approval');">
-                                <i class="fas fa-paper-plane"></i> Submitted Project Meetings
-                            </a>
-                        </li>*@
-                        <li>
-                            <a href="#" onclick="ProjectMeetingsLink('Actioned');">
-                                <i class="fas fa-inbox"></i> Received Project Meetings
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
-
+     
 
     </div>
 
