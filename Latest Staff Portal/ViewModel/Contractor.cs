@@ -83,7 +83,7 @@ namespace Latest_Staff_Portal.ViewModel
         public string Tender_Committee { get; set; }
         public List<System.Web.Mvc.SelectListItem> ListOfTenderCommittee { get; set; }
         public List<System.Web.Mvc.SelectListItem> ListOfProjects { get; set; }
-        
+
 
         public string Completion_I_A_Recommendation { get; set; }
     }
@@ -241,7 +241,7 @@ namespace Latest_Staff_Portal.ViewModel
 
     public class ApprovalRequestCard
     {
-        
+
         public string No { get; set; }
         public string Contractor_No { get; set; }
         public string Contractor_Name { get; set; }
@@ -605,18 +605,34 @@ namespace Latest_Staff_Portal.ViewModel
     {
 
         public string No { get; set; }
-        public string Contractor_No { get; set; }
-        public string Contractor_Name { get; set; }
         public string Project_No { get; set; }
         public string Project_Name { get; set; }
+        public string Contractor_No { get; set; }
+        public string Contractor_Name { get; set; }
         public string Document_Type { get; set; }
         public string Date_of_Submittion { get; set; }
         public string Date_of_Receipt { get; set; }
         public string Received_By { get; set; }
         public string Status { get; set; }
+        public string Instruction_Request { get; set; }
+        public string Instruction_Notes { get; set; }
+        public string Current_Approving_Member { get; set; }
+        public string Approving_Member_Name { get; set; }
+        public string Asssigning_Employee { get; set; }
+        public string Assigning_Emplyee_Name { get; set; }
+        public string Deadline { get; set; }
+        public string Key_Comments { get; set; }
+        public string Team_Lead_General_Comments { get; set; }
+        public string Team_Lead_Rejection_Comments { get; set; }
+        public bool Consolidated { get; set; }
+        public string Team_Approval_Status { get; set; }
+        public string Signing_Comments { get; set; }
+        public bool Sent_to_Ast_Directors { get; set; }
+
+        public string PM_Comments { get; set; }
+        public string PM_Rejection_Comments { get; set; }
+
     }
-
-
     public class HOSRequestscard
     {
 

@@ -1,4 +1,4 @@
-﻿@model Latest_Staff_Portal.ViewModel.ApprovalRequestCard
+﻿@model Latest_Staff_Portal.ViewModel.InstructionRequestCard
 
 
 @{
@@ -53,7 +53,7 @@
 
                 if (@Model.Status == "New")
                 {
-                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendRequest('@Model.No');">
+                    <button class="btn btn-primary btn-sm" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitContractorApprovalRequest('@Model.No');">
                         <i class="fa fa-check" aria-hidden="true"></i> Send Request
                     </button>
                 }
@@ -149,11 +149,51 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-           
+
         </div>
+
+        <div class="accordion" id="accordionExample">
+
+            <!-- Accordion Item 1- Comment Input Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Approvals
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div id="" style="margin: 10px 20px">
+                            <div class="row mt-3">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.Label("Approval Comment", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                        @*  @Html.EditorFor(model => model.Instruction_Request, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Instruction_Request" } })*@
+                                        <textarea class="form-control" rows="3" id="Contractor_Comment"
+                                                  @(Model.Status != "New" ? "readonly" : "")>@Model.Instruction_Request</textarea>
+                                    </div>
+                                  
+                                </div>
+                                @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Approval Notes", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Instruction_Notes" value="@(Model.Instruction_Notes)" readonly></textarea>
+
+                                    </div>
+                                </div>*@
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-5">
 
-           @* <div class="row mt-5">
+            @* <div class="row mt-5">
                 <h5 class="mb-3">Contractor Request Lines</h5>
                 <hr />
                 <div id="divContractorRequestLines"></div>
@@ -173,7 +213,7 @@
                 <div id="divCommitteeMembers"></div>
                 <hr />
             </div>*@
-            
+
             <div class="row mt-5">
                 <b>Document Attachments</b>
                 <hr />
@@ -1383,18 +1423,28 @@
      }
 
 
-  function SendRequest() {
-      var RequestNo = `@Model.No`;
+    function SubmitContractorApprovalRequest() {
+        var RequestNo = `@Model.No`;
+        var Contractor_Comment = $('#Contractor_Comment').val();
+
+        if (!Contractor_Comment) {
+            Swal.fire('Warning', 'Contractor Approval Comment required', 'warning');
+            return;
+        }
+
       ShowProgress();
       $.ajax({
           type: "POST",
-          url: '/Contractor/SendRequestForProcessing',
-          data: { RequestNo: RequestNo},
+          url: '/Contractor/SubmitContractorApprovalRequest',
+          data: { RequestNo: RequestNo, Contractor_Comment: Contractor_Comment },
           success: function (response) {
               HideProgress();
               if (response.success) {
                   Swal.fire('Success', 'Record successfully submitted', 'success');
                   window.location.reload();
+              }
+              else {
+                  Swal.fire('Warning', response.message, 'warning');
               }
           },
           error: function (err) {

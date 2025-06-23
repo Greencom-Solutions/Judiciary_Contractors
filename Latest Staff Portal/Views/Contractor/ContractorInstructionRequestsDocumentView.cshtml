@@ -1,4 +1,4 @@
-﻿@model Latest_Staff_Portal.ViewModel.ContractorExtensionRequests
+﻿@model Latest_Staff_Portal.ViewModel.InstructionRequestCard
 
 
 @{
@@ -55,7 +55,7 @@
             @{
                 if (@Model.Status == "New")
                 {
-                    <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitRequest('@Model.No');">
+                    <button class="btn btn-primary" style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitContractorInstructionRequest('@Model.No');">
                         <i class="fa fa-check" aria-hidden="true"></i> Submit Request
                     </button>
                 }
@@ -151,16 +151,17 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-           
+
         </div>
 
-        <div class="accordion" id="accordionExample" hidden>
+        <div class="accordion" id="accordionExample" >
+
 
             <!-- Accordion Item 1- Comment Input Section -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Comment Input Section
+                        Instructions
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -168,374 +169,25 @@
                         <div id="" style="margin: 10px 20px">
                             <div class="row mt-3">
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Memo Notes", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Memo_Comments" value="@(Model.Memo_Comments)"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Comments", htmlAttributes: new { @class = "control-label col-md-12" })
-                                        <textarea class="form-control" rows="3" id="Key_Comments" value="@(Model.Key_Comments)"></textarea>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Accordion Item 2-  QS Actions -->
-            <div class="accordion-item" hidden>
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        QS Actions
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div id="" style="margin: 10px 20px">
-                            <div class="row mt-5">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Approved_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Approved_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Approved_Amount, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Approved_Variation_Addition, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Approved_Variation_Addition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Approved_Variation_Addition, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Apprroved_Variation_Omition, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Apprroved_Variation_Omition, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Apprroved_Variation_Omition, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Actual_Work_Progress, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Actual_Work_Progress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Actual_Work_Progress, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Contract_Sum_Execution_PercentodatamediaReadLink, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Approved_Certificates, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Approved_Certificates, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Approved_Certificates, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Certificate_No, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Certificate_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Certificate_No, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Contract_No, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Contract_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Contract_No, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Final_Contract_Value, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Final_Contract_Value, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Final_Contract_Value, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Previously_Paid_Amount, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Previously_Paid_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Previously_Paid_Amount, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Revised_Completion_Date, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Revised_Completion_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Revised_Completion_Date, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Valuation_Date, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Valuation_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Valuation_Date, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Total_Net_Variation, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Total_Net_Variation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Total_Net_Variation, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Accordion Item 3- DBS Actions -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        DBS Actions
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div id="" style="margin: 10px 20px">
-                            <div class="row mt-5">
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Current_Approving_Member, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Current_Approving_Member, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Current_Approving_Member, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Approving_Member_Name, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Approving_Member_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Approving_Member_Name, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Asssigning_Employee, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Asssigning_Employee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Asssigning_Employee, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Assigning_Emplyee_Name, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Assigning_Emplyee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Assigning_Emplyee_Name, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Team Lead General Comments", htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Team_Lead_General_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Team_Lead_General_Comments" } })
-                                        @Html.ValidationMessageFor(model => model.Team_Lead_General_Comments, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.Label("Team Lead Rejection Comments", htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Team_Lead_Rejection_Comments, new { htmlAttributes = new { @class = "form-control", @id = "Team_Lead_Rejection_Comments" } })
-                                        @Html.ValidationMessageFor(model => model.Team_Lead_Rejection_Comments, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Accordion Item 4- Supply Chain Actions -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFour">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                        Supply Chain Actions
-                    </button>
-                </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div id="" style="margin: 10px 20px">
-                            <div class="row mt-5">
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Selected_SCM_Employee, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Selected_SCM_Employee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Selected_SCM_Employee, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Selected_Employee_Name, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Selected_Employee_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Selected_Employee_Name, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Selected_user_Id, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Selected_user_Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Selected_user_Id, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Committee_Assesment_Notes, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Committee_Assesment_Notes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Committee_Assesment_Notes, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Initial_Contract_End_Date, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Initial_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Initial_Contract_End_Date, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.New_Contract_End_Date, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.New_Contract_End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.New_Contract_End_Date, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Director_SCM_Comments, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Director_SCM_Comments, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Director_SCM_Comments, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Professional_Opinion_Notes, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Professional_Opinion_Notes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Professional_Opinion_Notes, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Accordion Item 5- CRJ -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                        CRJ
-                    </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div id="" style="margin: 10px 20px">
-
-                            <div class="row mt-5">
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Committee_Sec_No, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Committee_Sec_No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Committee_Sec_No, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Secretary_Name, htmlAttributes: new { @class = "control-label col-md-12" })
-
-                                        @Html.EditorFor(model => model.Secretary_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Secretary_Name, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Accordion Item 6- Communication -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSix">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                        Communication
-                    </button>
-                </h2>
-                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div id="" style="margin: 10px 20px">
-                            <div class="row mt-5">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Project_Manger_Communication, htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.Label("Instruction", htmlAttributes: new { @class = "control-label col-md-12" })
 
-                                        @Html.EditorFor(model => model.Project_Manger_Communication, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.Project_Manger_Communication, "", new { @class = "text-danger" })
+                                        @*  @Html.EditorFor(model => model.Instruction_Request, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Instruction_Request" } })*@
+                                        <textarea class="form-control" rows="3" id="Contractor_Comment"
+                                                  @(Model.Status != "New" ? "readonly" : "")>@Model.Instruction_Request</textarea>
+
                                     </div>
                                 </div>
+                                @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("Instruction Notes", htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <textarea class="form-control" rows="3" id="Instruction_Notes" value="@(Model.Instruction_Notes)"></textarea>
+
+                                    </div>
+                                </div>*@
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -545,7 +197,7 @@
 
         <div class="row mb-5">
 
-           @* <div class="row mt-5">
+            @* <div class="row mt-5">
                 <h5 class="mb-3">Contractor Request Lines</h5>
                 <hr />
                 <div id="divContractorRequestLines"></div>
@@ -714,6 +366,36 @@
     };
 
     //actions
+
+
+    function SubmitContractorInstructionRequest() {
+        var RequestNo = `@Model.No`;
+        var Contractor_Comment = $('#Contractor_Comment').val();
+        if (!Contractor_Comment) {
+            Swal.fire('Warning', 'Instruction required', 'warning');
+            return;
+        }
+
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: '/Contractor/SubmitContractorInstructionRequest',
+            data: { RequestNo: RequestNo, Contractor_Comment: Contractor_Comment },
+            success: function (response) {
+                HideProgress();
+                if (response.success) {
+                    Swal.fire('Success', 'Record successfully submitted', 'success');
+                    window.location.reload();
+                }
+            },
+            error: function (err) {
+                HideProgress();
+                Swal.fire('Warning', err.responseText || 'An error occurred', 'warning');
+            }
+        });
+    }
+
+
     function ReceiveContractorExtensionRequest(No) {
         ShowProgress();
         $.ajax({
