@@ -48,7 +48,14 @@ namespace Latest_Staff_Portal.Controllers
             string UserID = employeeView.UserID;
             string page = ""; // Declare 'page' once at the top.
             /*page = $"Contract?$filter=Created_By eq '{employeeView.UserID}'&$format=json";*/
-            page = $"ExtensionRequestCard?$filter=Document_Type eq 'Extension' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
+            if (status=="Contractor")
+            {
+                page = $"ExtensionRequestCard?$filter=Document_Type eq 'Extension' and SCM_Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
+            }
+            else {
+                page = $"ExtensionRequestCard?$filter=Document_Type eq 'Extension' and Status eq '{status}' and Contractor_No eq '{employeeView.No}'&$format=json";
+            }
+                
 
             HttpWebResponse httpResponse = Credentials.GetOdataData(page);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -113,7 +120,8 @@ namespace Latest_Staff_Portal.Controllers
                         Crj_Comments = (string)config["Crj_Comments"],
                         CRJ_General_Comments = (string)config["CRJ_General_Comments"],
                         Project_Manger_Communication = (string)config["Project_Manger_Communication"],
-                        Contract_Sum_Execution_PercentodatamediaReadLink = (string)config["Contract_Sum_Execution_PercentodatamediaReadLink"]
+                        Contract_Sum_Execution_PercentodatamediaReadLink = (string)config["Contract_Sum_Execution_PercentodatamediaReadLink"],
+                        Addendum_Done= (bool)config["Addendum_Done"]
                     };
                     ExtensionRequestsList.Add(ExtensionRequest);
 
@@ -276,7 +284,8 @@ namespace Latest_Staff_Portal.Controllers
                         Appealed_Period = (string)config["Appealed_Period"],
                         New_Appealed_Contract_End_Date = (string)config["New_Appealed_Contract_End_Date"],
                         isManager = isManager,
-                        Sent_to_Ast_Directors = (bool)config["Sent_to_Ast_Directors"]
+                        Sent_to_Ast_Directors = (bool)config["Sent_to_Ast_Directors"],
+                        Addendum_Done= (bool)config["Addendum_Done"]
 
 
 
