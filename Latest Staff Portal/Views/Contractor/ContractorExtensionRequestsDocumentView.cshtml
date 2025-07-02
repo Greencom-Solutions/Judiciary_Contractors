@@ -1440,7 +1440,7 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ DocNo: No}),
-            url: "/Procurement/SubmitSignedAddendumToDSCM",
+            url: "/Contractor/SubmitSignedAddendumToDSCM",
             success: function (data) {
                 if (data.success) {
                     HideProgress();
@@ -1758,7 +1758,7 @@
             contentType: "application/json; charset = utf-8",
             processData: false,
             data: JSON.stringify({ DocNo: No}),
-            url: "/Procurement/AcknowledgeAction",
+            url: "/Contractor/AcknowledgeAction",
             success: function (data) {
                 if (data.success) {
                     HideProgress();

@@ -1001,6 +1001,37 @@ namespace Latest_Staff_Portal.Controllers
             }
         }
 
+        public JsonResult SubmitSignedAddendumToDSCM(string DocNo)
+        {
+            try
+            {
+                EmployeeView employeeView = Session["EmployeeData"] as EmployeeView;
+
+                string staffNo = Session["Username"].ToString();
+                string msg = "";
+                string userId = employeeView.UserID;
+                bool result = false;
+                result = Credentials.ObjNav.FnSubmitSignedAddendumToDSCM(DocNo, staffNo);
+                if (result)
+                {
+                    msg = "Record Successfully Approved";
+                    return Json(new { message = msg, success = true }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    msg = "Record Not submitted. Try again";
+                    return Json(new { message = msg, success = false }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex.Message.Replace("'", ""), success = false },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public JsonResult AcknowledgeAction(string DocNo)
         {
             try
@@ -1011,7 +1042,7 @@ namespace Latest_Staff_Portal.Controllers
                 string msg = "";
                 string userId = employeeView.UserID;
                 bool result = false;
-                /*result = Credentials.ObjNav.FnAcknowledgeRequest();*/
+                result = Credentials.ObjNav.FnAcknowledgeRequest(DocNo);
                 if (result)
                 {
                     msg = "Record Rejected";
