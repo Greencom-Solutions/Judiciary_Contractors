@@ -539,8 +539,8 @@ namespace Latest_Staff_Portal.Controllers
                     reqLine.Header_No,
                     reqLine.Request_Description,
                     reqLine.section,
-                   reqLine.Assistant_Director
-                /* DateTime.ParseExact(reqLine.Deadline, "dd/MM/yyyy", CultureInfo.InvariantCulture),*/
+                   reqLine.Assistant_Director,
+                 DateTime.ParseExact(reqLine.Deadline, "dd/MM/yyyy", CultureInfo.InvariantCulture)
                 );
 
                 if (result)
@@ -4242,7 +4242,7 @@ namespace Latest_Staff_Portal.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult SubmitRequest(string Project_No, string Contractor_No, int docType)
+        public JsonResult SubmitRequest(string Project_No, string Contractor_No, int docType, string AmendmentType)
         {
             try
             {
@@ -4256,10 +4256,17 @@ namespace Latest_Staff_Portal.Controllers
                 EmployeeView employee = Session["EmployeeData"] as EmployeeView;
                 //string userId = employee.UserID;
 
+                var AmmType = "0";
+                if (AmendmentType!=null)
+                {
+                    AmmType = AmendmentType;
+                }
+
                 string docNo = Credentials.ObjNav.FnCreateContractorRequestHeader(
                     employeeView.No,
                     Project_No,
-                    docType
+                    docType,
+                    int.Parse(AmmType)
                 );
 
                 //Credentials.ObjNav.fnGetPortalUser()

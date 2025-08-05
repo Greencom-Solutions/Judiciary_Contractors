@@ -1903,7 +1903,7 @@ namespace Latest_Staff_Portal.Controllers
                 var adminUnit = employee?.AdministrativeUnit;
                 DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                 DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                message = Credentials.ObjNav.generateCommitmentReport(Convert.ToInt32(reportType), startDateTime, endDateTime);
+                //message = Credentials.ObjNav.generateCommitmentReport(Convert.ToInt32(reportType), startDateTime, endDateTime);
                 if (string.IsNullOrEmpty(message))
                 {
                     message = "File Not Found";

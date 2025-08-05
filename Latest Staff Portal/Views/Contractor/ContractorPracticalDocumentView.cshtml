@@ -56,7 +56,7 @@
             @{
                 if (@Model.Status == "New")
                 {
-                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SubmitRequest('@Model.No');">
+                    <button style="background: #162f25; color: whitesmoke; border-radius: 10px" onclick="SendRequest('@Model.No');">
                         <i class="fa fa-check" aria-hidden="true"></i> Submit Request
                     </button>
                 }
@@ -339,7 +339,7 @@
         <div class="accordion" id="accordionExample">
 
             <!-- Accordion Item 1- Comment Input Section -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Comment Input Section
@@ -492,7 +492,7 @@
 
 
             <!-- Accordion Item 3- DBS Actions -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         DBS Actions
@@ -568,7 +568,7 @@
             </div>
 
             <!-- Accordion Item 4- Supply Chain Actions -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingFour">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                         Supply Chain Actions
@@ -653,7 +653,7 @@
             </div>
 
             <!-- Accordion Item 5- CRJ -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingFive">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                         CRJ
@@ -692,7 +692,7 @@
             </div>
 
             <!-- Accordion Item 6- Communication -->
-            <div class="accordion-item">
+            <div class="accordion-item" hidden>
                 <h2 class="accordion-header" id="headingSix">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                         Communication
@@ -720,7 +720,7 @@
 
         <div class="row mb-5">
 
-            <div class="row mt-5">
+           @* <div class="row mt-5">
                 <h5 class="mb-3">Valuing Members</h5>
                 <hr />
                 <div id="divContractorRequestLines"></div>
@@ -746,7 +746,7 @@
 
 
 
-            </div>
+            </div>*@
             <div class="row mt-5">
                 <b>Document Attachments</b>
                 <hr />
@@ -1279,9 +1279,9 @@
     var GetDocumentAttachments = function () {
         var DocNo = `@Model.No`;
         var status2 = '@Model.Status';
-        if (status2 == "DSCM") {
+       /* if (status2 == "DSCM") {*/
             var status="Open"
-        }
+      /*  }*/
         $.ajax({
            async: true,
            type: "POST",
@@ -1484,6 +1484,27 @@
          return new Blob(byteArrays, { type: contentType });
      }
 
+
+      function SendRequest() {
+          var RequestNo = `@Model.No`;
+          ShowProgress();
+           $.ajax({
+               type: "POST",
+               url: '/Contractor/SendRequestForProcessing',
+               data: { RequestNo: RequestNo},
+               success: function (response) {
+                   HideProgress();
+                   if (response.success) {
+                       Swal.fire('Success', 'Record successfully submitted', 'success');
+                       window.location.reload();
+                   }
+               },
+               error: function (err) {
+                   HideProgress();
+                   Swal.fire('Warning', err.responseText || 'An error occurred', 'warning');
+               }
+           });
+       }
 
 
 
